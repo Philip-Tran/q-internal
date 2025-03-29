@@ -3,7 +3,7 @@ definePageMeta({
   layout: ["auth-layout"]
 })
 
-import { useAuthStore } from "../../stores/auth.store";
+import { useAuthStore } from "../../stores/auth/auth.store";
 import { toast } from 'vue-sonner'
 
 import {

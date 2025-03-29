@@ -1,4 +1,11 @@
 <script setup lang="ts">
+definePageMeta({
+  layout: "default",
+})
+const okrStore = useOKRsStore()
+const {createOKRsState, createOKRs} = okrStore
+import { newOKRsSchema } from '~/schemas/oKRs.schema'
+
 import { Button } from '@/components/ui/button'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
@@ -16,24 +23,6 @@ import { toast } from 'vue-sonner'
 import { Check, Circle, Dot, Plus, Trash } from 'lucide-vue-next'
 
 import { toTypedSchema } from '@vee-validate/zod'
-import * as z from 'zod'
-
-const newOKRsSchema = [
-  z.object({
-    objective: z.string().min(10),
-  }),
-  z.object({
-    keyResults: z.array(
-      z.object({
-        keyResultName: z.string().min(2).max(50),
-        keyResultNumber: z.number(),
-      })
-    ),
-  }),
-  z.object({
-    timeFrame: z.union([z.literal('thisMonth'), z.literal('quarter')]),
-  }),
-]
 
 const stepIndex = ref(1)
 const steps = [
@@ -55,9 +44,16 @@ const removeKeyResult = (index: number) => {
   keyResults.value.splice(index, 1)
 }
 
-function onSubmit(values: any) {
+async function onSubmit(values: any) {
   console.log(values)
-  toast.info("Created mew ORKs successfully")
+  const data = await okrStore.createOKRs(values)
+  console.log(data)
+  if(okrStore.createOKRsState.isError) {
+    toast.error(createOKRsState.message)
+  } else {
+    toast.info(data)
+  }
+  
 }
 </script>
 
@@ -65,7 +61,7 @@ function onSubmit(values: any) {
   <div>
     <div class="w-full items-center">
       <div class="space-y-20 py-12">
-        <h2 class="text-center text-2xl font-medium">New Objective</h2>
+        <h2 class="text-center text-2xl font-medium">New OKRs</h2>
         <div class="items-center justify-center">
           <div class="max-w-[650px] mx-auto">
             <Form v-slot="{ meta, values, validate }" as="" keep-values
@@ -115,7 +111,7 @@ function onSubmit(values: any) {
                         <FormItem>
                           <FormLabel>Objective</FormLabel>
                           <FormControl>
-                            <Textarea class="min-h-[160px]" v-bind="componentField"
+                            <Textarea class="min-h-[300px]" v-bind="componentField"
                               placeholder="Develop closer relationship with God" />
                           </FormControl>
                           <FormMessage />
