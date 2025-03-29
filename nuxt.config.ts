@@ -1,8 +1,11 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   compatibilityDate: "2024-11-01",
-  devtools: { enabled: true },
-  modules: ["@nuxtjs/tailwindcss", "shadcn-nuxt", "@nuxt/fonts"],
+  devtools: { enabled: false },
+  modules: ["@nuxtjs/tailwindcss", "@pinia/nuxt", "shadcn-nuxt", "@nuxt/fonts"],
+  pinia: {
+    storesDirs: ["./stores/**", "./custom-folder/stores/**"],
+  },
   shadcn: {
     /**
      * Prefix for all the imported component
@@ -16,8 +19,14 @@ export default defineNuxtConfig({
   },
   vite: {},
 
+  vue: {
+    compilerOptions: {
+      isCustomElement: (tag) => tag === "icon",
+    },
+  },
+
   runtimeConfig: {
-    apiKey: process.env.GITHUB_CLIENT_ID,
-    baseUrl: process.env.GITHUB_CLIENT_SECRET,
+    // apiKey: process.env.GITHUB_CLIENT_ID,
+    // baseUrl: process.env.GITHUB_CLIENT_SECRET,
   },
 });
