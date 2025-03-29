@@ -79,7 +79,7 @@ const router = useRouter()
         </div>
       </div>
     </div>
-    <div class="default-layout flex-1 space-y-4 p-8 pt-6">
+    <div class="default-layout flex-1 px-4 2xl:px-20 pt-6">
       <slot />
       <!-- Overlay -->
       <div v-if="isCommandVisible" class="fixed inset-0 bg-black bg-opacity-50 z-40"></div>

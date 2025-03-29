@@ -2,7 +2,7 @@
 definePageMeta({
   middleware: ["admin"]
 })
-import { Goal } from "lucide-vue-next";
+import { Crosshair, Goal } from "lucide-vue-next";
 import { authClient } from "~/lib/auth-client";
 
 const { data: session, isPending } = await authClient.useSession(useFetch);
@@ -42,11 +42,16 @@ const { status, data } = await useLazyFetch("/api/okrs/current", {
           <p v-if="status === 'pending'">Is loading</p>          
           <template v-else>
             <CardContent class="p-6 pt-0">
-              <div>
-                <div v-for="goal in data?.data">
-                  <h2>
-                    {{ goal.name }}
-                  </h2>
+              <div class="flex flex-col space-y-6">
+                <div v-for="goal in data?.data" class="flex space-x-4">
+                  <div class="flex justify-center items-center">
+                    <Crosshair />
+                  </div>
+                  <div>
+                    <h2 class="font-serif text-2xl font-medium">
+                      {{ goal.name }}
+                    </h2>
+                  </div>
                 </div>
               </div>
             </CardContent>

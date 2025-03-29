@@ -136,3 +136,26 @@ model KeyResultProgressUpdate {
   keyResultId String
   keyResult KeyResult @relation(fields: [keyResultId], references: [id])
 }
+
+enum WorkStatus {
+  TODO
+  IN_PROGRESS
+  DONE
+  PAUSE
+}
+
+model Work {
+  id String @id @default(uuid())
+  name String
+  status WorkStatus
+  worklogs WorkLog[]
+}
+
+model WorkLog {
+  id String @id @default(uuid())
+  logContent String
+  createdAt DateTime @default(now())
+
+  workId String
+  work Work @relation(fields: [workId], references: [id])
+}
