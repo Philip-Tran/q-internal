@@ -78,3 +78,61 @@ model Verification {
 
   @@map("verification")
 }
+
+model Objective {
+  id    String @id @default(uuid())
+  name  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  month Int
+  year Int
+  keyResults KeyResult[]
+  reflexes Reflex[]
+  progressUpdates ProgressUpdate[]
+
+  @@map("objective")
+
+}
+
+model KeyResult {
+  id        String @id @default(uuid())
+  name      String
+  resultNumber Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+ 
+  objectiveId String
+  objective         Objective @relation(fields: [objectiveId], references: [id])
+
+  keyResultProgressUpdate KeyResultProgressUpdate[]
+
+  @@map("key_result")
+}
+
+model Reflex {
+  id    String @id @default(uuid())
+  confidentRate Int 
+  whatCanBeImproved String
+  whatToDoToImprove String
+  noteToMyself String
+
+  objectiveId String
+  objective         Objective @relation(fields: [objectiveId], references: [id])
+  
+  @@map("reflex")
+}
+
+model ProgressUpdate {
+  id String @id @default(uuid())
+  confidentRate Int
+
+  objectiveId String
+  objective         Objective @relation(fields: [objectiveId], references: [id])
+}
+
+model KeyResultProgressUpdate {
+  id String @id @default(uuid())
+  
+  keyResultId String
+  keyResult KeyResult @relation(fields: [keyResultId], references: [id])
+}
