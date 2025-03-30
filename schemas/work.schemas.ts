@@ -1,4 +1,4 @@
-import { WorkStatus } from "@prisma/client";
+import { WorkStatus, LogType } from "@/types/work.type";
 import * as z from "zod";
 
 const addWorkSchema = z.object({
@@ -6,4 +6,9 @@ const addWorkSchema = z.object({
   status: z.nativeEnum(WorkStatus).default(WorkStatus.IN_PROGRESS),
 });
 
-export { addWorkSchema };
+const addLogSchema = z.object({
+  logContent: z.string().max(300),
+  logType: z.nativeEnum(LogType).default(LogType.FINISH),
+})
+
+export { addWorkSchema, addLogSchema };

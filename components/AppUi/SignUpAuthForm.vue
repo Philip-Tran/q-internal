@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { cn } from '@/lib/utils'
-import { ref } from 'vue'
 import { useForm } from 'vee-validate'
 import { z } from 'zod'
 import { toTypedSchema } from '@vee-validate/zod'

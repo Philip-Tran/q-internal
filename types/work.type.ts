@@ -10,4 +10,10 @@ interface Work {
   status: WorkStatus;
 }
 
+export enum LogType {
+  PAUSE = "PAUSE",
+  UPDATE = "UPDATE",
+  FINISH = "FINISH"
+}
+
 export type { Work };

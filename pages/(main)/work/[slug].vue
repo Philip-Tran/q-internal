@@ -1,24 +1,36 @@
 <script lang="ts" setup>
 import { LampEffect } from '~/components/ui/lamp-effect';
+import LogTab from "@/components/AppUi/work/LogTab.vue";
 
 definePageMeta({
     layout: "plain-layout"
 })
 
 interface Work {
-    workName: String,
-    status: String,
-    id: String
+    workName: string,
+    status: string,
+    id: string
 }
 
 const { status, data: CurrentWork } = await useFetch<Work>("/api/work/current", {
     method: "GET",
     lazy: true
 })
+
+const isLogTabOpen = ref(false)
+
+const toggleLogTab = () => {
+    isLogTabOpen.value = !isLogTabOpen.value
+}
 </script>
 
 <template>
-    <div>
+    <div class="relative">
+        <div class="absolute translate-x-1/2 z-10 right-1/2 opacity-0 hover:opacity-100 top-4">
+            <Button @click="toggleLogTab">Log work</Button>
+        </div>
+        <LogTab v-if="isLogTabOpen" :workId="CurrentWork?.id"
+            class="absolute z-50 right-4 md:right-1/2 translate-x-1/2 -translate-y-1/2 top-1/3 rounded-xl p-3 bg-slate-900 border-none bg-opacity-35" />
         <LampEffect class="rounded-none">
             <div class="flex flex-col space-y-6">
                 <div>

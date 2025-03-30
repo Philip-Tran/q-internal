@@ -167,10 +167,17 @@ model Work {
   @@map("work")
 }
 
+enum LogType {
+  PAUSE
+  UPDATE
+  FINISH
+}
+
 model WorkLog {
   id         String   @id @default(uuid())
   logContent String
   createdAt  DateTime @default(now())
+  logType  LogType
 
   workId String
   work   Work   @relation(fields: [workId], references: [id])
