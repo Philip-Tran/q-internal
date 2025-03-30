@@ -11,28 +11,26 @@ import {
     DialogTrigger,
 } from '@/components/ui/dialog'
 
-import {
-    Form,
-    FormControl,
-    FormDescription,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage,
-} from '@/components/ui/form'
-
 import { toTypedSchema } from '@vee-validate/zod'
+import { useForm } from 'vee-validate';
 
-const formSchema = toTypedSchema(addWorkSchema)
+const { meta, defineField, values, handleSubmit, errors } = useForm({
+    validationSchema: toTypedSchema(addWorkSchema)
+});
 
-function onSubmit(values: any) {
+const [workName, workNameAttrs] = defineField('workName');
+
+const onSubmit = handleSubmit(async (values) => {
     console.log(values)
-}
-
+    const data = await $fetch("/api/work/create", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: values,
+    })
+})
 </script>
 
 <template>
-    <Form v-slot="{ handleSubmit }" as="" keep-values :validation-schema="formSchema">
         <Dialog>
             <DialogTrigger as-child>
                 <Button variant="outline">
@@ -47,16 +45,14 @@ function onSubmit(values: any) {
                     </DialogDescription>
                 </DialogHeader>
 
-                <form id="dialogForm" @submit="handleSubmit($event, onSubmit)">
-                    <FormField v-slot="{ componentField }" name="workName">
-                        <FormItem>
-                            <FormLabel>Name</FormLabel>
-                            <FormControl>
-                                <Textarea type="text" placeholder="" v-bind="componentField" class="md:min-h-[140px]" />
-                            </FormControl>
-                            <FormMessage />
-                        </FormItem>
-                    </FormField>
+                <form id="dialogForm" @submit="onSubmit">
+                    <div>
+                        <Label class="mb-4">Name</Label>
+                        <div>
+                            <Textarea type="text" placeholder="" v-model="workName" v-bind="workNameAttrs" class="md:min-h-[140px]" />
+                        </div>
+                        <span class="text-sm my-2">{{ errors.workName }}</span>
+                    </div>
                 </form>
 
                 <DialogFooter>
@@ -65,6 +61,5 @@ function onSubmit(values: any) {
                     </Button>
                 </DialogFooter>
             </DialogContent>
-        </Dialog>
-    </Form>
+        </Dialog>    
 </template>

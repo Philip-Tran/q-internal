@@ -2,34 +2,18 @@
 definePageMeta({
   middleware: ["admin"]
 })
-import { Crosshair, Goal } from "lucide-vue-next";
-import { authClient } from "~/lib/auth-client";
-import { Progress } from '@/components/ui/progress'
+import { authClient } from "~/server/utils/auth-client";
 
+import { Crosshair, Goal } from "lucide-vue-next";
+import { Progress } from '@/components/ui/progress'
 import { AnimatedCircularProgressBar } from "@/components/ui/animated-circular-progressbar"
+import { AppUiCurrentWorkCardVue } from "#components";
 
 const { data: session, isPending } = await authClient.useSession(useFetch);
 
 const { status, data } = await useLazyFetch("/api/okrs/current", {
   method: "GET",
 })
-
-//
-import { ref, onMounted, onBeforeUnmount } from "vue";
-const value = ref(0);
-
-function handleIncrement(prev: number) {
-  return prev === 100 ? 0 : prev + 10;
-}
-
-onMounted(() => {
-  value.value = handleIncrement(value.value);
-  const interval = setInterval(() => {
-    value.value = handleIncrement(value.value);
-  }, 500);
-
-  onBeforeUnmount(() => clearInterval(interval));
-});
 
 const monthTimePercentage = getMonthProgressPercentage()
 </script>
@@ -78,11 +62,11 @@ const monthTimePercentage = getMonthProgressPercentage()
                       </div>
                     </div>
                     <div>
-                      <AnimatedCircularProgressBar :max="100" :min="0" :value="60" circleStrokeWidth="7" class="w-[60px] h-[60px] text-lg"/>
+                      <AnimatedCircularProgressBar :max="100" :min="0" :value="60" :circleStrokeWidth=8 class="w-[60px] h-[60px] text-lg"/>
                     </div>
                   </div>
                   <div>
-                    <Progress  :model-value="monthTimePercentage" class="h-1"/>
+                    <Progress  :model-value="monthTimePercentage" class="h-2"/>
                   </div>
                 </div>
               </div>
@@ -91,10 +75,13 @@ const monthTimePercentage = getMonthProgressPercentage()
         </Card>
         <Card class="col-span-3">
           <CardHeader class="border-b py-2 flex flex-row items-center justify-between">
-            <CardTitle>Current work</CardTitle>
+            <CardTitle>Current</CardTitle>
             <AppUiCreateNewWorkDialog/>
           </CardHeader>
           <CardContent class="p-6">
+            <div class="">
+              <AppUiCurrentWorkCardVue/>
+            </div>
           </CardContent>
         </Card>
       </div>

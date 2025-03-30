@@ -80,29 +80,29 @@ model Verification {
 }
 
 model Objective {
-  id    String @id @default(uuid())
-  name  String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  month Int
-  year Int
-  progressOnTotalKeyResult Int 
-  keyResults KeyResult[]
-  reflexes Reflex[]
-  progressUpdates ProgressUpdate[]
+  id                       String           @id @default(uuid())
+  name                     String
+  createdAt                DateTime         @default(now())
+  updatedAt                DateTime         @updatedAt
+  month                    Int
+  year                     Int
+  progressOnTotalKeyResult Int?
+  keyResults               KeyResult[]
+  reflexes                 Reflex[]
+  progressUpdates          ProgressUpdate[]
 
   @@map("objective")
 }
 
 model KeyResult {
-  id        String @id @default(uuid())
-  name      String
+  id           String   @id @default(uuid())
+  name         String
   resultNumber Int
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
- 
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
   objectiveId String
-  objective         Objective @relation(fields: [objectiveId], references: [id])
+  objective   Objective @relation(fields: [objectiveId], references: [id])
 
   keyResultProgressUpdate KeyResultProgressUpdate[]
 
@@ -110,34 +110,41 @@ model KeyResult {
 }
 
 model Reflex {
-  id    String @id @default(uuid())
-  confidentRate Int 
+  id                String   @id @default(uuid())
+  confidentRate     Int
   whatCanBeImproved String
   whatToDoToImprove String
-  noteToMyself String
+  noteToMyself      String
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
 
   objectiveId String
-  objective         Objective @relation(fields: [objectiveId], references: [id])
-  
+  objective   Objective @relation(fields: [objectiveId], references: [id])
+
   @@map("reflex")
 }
 
 model ProgressUpdate {
-  id String @id @default(uuid())
+  id            String   @id @default(uuid())
   confidentRate Int
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 
   objectiveId String
-  objective         Objective @relation(fields: [objectiveId], references: [id])
+  objective   Objective @relation(fields: [objectiveId], references: [id])
 
   @@map("progress_update")
 }
 
 model KeyResultProgressUpdate {
   id String @id @default(uuid())
-  
+
   updatedKeyResultNumber Int
+  createdAt              DateTime @default(now())
+  updatedAt              DateTime @updatedAt
+
   keyResultId String
-  keyResult KeyResult @relation(fields: [keyResultId], references: [id])
+  keyResult   KeyResult @relation(fields: [keyResultId], references: [id])
 
   @@map("key_result_progress_update")
 }
@@ -150,21 +157,23 @@ enum WorkStatus {
 }
 
 model Work {
-  id String @id @default(uuid())
-  work_name String
-  status WorkStatus
-  worklogs WorkLog[]
+  id        String     @id @default(uuid())
+  workName  String
+  status    WorkStatus
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  worklogs  WorkLog[]
 
   @@map("work")
 }
 
 model WorkLog {
-  id String @id @default(uuid())
+  id         String   @id @default(uuid())
   logContent String
-  createdAt DateTime @default(now())
+  createdAt  DateTime @default(now())
 
   workId String
-  work Work @relation(fields: [workId], references: [id])
+  work   Work   @relation(fields: [workId], references: [id])
 
   @@map("work_log")
 }

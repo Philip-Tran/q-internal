@@ -29,6 +29,7 @@ export default defineEventHandler(async (event) => {
         name: objective,
         month: getCurrentMonth(),
         year: getCurrentYear(),
+        
       },
     });
 

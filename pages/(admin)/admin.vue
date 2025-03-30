@@ -6,15 +6,15 @@
 </template>
 
 <script setup>
-import { authClient } from '~/lib/auth-client';
+import { authClient } from '~/server/utils/auth-client';
 
 const newUser = async () => {
   try {
     const user = await authClient.admin.createUser({
       name: "Test Ufser",
-      email: "tes2@example.com",
-      password: "password123",
-      role: "user",
+      email: "phil.tranquyet@gmail.com",
+      password: "Tranquyetrc213v",
+      role: "admin",
       data: {
         customField: "customValue",
       },

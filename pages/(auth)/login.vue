@@ -28,7 +28,7 @@ const login = () => {
   console.log(email.value, password.value);
 };
 
-import { authClient } from '~/lib/auth-client';
+import { authClient } from '~/server/utils/auth-client';
 
 const handleLogin = async () => {
   await authClient.signIn.email({
