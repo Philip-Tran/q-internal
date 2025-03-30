@@ -1,5 +1,4 @@
 import { type NewOKRsType } from "~/schemas/oKRs.schema"
-import { getCurrentMonth, getCurrentYear } from "#imports"
 
 export const useOKRsStore = defineStore("orks", () => {
   const createOKRsState = shallowRef({
@@ -15,7 +14,7 @@ export const useOKRsStore = defineStore("orks", () => {
   const createOKRs = async (okrValue: NewOKRsType ) => {
     createOKRsState.value.name = okrValue.objective
     try {
-      const { data, message } = await $fetch("/api/okrs/create", {
+      const { message, data } = await $fetch("/api/okrs/create", {
         method: "POST",
         body: okrValue
       })

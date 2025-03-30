@@ -86,12 +86,12 @@ model Objective {
   updatedAt DateTime @updatedAt
   month Int
   year Int
+  progressOnTotalKeyResult Int 
   keyResults KeyResult[]
   reflexes Reflex[]
   progressUpdates ProgressUpdate[]
 
   @@map("objective")
-
 }
 
 model KeyResult {
@@ -128,13 +128,18 @@ model ProgressUpdate {
 
   objectiveId String
   objective         Objective @relation(fields: [objectiveId], references: [id])
+
+  @@map("progress_update")
 }
 
 model KeyResultProgressUpdate {
   id String @id @default(uuid())
   
+  updatedKeyResultNumber Int
   keyResultId String
   keyResult KeyResult @relation(fields: [keyResultId], references: [id])
+
+  @@map("key_result_progress_update")
 }
 
 enum WorkStatus {
@@ -146,9 +151,11 @@ enum WorkStatus {
 
 model Work {
   id String @id @default(uuid())
-  name String
+  work_name String
   status WorkStatus
   worklogs WorkLog[]
+
+  @@map("work")
 }
 
 model WorkLog {
@@ -158,4 +165,6 @@ model WorkLog {
 
   workId String
   work Work @relation(fields: [workId], references: [id])
+
+  @@map("work_log")
 }

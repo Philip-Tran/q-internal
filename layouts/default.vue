@@ -13,6 +13,26 @@ import {
 } from '@/components/ui/command'
 
 import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog'
+
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form'
+
+import {
   Calculator,
   Calendar,
   CreditCard,
@@ -63,6 +83,7 @@ const router = useRouter()
 
 <template>
   <div>
+    <!-- Header -->
     <div class="border-b">
       <div class="flex h-16 items-center px-4 py-3 space-x-8">
         <!-- <TeamSwitcher /> -->
@@ -71,7 +92,7 @@ const router = useRouter()
             Q Internal
           </div>
         </RouterLink>
-        <Separator orientation="vertical" class="w-[2px] h-7"/>
+        <Separator orientation="vertical" class="w-[2px] h-7" />
         <AppUiMainNav class="mx-6" />
         <div class="ml-auto flex items-center space-x-4">
           <!-- <Search /> -->
@@ -81,6 +102,7 @@ const router = useRouter()
     </div>
     <div class="default-layout flex-1 px-4 2xl:px-20 pt-6">
       <slot />
+      
       <!-- Overlay -->
       <div v-if="isCommandVisible" class="fixed inset-0 bg-black bg-opacity-50 z-40"></div>
 
