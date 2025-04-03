@@ -9,5 +9,5 @@ export default defineEventHandler(async (event) => {
       month: getCurrentMonth(),
     }
   })
-  return { message: "Get current objective successfully", data: currentObjective}
+  return currentObjective
 })

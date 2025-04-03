@@ -2,21 +2,37 @@
 definePageMeta({
   middleware: ["admin"]
 })
+
 import { authClient } from "~/server/utils/auth-client";
-
 import { Crosshair, Goal } from "lucide-vue-next";
-import { Progress } from '@/components/ui/progress'
-import { AnimatedCircularProgressBar } from "@/components/ui/animated-circular-progressbar"
-import { AppUiCurrentWorkCardVue } from "#components";
 
-const { data: session, isPending } = await authClient.useSession(useFetch);
+interface Work {
+  name: string;
+  status: string;
+  id: string;
+}
 
-const { status, data } = await useLazyFetch("/api/okrs/current", {
+// Fetch session data
+const { data: session, isPending: isSessionPending } = await authClient.useSession(useFetch);
+
+// Fetch OKRs
+const { status: okrsStatus } = await useFetch("/api/okrs/current", {
   method: "GET",
-})
+  lazy: true,
+  cache: "reload",
+  key: "currentOKRs"
+});
+const { data: currentOKRs } = useNuxtData("currentOKRs");
 
-const monthTimePercentage = getMonthProgressPercentage()
+// Fetch Current Work
+const { status: workStatus, data: currentWork, error: workError } = await useFetch<Work | null>("/api/work/current", {
+  method: "GET",
+  lazy: true
+});
+
+const monthTimePercentage = getMonthProgressPercentage();
 </script>
+
 
 <template>
   <div>
@@ -49,7 +65,7 @@ const monthTimePercentage = getMonthProgressPercentage()
           <template v-else>
             <CardContent class="p-6">
               <div class="flex flex-col space-y-8">
-                <div v-for="goal in data?.data" class="flex flex-col space-y-5">
+                <div v-for="okr in currentOKRs" :key="okr.id" class="flex flex-col space-y-5">
                   <div  class="flex space-x-4 justify-between">
                     <div class="flex space-x-3 justify-center items-center">
                       <div class="flex justify-center items-center">
@@ -57,7 +73,7 @@ const monthTimePercentage = getMonthProgressPercentage()
                       </div>
                       <div>
                         <h2 class="font-serif text-2xl font-medium">
-                          {{ goal.name }}
+                          {{ okr.name }}
                         </h2>
                       </div>
                     </div>
@@ -80,7 +96,7 @@ const monthTimePercentage = getMonthProgressPercentage()
           </CardHeader>
           <CardContent class="p-6">
             <div class="">
-              <AppUiCurrentWorkCardVue/>
+              <AppUiCurrentWorkCard :currentWork="currentWork" :status="status" :error="error"/>
             </div>
           </CardContent>
         </Card>

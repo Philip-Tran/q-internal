@@ -1,17 +1,11 @@
-<script lang="ts" setup>
-interface Work {
-  workName: string; // Use lowercase `string` (not `String`)
-  status: string;
-  id: string;
-}
-
-// Fetch the current work
-const { status, data: CurrentWork, error } = await useFetch<Work | null>("/api/work/current", {
-  method: "GET",
-  lazy: true
-});
-
+<script setup>
 import { GlowBorder } from "@/components/ui/glow-border";
+
+defineProps({
+  currentWork: Object,
+  status: String,
+  error: Object,
+});
 </script>
 
 <template>
@@ -25,7 +19,7 @@ import { GlowBorder } from "@/components/ui/glow-border";
   </GlowBorder>
 
   <!-- If there is an active work -->
-  <RouterLink v-else-if="CurrentWork?.id" :to="`/work/${CurrentWork.id}`">
+  <RouterLink v-else-if="currentWork?.id" :to="`/work/${currentWork.id}`">
     <GlowBorder
       class="relative flex h-[300px] w-full flex-col items-center justify-center overflow-hidden rounded-lg border bg-background md:shadow-xl"
       :color="['#A07CFE', '#FE8FB5', '#FFBE7B']"
@@ -33,7 +27,7 @@ import { GlowBorder } from "@/components/ui/glow-border";
       <span
         class="pointer-events-none whitespace-pre-wrap bg-gradient-to-b from-black to-gray-300/80 bg-clip-text text-center text-4xl font-semibold leading-none text-transparent dark:from-white dark:to-zinc-700/75"
       >
-        {{ CurrentWork.workName }}
+        {{ currentWork.workName }}
       </span>
     </GlowBorder>
   </RouterLink>
