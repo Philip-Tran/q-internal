@@ -3,7 +3,6 @@ definePageMeta({
   middleware: ["admin"]
 })
 
-import { authClient } from "~/server/utils/auth-client";
 import { Crosshair, Goal } from "lucide-vue-next";
 
 interface Work {
@@ -13,13 +12,13 @@ interface Work {
 }
 
 // Fetch session data
-const { data: session, isPending: isSessionPending } = await authClient.useSession(useFetch);
+//const { data: session, isPending: isSessionPending } = await authClient.useSession(useFetch);
 
 // Fetch OKRs
 const { status: okrsStatus } = await useFetch("/api/okrs/current", {
   method: "GET",
   lazy: true,
-  cache: "reload",
+  // cache: "reload",
   key: "currentOKRs"
 });
 const { data: currentOKRs } = useNuxtData("currentOKRs");
@@ -27,7 +26,8 @@ const { data: currentOKRs } = useNuxtData("currentOKRs");
 // Fetch Current Work
 const { status: workStatus, data: currentWork, error: workError } = await useFetch<Work | null>("/api/work/current", {
   method: "GET",
-  lazy: true
+  lazy: true,
+  key: "currentWork"
 });
 
 const monthTimePercentage = getMonthProgressPercentage();
@@ -61,7 +61,7 @@ const monthTimePercentage = getMonthProgressPercentage();
           <CardHeader class="border-b-2">
             <CardTitle>This month goal</CardTitle>
           </CardHeader>
-          <p v-if="status === 'pending'">Is loading</p>
+          <p v-if="okrsStatus === 'pending'">Is loading</p>
           <template v-else>
             <CardContent class="p-6">
               <div class="flex flex-col space-y-8">
@@ -96,7 +96,7 @@ const monthTimePercentage = getMonthProgressPercentage();
           </CardHeader>
           <CardContent class="p-6">
             <div class="">
-              <AppUiCurrentWorkCard :currentWork="currentWork" :status="status" :error="error"/>
+              <AppUiCurrentWorkCard :currentWork="currentWork" :status="workStatus" :error="workError"/>
             </div>
           </CardContent>
         </Card>
@@ -104,7 +104,6 @@ const monthTimePercentage = getMonthProgressPercentage();
     </div>
   </div>
   <div class="bg-green-400">
-    <pre>{{ session?.user }}</pre>
   </div>
 </template>
 

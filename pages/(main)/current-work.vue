@@ -5,15 +5,17 @@ definePageMeta({
 
 import { LampEffect } from '~/components/ui/lamp-effect';
 
+const {data: currentWork} = useNuxtData("currentWork")
+
 </script>
 
 <template>
   <div>
     <div>
       <LampEffect>
-        <div class="flex flex-col space-y-6">
+        <div class="flex flex-col space-y-3 -mt-20">
           <div>
-            <span class="font-heading text-3xl font-serif text-white">Create a brick megamenu</span>
+            <span class="font-heading text-3xl font-serif text-white">{{ currentWork.workName }}</span>
           </div>
         </div>
       </LampEffect>

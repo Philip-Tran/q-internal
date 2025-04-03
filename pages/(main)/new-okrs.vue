@@ -53,7 +53,6 @@ async function onSubmit(values: any) {
   } else {
     toast.info(data)
   }
-  
 }
 </script>
 
