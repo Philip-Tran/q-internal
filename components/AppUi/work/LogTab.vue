@@ -16,8 +16,8 @@ import { useForm } from 'vee-validate';
 import { addLogSchema } from '~/schemas/work.schemas';
 
 const router = useRouter()
-
 const currentTab = ref('logUpdate')
+const emit = defineEmits(['close'])
 
 const { meta, defineField, values, handleSubmit, errors } = useForm({
   validationSchema: toTypedSchema(addLogSchema)
@@ -49,6 +49,11 @@ const onSubmit = handleSubmit(async (values) => {
     toast.success(`${data.value?.message}`, {
       description: logType == LogType.UPDATE ? "Update successfully" : "Redirecting to dashboard"
     })
+
+    setTimeout(() => {
+      emit('close')
+    }, 500)
+
     if(logType !== LogType.UPDATE) {
       setTimeout(() => {
         router.push("/")

@@ -29,7 +29,7 @@ const toggleLogTab = () => {
         <div class="absolute translate-x-1/2 z-10 right-1/2 opacity-0 hover:opacity-100 top-4">
             <Button @click="toggleLogTab">Log work</Button>
         </div>
-        <LogTab v-if="isLogTabOpen" :workId="CurrentWork?.id"
+        <LogTab v-if="isLogTabOpen" :workId="CurrentWork?.id" @close="isLogTabOpen = false"
             class="absolute z-50 right-4 md:right-1/2 translate-x-1/2 -translate-y-1/2 top-1/3 rounded-xl p-3 bg-slate-900 border-none bg-opacity-35" />
         <LampEffect class="rounded-none">
             <div class="flex flex-col space-y-6">
