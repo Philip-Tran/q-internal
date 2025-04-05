@@ -13,26 +13,6 @@ import {
 } from '@/components/ui/command'
 
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/ui/dialog'
-
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form'
-
-import {
   Calculator,
   Calendar,
   CreditCard,
@@ -41,6 +21,7 @@ import {
   User,
 } from 'lucide-vue-next'
 
+const router = useRouter()
 const isCommandVisible = ref(false)
 const commandRef = ref<HTMLElement | null>(null)
 
@@ -78,7 +59,6 @@ const handleNewWork = () => {
   router.push("/new-work")
 }
 
-const router = useRouter()
 </script>
 
 <template>
@@ -102,7 +82,6 @@ const router = useRouter()
     </div>
     <div class="default-layout flex-1 px-4 2xl:px-20 pt-6">
       <slot />
-      
       <!-- Overlay -->
       <div v-if="isCommandVisible" class="fixed inset-0 bg-black bg-opacity-50 z-40"></div>
 

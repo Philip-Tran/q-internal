@@ -54,7 +54,7 @@ const onSubmit = handleSubmit(async (values) => {
       emit('close')
     }, 500)
 
-    if(logType !== LogType.UPDATE) {
+    if (logType !== LogType.UPDATE) {
       setTimeout(() => {
         router.push("/")
       }, 2000)
@@ -107,8 +107,9 @@ const onSubmit = handleSubmit(async (values) => {
         <Card>
           <CardHeader>
             <CardTitle>Finish work</CardTitle>
-            <!-- <CardDescription>
-          </CardDescription> -->
+            <CardDescription>
+              What do I think of the all process
+            </CardDescription>
           </CardHeader>
           <form id="finishLogForm" @submit.prevent="onSubmit">
             <CardContent class="space-y-2">
@@ -116,7 +117,7 @@ const onSubmit = handleSubmit(async (values) => {
                 <Textarea class="h-[120px]" type="text" v-model="logContent" v-bind="logContentAttrs" />
               </div>
             </CardContent>
-            <CardFooter>
+            <CardFooter class="">
               <Button type="submit">Finish</Button>
             </CardFooter>
           </form>

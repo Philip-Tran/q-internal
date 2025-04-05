@@ -29,4 +29,8 @@ export default defineNuxtConfig({
     // apiKey: process.env.GITHUB_CLIENT_ID,
     // baseUrl: process.env.GITHUB_CLIENT_SECRET,
   },
+
+  app: {
+    pageTransition: { name: 'page', mode: 'out-in' }
+  },
 });

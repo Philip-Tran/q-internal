@@ -1,20 +1,19 @@
-<script setup>
-import { GlowBorder } from "@/components/ui/glow-border";
+<script setup lang="ts">
+import { GlowBorder } from "@/components/ui/glow-border"
+import type { Work } from "@/types/work.type"
 
-defineProps({
-  currentWork: Object,
-  status: String,
-  error: Object,
-});
+defineProps<{
+  currentWork?: Work | null
+  status?: string
+  error?: Error | null
+}>()
 </script>
 
 <template>
   <!-- Show skeleton while fetching -->
-  <GlowBorder
-    v-if="status === 'pending'"
+  <GlowBorder v-if="status === 'pending'"
     class="relative flex h-[300px] w-full flex-col items-center justify-center overflow-hidden rounded-lg border bg-background md:shadow-xl"
-    :color="['#A07CFE', '#FE8FB5', '#FFBE7B']"
-  >
+    :color="['#A07CFE', '#FE8FB5', '#FFBE7B']">
     <Skeleton class="w-full h-12" />
   </GlowBorder>
 
@@ -22,11 +21,9 @@ defineProps({
   <RouterLink v-else-if="currentWork?.id" :to="`/work/${currentWork.id}`">
     <GlowBorder
       class="relative flex h-[300px] w-full flex-col items-center justify-center overflow-hidden rounded-lg border bg-background md:shadow-xl"
-      :color="['#A07CFE', '#FE8FB5', '#FFBE7B']"
-    >
+      :color="['#A07CFE', '#FE8FB5', '#FFBE7B']">
       <span
-        class="pointer-events-none whitespace-pre-wrap bg-gradient-to-b from-black to-gray-300/80 bg-clip-text text-center text-3xl font-semibold leading-none text-transparent dark:from-white dark:to-zinc-700/75"
-      >
+        class="pointer-events-none whitespace-pre-wrap bg-gradient-to-b from-black to-gray-300/80 bg-clip-text text-center text-3xl font-semibold leading-none text-transparent dark:from-white dark:to-zinc-700/75">
         {{ currentWork.workName }}
       </span>
     </GlowBorder>

@@ -1,4 +1,4 @@
-import { WorkStatus, LogType } from "@/types/work.type";
+import { WorkStatus } from "@/types/work.type";
 import * as z from "zod";
 
 const addWorkSchema = z.object({

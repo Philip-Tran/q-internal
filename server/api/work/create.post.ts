@@ -1,50 +1,43 @@
-import { type Work, WorkStatus } from "~/types/work.type";
+import { type Work, WorkStatus } from '~/types/work.type'
 
 export default defineEventHandler(async (event) => {
-  const body = await readBody<Work>(event);
+  const body = await readBody<Work>(event)
+  const { workName, status = WorkStatus.IN_PROGRESS } = body
 
-  const { workName, status } = body;
+  if (!workName) {
+    throw createError({
+      statusCode: 400,
+      statusMessage: 'Work name is required',
+    })
+  }
 
-  if(!workName) {
-    createError({
+  // If attempting to create an IN_PROGRESS work, make sure none already exists
+  if (status === WorkStatus.IN_PROGRESS) {
+    const existing = await prisma.work.findFirst({
+      where: { status: WorkStatus.IN_PROGRESS },
+    })
+
+    if (existing) {
+      throw createError({
         statusCode: 400,
-        statusMessage: "Work name is required"
-    })
-  }
-
-  if(status === WorkStatus.IN_PROGRESS) {
-    const currentInProgressWork = await prisma.work.findFirst({
-      where: {
-        status: WorkStatus.IN_PROGRESS
-      }
-    })
-
-    if(currentInProgressWork) {
-      createError({
-        status: 400,
-        statusMessage: "I'm still doing something, remember to focus on one thing at a time"
+        statusMessage: "I'm still doing something, remember to focus on one thing at a time",
       })
-      return {message: "I'm still doing something, remember to focus on one thing at a time", currentWorkInProgress: currentInProgressWork}
-    } else {
-      const newWork = await prisma.work.create({
-        data: {
-            workName,
-            status: status || WorkStatus.IN_PROGRESS,
-        }
-      })
-  
-      if(newWork) {
-        return {message: "New work created successfully", data: newWork}
-      }
     }
-  } else {
-    const newWork = await prisma.work.create({
-      data: {
-        workName,
-        status: status
-      }
-    })
-
-    return {message: "New work created", data: newWork}
   }
-});
+
+  // Create new work
+  const newWork = await prisma.work.create({
+    data: {
+      workName,
+      status,
+    },
+  })
+
+  return {
+    message:
+      status === WorkStatus.IN_PROGRESS
+        ? 'New work created successfully'
+        : 'New work created',
+    data: newWork,
+  }
+})

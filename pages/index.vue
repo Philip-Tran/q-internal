@@ -3,22 +3,14 @@ definePageMeta({
   middleware: ["admin"]
 })
 
+import { type Work } from "~/types/work.type";
+
 import { Crosshair, Goal } from "lucide-vue-next";
-
-interface Work {
-  name: string;
-  status: string;
-  id: string;
-}
-
-// Fetch session data
-//const { data: session, isPending: isSessionPending } = await authClient.useSession(useFetch);
 
 // Fetch OKRs
 const { status: okrsStatus } = await useFetch("/api/okrs/current", {
   method: "GET",
   lazy: true,
-  // cache: "reload",
   key: "currentOKRs"
 });
 const { data: currentOKRs } = useNuxtData("currentOKRs");
@@ -33,9 +25,7 @@ const { status: workStatus, data: currentWork, error: workError } = await useFet
 const monthTimePercentage = getMonthProgressPercentage();
 </script>
 
-
 <template>
-  <div>
     <div class="space-y-4">
       <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <Card v-for="i in 4">
@@ -71,11 +61,9 @@ const monthTimePercentage = getMonthProgressPercentage();
                       <div class="flex justify-center items-center">
                         <Crosshair />
                       </div>
-                      <div>
                         <h2 class="font-serif text-2xl font-medium">
                           {{ okr.name }}
                         </h2>
-                      </div>
                     </div>
                     <div>
                       <AnimatedCircularProgressBar :max="100" :min="0" :value="60" :circleStrokeWidth=8 class="w-[60px] h-[60px] text-lg"/>
@@ -102,9 +90,6 @@ const monthTimePercentage = getMonthProgressPercentage();
         </Card>
       </div>
     </div>
-  </div>
-  <div class="bg-green-400">
-  </div>
 </template>
 
 

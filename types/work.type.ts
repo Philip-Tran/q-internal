@@ -1,3 +1,4 @@
+
 export enum WorkStatus {
   TODO = "TODO",
   IN_PROGRESS = "IN_PROGRESS",
@@ -5,10 +6,15 @@ export enum WorkStatus {
   PAUSE = "PAUSE",
 }
 
-interface Work {
-  workName: string;
-  status: WorkStatus;
+
+type Work = {
+    id: string
+    workName: string
+    status: WorkStatus
+    createdAt: Date
+    updatedAt: Date
 }
+
 
 export enum LogType {
   PAUSE = "PAUSE",
