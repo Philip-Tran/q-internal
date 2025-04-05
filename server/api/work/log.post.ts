@@ -32,7 +32,16 @@ export default defineEventHandler(async (event) => {
         status: "DONE" 
       }
     });
-  }
+  } else if (newLog && logType === "PAUSE") {
+    await prisma.work.update({
+      where: {
+        id: workId,
+      },
+      data: {
+        status: "PAUSE"
+      }
+    })
+  } 
 
   if (newLog) {
     return { message: "New log created successfully", data: newLog };

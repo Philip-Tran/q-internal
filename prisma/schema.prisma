@@ -168,9 +168,9 @@ model Work {
 }
 
 enum LogType {
-  PAUSE
-  UPDATE
   FINISH
+  UPDATE
+  PAUSE
 }
 
 model WorkLog {

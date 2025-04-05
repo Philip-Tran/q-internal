@@ -8,7 +8,6 @@ const addWorkSchema = z.object({
 
 const addLogSchema = z.object({
   logContent: z.string().max(300),
-  logType: z.nativeEnum(LogType).default(LogType.FINISH),
 })
 
 export { addWorkSchema, addLogSchema };

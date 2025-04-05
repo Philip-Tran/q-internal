@@ -7,13 +7,18 @@ const props = defineProps({
   },
 })
 
+import { LogType } from '~/types/work.type';
+
 import { cn } from '@/lib/utils';
-import {toast} from "vue-sonner"
+import { toast } from "vue-sonner"
 import { toTypedSchema } from '@vee-validate/zod'
 import { useForm } from 'vee-validate';
 import { addLogSchema } from '~/schemas/work.schemas';
 
 const router = useRouter()
+
+const currentTab = ref('logUpdate')
+
 const { meta, defineField, values, handleSubmit, errors } = useForm({
   validationSchema: toTypedSchema(addLogSchema)
 });
@@ -21,40 +26,47 @@ const { meta, defineField, values, handleSubmit, errors } = useForm({
 const [logContent, logContentAttrs] = defineField('logContent');
 
 const onSubmit = handleSubmit(async (values) => {
-  console.log(values)
-  const {status, data} = await useFetch("/api/work/log", {
+  let logType: string;
+
+  if (currentTab.value === 'logFinish') {
+    logType = LogType.FINISH;
+  } else if (currentTab.value === 'logPause') {
+    logType = LogType.PAUSE;
+  } else {
+    logType = LogType.UPDATE;
+  }
+
+  const { status, data } = await useFetch("/api/work/log", {
     method: "POST",
     body: {
       workId: props.workId,
+      logType,
       ...values,
     },
   })
 
-  if(status.value === "success") {
+  if (status.value === "success") {
     toast.success(`${data.value?.message}`, {
-      description: "Redirecting to dashboard"
+      description: logType == LogType.UPDATE ? "Update successfully" : "Redirecting to dashboard"
     })
-
-    setTimeout(() => {
-      router.push("/")
-    }, 2000)
-
+    if(logType !== LogType.UPDATE) {
+      setTimeout(() => {
+        router.push("/")
+      }, 2000)
+    }
   }
-
-
-  console.log(data)
 })
+
 
 </script>
 
 <template>
-  <div  :class="
-      cn(
-        'rounded-sm p-4 border',
-        props.class,
-      )
+  <div :class="cn(
+    'rounded-sm p-4 border',
+    props.class,
+  )
     ">
-    <Tabs default-value="logUpdate" class="w-[400px]">
+    <Tabs default-value="logUpdate" v-model="currentTab" class="w-[400px]">
       <TabsList class="grid w-full grid-cols-3">
         <TabsTrigger value="logUpdate">
           Update
@@ -69,24 +81,21 @@ const onSubmit = handleSubmit(async (values) => {
       <TabsContent value="logUpdate">
         <Card>
           <CardHeader>
-            <CardTitle>Account</CardTitle>
+            <CardTitle>Update</CardTitle>
             <CardDescription>
-              Make changes to your account here. Click save when you're done.
+              Which progress did I made on this task
             </CardDescription>
           </CardHeader>
-          <CardContent class="space-y-2">
-            <div class="space-y-1">
-              <Label for="name">Name</Label>
-              <Input id="name" default-value="Pedro Duarte" />
-            </div>
-            <div class="space-y-1">
-              <Label for="username">Username</Label>
-              <Input id="username" default-value="@peduarte" />
-            </div>
-          </CardContent>
-          <CardFooter>
-            <Button>Save changes</Button>
-          </CardFooter>
+          <form id="finishLogForm" @submit.prevent="onSubmit">
+            <CardContent class="space-y-2">
+              <div class="">
+                <Textarea class="h-[120px]" type="text" v-model="logContent" v-bind="logContentAttrs" />
+              </div>
+            </CardContent>
+            <CardFooter>
+              <Button type="submit">Submit</Button>
+            </CardFooter>
+          </form>
         </Card>
       </TabsContent>
       <TabsContent value="logFinish">
@@ -103,7 +112,7 @@ const onSubmit = handleSubmit(async (values) => {
               </div>
             </CardContent>
             <CardFooter>
-              <Button type="submit">Submit</Button>
+              <Button type="submit">Finish</Button>
             </CardFooter>
           </form>
         </Card>
@@ -111,24 +120,21 @@ const onSubmit = handleSubmit(async (values) => {
       <TabsContent value="logPause">
         <Card>
           <CardHeader>
-            <CardTitle>Password</CardTitle>
+            <CardTitle>Pause</CardTitle>
             <CardDescription>
-              Change your password here. After saving, you'll be logged out.
+              Why do I want to pause this task
             </CardDescription>
           </CardHeader>
-          <CardContent class="space-y-2">
-            <div class="space-y-1">
-              <Label for="current">Current password</Label>
-              <Input id="current" type="password" />
-            </div>
-            <div class="space-y-1">
-              <Label for="new">New password</Label>
-              <Input id="new" type="password" />
-            </div>
-          </CardContent>
-          <CardFooter>
-            <Button>Save password</Button>
-          </CardFooter>
+          <form id="finishLogForm" @submit.prevent="onSubmit">
+            <CardContent class="space-y-2">
+              <div class="">
+                <Textarea class="h-[120px]" type="text" v-model="logContent" v-bind="logContentAttrs" />
+              </div>
+            </CardContent>
+            <CardFooter>
+              <Button type="submit">Pause</Button>
+            </CardFooter>
+          </form>
         </Card>
       </TabsContent>
     </Tabs>
