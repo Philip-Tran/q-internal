@@ -2,6 +2,7 @@ export interface KeyResult {
     id: string
     name: string
     resultNumber: number
+    resultUpdate: number
     createdAt: string // ISO date string
     updatedAt: string // ISO date string
     objectiveId: string

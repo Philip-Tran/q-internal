@@ -18,7 +18,8 @@ const okrs = ref<ObjectiveWithKeyResults>()
 
 // Fetch the OKR data using the ID from the route parameter
 const { data, status } = await useFetch<ObjectiveWithKeyResults>(`/api/okrs/${objectiveId}`, {
-  method: "GET"
+  method: "GET",
+  key: `fullSingleOKRs-${objectiveId}` 
 })
 
 if (data.value) {
