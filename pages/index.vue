@@ -5,7 +5,7 @@ definePageMeta({
 
 import { type Work } from "~/types/work.type";
 
-import { Crosshair, Goal } from "lucide-vue-next";
+import { Crosshair, Goal, Pencil } from "lucide-vue-next";
 
 // Fetch OKRs
 const { status: okrsStatus } = await useFetch("/api/okrs/current", {
@@ -53,7 +53,7 @@ const monthTimePercentage = getMonthProgressPercentage();
           </CardHeader>
           <p v-if="okrsStatus === 'pending'">Is loading</p>
           <template v-else>
-            <CardContent class="p-6">
+            <CardContent class="p-6 relative">
               <div class="flex flex-col space-y-8">
                 <div v-for="okr in currentOKRs" :key="okr.id" class="flex flex-col space-y-5">
                   <div  class="flex space-x-4 justify-between">
@@ -71,6 +71,11 @@ const monthTimePercentage = getMonthProgressPercentage();
                   </div>
                   <div>
                     <Progress  :model-value="monthTimePercentage" class="h-2"/>
+                  </div>
+                  <div class="absolute -top-6 -right-2">
+                    <RouterLink :to="`/okrs/edit/${okr.id}`">
+                      <Button size="icon" variant="ghost"><Pencil class="stroke-slate-400 hover:stroke-yellow-600"/></Button>
+                    </RouterLink>
                   </div>
                 </div>
               </div>

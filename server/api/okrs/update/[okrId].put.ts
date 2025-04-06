@@ -1,23 +1,27 @@
-import { type H3Event, readBody, createError } from 'h3'
+import { type H3Event } from 'h3'
 
 export default defineEventHandler(async (event: H3Event) => {
   const body = await readBody<{
-    objectiveId: string
-    objective: string
-    keyResults: { id: string; keyResultName: string; keyResultNumber: number }[]
+    id: string
+    name: string
+    keyResults: {
+      id: string
+      name: string
+      resultNumber: number
+    }[]
   }>(event)
 
-  const { objectiveId, objective, keyResults } = body
+  const { id: objectiveId, name: objectiveName, keyResults } = body
 
   // Validate input
-  if (!objectiveId || !objective || !Array.isArray(keyResults)) {
+  if (!objectiveId || !objectiveName || !Array.isArray(keyResults)) {
     throw createError({
       statusCode: 400,
-      statusMessage: 'Missing required fields: objectiveId, objective, or keyResults',
+      statusMessage: 'Missing required fields: id (objectiveId), name, or keyResults',
     })
   }
 
-  // Check if objective exists
+  // Check if the objective exists
   const existingObjective = await prisma.objective.findUnique({
     where: { id: objectiveId },
   })
@@ -32,17 +36,17 @@ export default defineEventHandler(async (event: H3Event) => {
   // Update the objective name
   const updatedObjective = await prisma.objective.update({
     where: { id: objectiveId },
-    data: { name: objective },
+    data: { name: objectiveName },
   })
 
-  // Update all key results (in a transaction)
+  // Update key results
   const updatedKeyResults = await prisma.$transaction(
     keyResults.map((kr) =>
       prisma.keyResult.update({
         where: { id: kr.id },
         data: {
-          name: kr.keyResultName,
-          resultNumber: kr.keyResultNumber,
+          name: kr.name,
+          resultNumber: kr.resultNumber,
         },
       })
     )

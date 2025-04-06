@@ -98,6 +98,7 @@ model KeyResult {
   id           String   @id @default(uuid())
   name         String
   resultNumber Int
+  resultTarget Int
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 
