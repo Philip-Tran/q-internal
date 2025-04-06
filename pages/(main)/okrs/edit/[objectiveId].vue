@@ -33,7 +33,7 @@ const onSubmit = async () => {
 
   if(status.value === "success") {
     toast.info(message, {
-      description: "Haha"
+      description: "Redirecting to dashboard"
     })
     setTimeout(() => {
       router.push("/")

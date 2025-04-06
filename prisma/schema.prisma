@@ -98,7 +98,7 @@ model KeyResult {
   id           String   @id @default(uuid())
   name         String
   resultNumber Int
-  resultTarget Int
+  resultUpdate Int      @default(0)
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 
@@ -178,7 +178,7 @@ model WorkLog {
   id         String   @id @default(uuid())
   logContent String
   createdAt  DateTime @default(now())
-  logType  LogType
+  logType    LogType
 
   workId String
   work   Work   @relation(fields: [workId], references: [id])
