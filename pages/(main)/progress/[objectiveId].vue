@@ -5,7 +5,6 @@ definePageMeta({
 
 import type { KeyResult, ObjectiveWithKeyResults } from '~/types/okr.type'
 import { } from 'lucide-vue-next'
-import { Textarea } from '~/components/ui/textarea'
 import { NumberFieldContent, NumberFieldInput } from '~/components/ui/number-field'
 import { toast } from 'vue-sonner'
 
@@ -35,6 +34,10 @@ const onSubmit = async () => {
     if (data) {
         toast.info(message)
     }
+
+    setTimeout(() => {
+        router.push("/")
+    }, 1500)
 }
 
 </script>
@@ -46,7 +49,7 @@ const onSubmit = async () => {
             <div class="space-y-5 mx-auto">
                 <div v-for="kr in keyResults" :key="kr.id" class="grid grid-cols-3 gap-4 items-center">
                     <!-- Key Result Name -->
-                    <div class="col-span-2 row-span-1">
+                    <div class="col-span-2 row-span-1">-
                         <h6>{{ kr.name }}</h6>
                     </div>
     

@@ -79,6 +79,21 @@ model Verification {
   @@map("verification")
 }
 
+enum WeekDay {
+  SUN
+  MON
+  TUE
+  WED
+  THU
+  FRI
+  SAT
+}
+
+model Setting {
+  id        Int     @id @default(autoincrement())
+  updateDay WeekDay @default(SUN)
+}
+
 model Objective {
   id                       String           @id @default(uuid())
   name                     String

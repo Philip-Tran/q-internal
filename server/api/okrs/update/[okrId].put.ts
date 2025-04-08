@@ -52,6 +52,17 @@ export default defineEventHandler(async (event: H3Event) => {
     )
   )
 
+  const progressNumber = await getObjectiveProgressOnKeyResult(objectiveId)
+
+  await prisma.objective.update({
+    where: {
+      id: objectiveId,
+    },
+    data: {
+      progressOnTotalKeyResult: progressNumber
+    }
+  })
+
   return {
     message: 'Objective and key results updated successfully',
     data: {
