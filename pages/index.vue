@@ -6,6 +6,7 @@ definePageMeta({
 import { type Work } from "~/types/work.type";
 
 import { ArrowBigUpDash, Crosshair, Goal, Pencil } from "lucide-vue-next";
+import { toast } from "vue-sonner";
 
 // Fetch OKRs
 const { status: okrsStatus } = await useFetch("/api/okrs/current", {
@@ -22,7 +23,29 @@ const { status: workStatus, data: currentWork, error: workError } = await useFet
   key: "currentWork"
 });
 
+// Fetch Paused Work
+const { status: pausedWorkStatus, data: pausedWork, error: pausedWorkError } = await useFetch<Work | null>("/api/work/paused", {
+  method: "GET",
+  lazy: true,
+  key: "pausedWork"
+});
+
 const monthTimePercentage = getMonthProgressPercentage();
+
+const onResumeClick = async (workId: string) =>  {
+ const data = await $fetch("/api/work/un-paused", {
+  method: 'POST',
+   body: { id: workId}
+ })
+
+ if(data) {
+  toast.info("Unpaused work successfully", {
+    action: () => {
+      "start"
+    }
+  })
+ }
+}
 </script>
 
 <template>
@@ -100,7 +123,16 @@ const monthTimePercentage = getMonthProgressPercentage();
         </CardHeader>
         <CardContent class="p-6">
           <div class="">
-            <AppUiCurrentWorkCard :currentWork="currentWork" :status="workStatus" :error="workError" />
+            <div class="flex flex-col space-y-10">
+              <AppUiCurrentWorkCard :currentWork="currentWork" :status="workStatus" :error="workError" />
+              <div v-if="pausedWork" class="flex flex-col space-y-2">
+                <Label>Paused Work</Label>
+                <div >
+                  <h6>{{ pausedWork?.workName }}</h6>
+                  <Button variant="link" @click="onResumeClick(pausedWork.id)">Resume</Button>
+                </div>
+              </div>
+            </div>
           </div>
         </CardContent>
       </Card>

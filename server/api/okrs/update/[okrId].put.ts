@@ -8,6 +8,7 @@ export default defineEventHandler(async (event: H3Event) => {
       id: string
       name: string
       resultNumber: number
+      objectiveId?: string
     }[]
   }>(event)
 
@@ -39,18 +40,42 @@ export default defineEventHandler(async (event: H3Event) => {
     data: { name: objectiveName },
   })
 
-  // Update key results
-  const updatedKeyResults = await prisma.$transaction(
-    keyResults.map((kr) =>
-      prisma.keyResult.update({
-        where: { id: kr.id },
-        data: {
-          name: kr.name,
-          resultNumber: kr.resultNumber,
-        },
-      })
-    )
-  )
+  // Process key results - separate existing and new ones
+  const existingKeyResults = keyResults.filter(kr => !kr.id.startsWith('temp-'))
+  const newKeyResults = keyResults.filter(kr => kr.id.startsWith('temp-'))
+  
+  // Update existing key results
+  const updatedKeyResults = existingKeyResults.length > 0 
+    ? await prisma.$transaction(
+        existingKeyResults.map((kr) =>
+          prisma.keyResult.update({
+            where: { id: kr.id },
+            data: {
+              name: kr.name,
+              resultNumber: kr.resultNumber,
+            },
+          })
+        )
+      )
+    : []
+
+  // Create new key results
+  const createdKeyResults = newKeyResults.length > 0
+    ? await prisma.$transaction(
+        newKeyResults.map((kr) =>
+          prisma.keyResult.create({
+            data: {
+              name: kr.name,
+              resultNumber: kr.resultNumber,
+              objectiveId: objectiveId,
+            },
+          })
+        )
+      )
+    : []
+
+  // Combine updated and created key results
+  const allKeyResults = [...updatedKeyResults, ...createdKeyResults]
 
   const progressNumber = await getObjectiveProgressOnKeyResult(objectiveId)
 
@@ -67,7 +92,7 @@ export default defineEventHandler(async (event: H3Event) => {
     message: 'Objective and key results updated successfully',
     data: {
       objective: updatedObjective,
-      keyResults: updatedKeyResults,
+      keyResults: allKeyResults,
     },
   }
 })

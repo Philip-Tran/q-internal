@@ -4,7 +4,7 @@ definePageMeta({
 })
 
 import type { KeyResult, ObjectiveWithKeyResults } from '~/types/okr.type'
-import { } from 'lucide-vue-next'
+import { PlusCircle } from 'lucide-vue-next'
 import { Textarea } from '~/components/ui/textarea'
 import { NumberFieldContent, NumberFieldInput } from '~/components/ui/number-field'
 import { toast } from 'vue-sonner'
@@ -24,6 +24,21 @@ const { data, status } = await useFetch<ObjectiveWithKeyResults>(`/api/okrs/${ob
 
 if (data.value) {
   okrs.value = data.value
+}
+
+const addNewKeyResult = () => {
+  if (!okrs.value) return
+  
+  // Create a new key result with default values
+  const newKeyResult: KeyResult = {
+    id: `temp-${Date.now()}`, // Temporary ID that will be replaced by the backend
+    name: "",
+    resultNumber: 0,
+    objectiveId: objectiveId as string
+  }
+  
+  // Add the new key result to the existing ones
+  okrs.value.keyResults = [...okrs.value.keyResults, newKeyResult]
 }
 
 const onSubmit = async () => {
@@ -81,6 +96,17 @@ const onSubmit = async () => {
                       </div>
                     </div>
                   </div>
+                  
+                  <!-- Add New Key Result Button -->
+                  <Button 
+                    type="button" 
+                    variant="outline" 
+                    class="mt-4 flex items-center justify-center"
+                    @click="addNewKeyResult"
+                  >
+                    <PlusCircle class="mr-2 h-4 w-4" />
+                    Add New Key Result
+                  </Button>
                 </div>
               </div>
               <div>

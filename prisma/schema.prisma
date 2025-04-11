@@ -173,12 +173,13 @@ enum WorkStatus {
 }
 
 model Work {
-  id        String     @id @default(uuid())
-  workName  String
-  status    WorkStatus
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
-  worklogs  WorkLog[]
+  id          String     @id @default(uuid())
+  workName    String
+  status      WorkStatus
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  worklogs    WorkLog[]
+  noteContent String?
 
   @@map("work")
 }
