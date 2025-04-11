@@ -32,19 +32,19 @@ const { status: pausedWorkStatus, data: pausedWork, error: pausedWorkError } = a
 
 const monthTimePercentage = getMonthProgressPercentage();
 
-const onResumeClick = async (workId: string) =>  {
- const data = await $fetch("/api/work/un-paused", {
-  method: 'POST',
-   body: { id: workId}
- })
-
- if(data) {
-  toast.info("Unpaused work successfully", {
-    action: () => {
-      "start"
-    }
+const onResumeClick = async (workId: string) => {
+  const data = await $fetch("/api/work/un-paused", {
+    method: 'POST',
+    body: { id: workId }
   })
- }
+
+  if (data) {
+    toast.info("Unpaused work successfully", {
+      action: () => {
+        "start"
+      }
+    })
+  }
 }
 </script>
 
@@ -127,7 +127,7 @@ const onResumeClick = async (workId: string) =>  {
               <AppUiCurrentWorkCard :currentWork="currentWork" :status="workStatus" :error="workError" />
               <div v-if="pausedWork" class="flex flex-col space-y-2">
                 <Label>Paused Work</Label>
-                <div >
+                <div>
                   <h6>{{ pausedWork?.workName }}</h6>
                   <Button variant="link" @click="onResumeClick(pausedWork.id)">Resume</Button>
                 </div>

@@ -72,5 +72,5 @@ export default {
       },
     },
   },
-  plugins: [require("tailwindcss-animate"), setupInspiraUI],
+  plugins: [require("tailwindcss-animate"), setupInspiraUI, require("@tailwindcss/typography")],
 };

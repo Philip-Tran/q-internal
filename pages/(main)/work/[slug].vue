@@ -45,5 +45,12 @@ const toggleLogTab = () => {
                 <Button variant="outline" class="" size="xs">Finish</Button>
             </div>
         </div>
+
+        <!-- Note -->
+        <div class="absolute translate-x-1/2 z-10 right-1 hover:opacity-100 top-4">
+            <p>This is it</p>
+            <Button>Click me here</Button>
+            <TiptabEditor class="border border-white text-white w-[700px] bg-black p-4 rounded-sm"/>
+        </div>
     </div>
 </template>
