@@ -64,22 +64,8 @@ const handleNewWork = () => {
 <template>
   <div>
     <!-- Header -->
-    <div class="border-b">
-      <div class="flex h-16 items-center px-4 py-3 space-x-8">
-        <!-- <TeamSwitcher /> -->
-        <RouterLink to="/">
-          <div class="text-xl font-md">
-            Q Internal
-          </div>
-        </RouterLink>
-        <Separator orientation="vertical" class="w-[2px] h-7" />
-        <AppUiMainNav class="mx-6" />
-        <div class="ml-auto flex items-center space-x-4">
-          <!-- <Search /> -->
-          <!-- <UserNav /> -->
-        </div>
-      </div>
-    </div>
+    <AppUiHeader/>
+
     <div class="default-layout flex-1 px-4 2xl:px-20 pt-6">
       <slot />
       <!-- Overlay -->

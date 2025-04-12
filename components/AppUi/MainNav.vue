@@ -5,7 +5,6 @@ import { type HTMLAttributes } from "vue";
 const navLinks = [
   { name: 'Home', path: '/' },
   { name: 'New OKRs', path: '/new-okrs' },
-  { name: 'Current work', path: '/current-work' },
   { name: 'Settings', path: '/settings' }
 ]
 

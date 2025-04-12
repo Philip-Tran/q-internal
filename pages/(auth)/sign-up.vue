@@ -1,5 +1,7 @@
 <script lang="ts" setup>
-import { cn } from '@/lib/utils'
+definePageMeta({
+  layout: "auth-layout"
+})
 </script>
 
 <template>
