@@ -14,7 +14,7 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        sans: ["DM Sans", "Inter"],
+        sans: ["Inter", "DM Sans"],
         serif: ["Noto Serif"],
       },
       borderRadius: {

@@ -108,7 +108,7 @@ const onSubmit = async () => {
                           <Label>Number</Label>
                         </div>
                       </div>
-                      <div class="flex flex-col space-y-12">
+                      <div v-auto-animate class="flex flex-col space-y-12">
                         <div v-for="(kr, index) in okrs.keyResults" :key="kr.id" class="flex space-x-8">
                           <div class="w-4/5">
                             <Input v-model="kr.name" />
