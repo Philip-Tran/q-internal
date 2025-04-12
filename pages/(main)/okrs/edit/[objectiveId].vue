@@ -34,6 +34,7 @@ const addNewKeyResult = () => {
     id: `temp-${Date.now()}`, // Temporary ID that will be replaced by the backend
     name: "",
     resultNumber: 0,
+    resultUpdate: 0,
     objectiveId: objectiveId as string
   }
 

@@ -13,6 +13,10 @@ export default {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ["DM Sans", "Inter"],
+        serif: ["Noto Serif"],
+      },
       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
@@ -72,5 +76,9 @@ export default {
       },
     },
   },
-  plugins: [require("tailwindcss-animate"), setupInspiraUI, require("@tailwindcss/typography")],
+  plugins: [
+    require("tailwindcss-animate"),
+    setupInspiraUI,
+    require("@tailwindcss/typography"),
+  ],
 };

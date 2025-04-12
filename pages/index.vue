@@ -12,21 +12,19 @@ import { toast } from "vue-sonner";
 const { status: okrsStatus } = await useFetch("/api/okrs/current", {
   method: "GET",
   lazy: true,
-  key: "currentOKRs"
+  key: "currentOKRs",
 });
 const { data: currentOKRs } = useNuxtData("currentOKRs");
 
 // Fetch Current Work
 const { status: workStatus, data: currentWork, error: workError } = await useFetch<Work | null>("/api/work/current", {
   method: "GET",
-  lazy: true,
   key: "currentWork"
 });
 
 // Fetch Paused Work
 const { status: pausedWorkStatus, data: pausedWork, error: pausedWorkError } = await useFetch<Work | null>("/api/work/paused", {
   method: "GET",
-  lazy: true,
   key: "pausedWork"
 });
 

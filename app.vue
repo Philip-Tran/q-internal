@@ -3,8 +3,8 @@ import { Toaster } from '@/components/ui/sonner'
 </script>
 
 <template>
-  <NuxtLoadingIndicator color="black" :height=1 />
-
+  <!-- <NuxtLoadingIndicator color="black" :height=1 /> -->
+   
   <ClientOnly>
     <Toaster richColors class="pointer-events-auto" :duration=4500 position="top-center" />
   </ClientOnly>
@@ -15,13 +15,13 @@ import { Toaster } from '@/components/ui/sonner'
 </template>
 
 <style>
-.page-enter-active,
+/* .page-enter-active,
 .page-leave-active {
-  transition: all 0.4s;
+  transition: all 0.1s ease;
 }
 .page-enter-from,
 .page-leave-to {
   opacity: 0;
-  filter: blur(1rem);
-}
+  filter: blur(.5rem);
+} */
 </style>

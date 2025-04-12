@@ -21,7 +21,6 @@ const noteContent = ref("")
 
 const { status, data: CurrentWork } = await useFetch<Work>("/api/work/current", {
     method: "GET",
-    lazy: true
 })
 
 const toggleLogTab = () => {
@@ -81,7 +80,6 @@ const toggleNote = () => {
             </div>
         </div>
 
-        <!-- Note -->
         <!-- Note UI -->
         <div class="absolute z-10 right-8 top-8">
             <div v-if="isNoteOpen" class="drop-shadow-lg shadow-white w-[700px] h-1/2">

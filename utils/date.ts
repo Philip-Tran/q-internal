@@ -1,20 +1,24 @@
-import {computed} from "vue"
+import { computed } from "vue";
 import { useNow } from "@vueuse/core";
 
 export function getCurrentMonth(): number {
-    return new Date().getMonth() + 1; 
-  }
-  
-export function getCurrentYear(): number {
-    return new Date().getFullYear();
+  return new Date().getMonth() + 1;
 }
-  
+
+export function getCurrentYear(): number {
+  return new Date().getFullYear();
+}
+
 export const getMonthProgressPercentage = () => {
   const now = useNow({ interval: 1000 * 60 * 60 }); // Update every hour
 
   return computed(() => {
     const date = now.value;
-    const totalDays = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
+    const totalDays = new Date(
+      date.getFullYear(),
+      date.getMonth() + 1,
+      0
+    ).getDate();
     const currentDay = date.getDate();
     return Math.round((currentDay / totalDays) * 100);
   });

@@ -36,4 +36,15 @@ export default defineNuxtConfig({
   app: {
     pageTransition: { name: 'page', mode: 'out-in' }
   },
+
+  experimental: {
+    defaults: {
+      nuxtLink: {
+        // default values
+        componentName: 'NuxtLink',
+        prefetch: true,
+        prefetchOn: { visibility: true, interaction: true } 
+      }
+    }
+  }
 });
