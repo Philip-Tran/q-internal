@@ -82,10 +82,14 @@ const onSubmit = async () => {
 <template>
   <div class="w-full">
     <Card class="max-w-[850px] mx-auto">
+      <CardHeader>
+        <CardTitle>
+          <h2 class="text-center text-2xl font-medium">Edit OKRs</h2>
+        </CardTitle>
+      </CardHeader>
       <CardContent>
         <div class="w-full items-center">
           <div class="space-y-20 py-12">
-            <h2 class="text-center text-2xl font-medium">Edit OKRs</h2>
             <div class="items-center justify-center">
               <div class="mx-auto">
                 <div v-if="!okrs">Loading</div>

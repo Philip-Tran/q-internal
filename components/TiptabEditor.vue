@@ -1,10 +1,17 @@
 <script setup>
 import { cn } from '@/lib/utils';
+import { ScrollArea } from './ui/scroll-area';
 
 const props = defineProps({
   modelValue: String,
   class: {
     type: String
+  },
+  editorClass: {
+    type: String
+  },
+  isButtonVisible: {
+    type: Boolean,
   }
 })
 
@@ -20,7 +27,7 @@ const editor = useEditor({
   editorProps: {
     attributes: {
       spellcheck: "true",
-      class: cn("prose w-full lg:w-[700px] text-sm w-full mx-0 leading-8 lg:leading-relaxed text-grey-700 prose-sm prose-h1:font-sans prose-h2:font-sans prose-h3:font-sans prose-h4:font-sans prose-h5:font-sans min-h-60 overflow-y-auto focus:outline-none", props.class)
+      class: cn("prose w-full lg:w-[700px] text-sm w-full mx-0 leading-8 lg:leading-relaxed text-grey-700 prose-sm prose-h1:font-sans prose-h2:font-sans prose-h3:font-sans prose-h4:font-sans prose-h5:font-sans min-h-60 overflow-y-auto focus:outline-none", props.editorClass)
     },
     transformPastedText(text) {
       return text
@@ -34,8 +41,12 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <div>
-    <div v-if="editor">
+  <div :class="cn(
+    '',
+    props.class,
+  )
+    ">
+    <div v-if="editor && isButtonVisible">
       <button @click="editor.chain().focus().toggleBold().run()"
         :disabled="!editor.can().chain().focus().toggleBold().run()" :class="{ 'is-active': editor.isActive('bold') }">
         bold
@@ -117,6 +128,9 @@ onBeforeUnmount(() => {
         redo
       </button>
     </div>
-    <TiptapEditorContent :editor="editor" />
+
+    <ScrollArea class="h-[400px]">
+      <TiptapEditorContent :editor="editor" />
+    </ScrollArea>
   </div>
 </template>
