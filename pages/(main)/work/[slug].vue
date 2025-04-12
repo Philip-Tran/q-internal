@@ -22,6 +22,8 @@ const isLogTabOpen = ref(false)
 const toggleLogTab = () => {
     isLogTabOpen.value = !isLogTabOpen.value
 }
+
+const content = ref("")
 </script>
 
 <template>
@@ -48,9 +50,9 @@ const toggleLogTab = () => {
 
         <!-- Note -->
         <div class="absolute translate-x-1/2 z-10 right-1 hover:opacity-100 top-4">
-            <p>This is it</p>
+            <p class="text-white">{{ content }}</p>
             <Button>Click me here</Button>
-            <TiptabEditor class="border border-white text-white w-[700px] bg-black p-4 rounded-sm"/>
+            <TiptabEditor v-model="content" class="border border-white text-white w-[700px] bg-black p-4 rounded-sm"/>
         </div>
     </div>
 </template>

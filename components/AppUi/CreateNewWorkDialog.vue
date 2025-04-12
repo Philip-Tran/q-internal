@@ -25,7 +25,7 @@ const [workName, workNameAttrs] = defineField('workName');
 
 const onSubmit = handleSubmit(async (values) => {
     console.log(values)
-    const { data, status } = await useFetch("/api/work/create", {
+    const { data, status } = await useFetch("/api/work", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: values,

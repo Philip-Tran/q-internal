@@ -19,7 +19,7 @@ export const useOKRsStore = defineStore("orks", () => {
   const createOKRs = async (okrValue: NewOKRsType) => {
     createOKRsState.value.name = okrValue.objective;
     try {
-      const { message, data } = await $fetch("/api/okrs/create", {
+      const { message, data } = await $fetch("/api/okrs", {
         method: "POST",
         body: okrValue,
       });

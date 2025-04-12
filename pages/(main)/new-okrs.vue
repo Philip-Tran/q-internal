@@ -2,27 +2,15 @@
 definePageMeta({
   layout: "default",
 })
-const okrStore = useOKRsStore()
-const {createOKRsState, createOKRs} = okrStore
-import { newOKRsSchema } from '~/schemas/oKRs.schema'
 
-import { Button } from '@/components/ui/button'
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
-import { Stepper, StepperDescription, StepperItem, StepperSeparator, StepperTitle, StepperTrigger } from '@/components/ui/stepper'
-import { Textarea } from '~/components/ui/textarea'
+const okrStore = useOKRsStore()
+const { createOKRsState, createOKRs } = okrStore
+import { newOKRsSchema } from '~/schemas/oKRs.schema'
+import { toTypedSchema } from '@vee-validate/zod'
+
 import { toast } from 'vue-sonner'
 import { Check, Circle, Dot, Plus, Trash } from 'lucide-vue-next'
 
-import { toTypedSchema } from '@vee-validate/zod'
 
 const stepIndex = ref(1)
 const steps = [
@@ -46,12 +34,12 @@ const removeKeyResult = (index: number) => {
 
 async function onSubmit(values: any) {
   console.log(values)
-  const data = await okrStore.createOKRs(values)
+  const data = await createOKRs(values)
   console.log(data)
-  if(okrStore.createOKRsState.isError) {
+  if (createOKRsState.isError) {
     toast.error(createOKRsState.message)
   } else {
-    toast.info(data)
+    toast.info(createOKRsState.message)
   }
 }
 </script>
@@ -142,8 +130,8 @@ async function onSubmit(values: any) {
                           </FormItem>
                         </FormField>
 
-                        <Button variant="ghost" size="icon" @click.prevent="removeKeyResult(index)" v-if="keyResults.length > 1"
-                          class="absolute -right-4 bottom-0 translate-x-full">
+                        <Button variant="ghost" size="icon" @click.prevent="removeKeyResult(index)"
+                          v-if="keyResults.length > 1" class="absolute -right-4 bottom-0 translate-x-full">
                           <Trash class="size-4" />
                         </Button>
                       </div>
@@ -176,10 +164,6 @@ async function onSubmit(values: any) {
                     </template>
                   </div>
 
-                  <!-- <div class="flex items-center justify-between mt-4">
-                    <Button :disabled="isPrevDisabled" variant="outline" size="sm" @click="prevStep()">Back</Button>
-                    <Button  :disabled="!meta.valid || isNextDisabled"  size="sm" @click="meta.valid && nextStep()">Next</Button>
-                  </div> -->
                   <div class="flex items-center justify-between mt-4">
                     <Button :disabled="isPrevDisabled" variant="outline" size="sm" @click="prevStep()">
                       Back
