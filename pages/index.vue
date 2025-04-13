@@ -87,7 +87,7 @@ const onResumeClick = async (workId: string) => {
                     </h2>
                   </div>
                   <div>
-                    <AnimatedCircularProgressBar :max="100" :min="0" :value="okr.progressOnTotalKeyResult"
+                    <AnimatedCircularProgressBar :max="100" :show-percentage="true" :min="0" :value="okr.progressOnTotalKeyResult"
                       :circleStrokeWidth=8 class="w-[60px] h-[60px] text-lg" />
                   </div>
                 </div>

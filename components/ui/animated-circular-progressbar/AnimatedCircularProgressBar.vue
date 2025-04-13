@@ -5,7 +5,7 @@
       <circle cx="50" cy="50" r="45" :stroke-width="circleStrokeWidth" stroke-dashoffset="0" stroke-linecap="round" stroke-linejoin="round" class="gauge-primary-stroke opacity-100" />
     </svg>
     <span v-if="showPercentage" :data-current-value="currentPercent" class="absolute inset-0 m-auto size-fit delay-0 duration-1000 ease-linear animate-in fade-in">
-      {{ currentPercent }}
+      {{ value }}
     </span>
   </div>
 </template>
