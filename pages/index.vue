@@ -23,9 +23,9 @@ const { status: workStatus, data: currentWork, error: workError } = await useFet
 });
 
 // Fetch Paused Work
-const { status: pausedWorkStatus, data: pausedWork, error: pausedWorkError } = await useFetch<Work | null>("/api/work/paused", {
+const { status: pausedWorkStatus, data: pausedWorks, error: pausedWorkError } = await useFetch<Work[] | null>("/api/work/paused", {
   method: "GET",
-  key: "pausedWork"
+  key: "pausedWorks"
 });
 
 const monthTimePercentage = getMonthProgressPercentage();
@@ -44,6 +44,7 @@ const onResumeClick = async (workId: string) => {
     })
   }
 }
+
 </script>
 
 <template>
@@ -123,11 +124,13 @@ const onResumeClick = async (workId: string) => {
           <div class="">
             <div class="flex flex-col space-y-10">
               <AppUiCurrentWorkCard :currentWork="currentWork" :status="workStatus" :error="workError" />
-              <div v-if="pausedWork" class="flex flex-col space-y-2">
+              <div v-if="pausedWorks" class="flex flex-col space-y-2">
                 <Label>Paused Work</Label>
                 <div>
-                  <h6>{{ pausedWork?.workName }}</h6>
-                  <Button variant="link" @click="onResumeClick(pausedWork.id)">Resume</Button>
+                  <div v-for="(pausedWork, index) in pausedWorks" :key="index">
+                    <h6>{{ pausedWork?.workName }}</h6>
+                    <Button variant="link" @click="onResumeClick(pausedWork.id)">Resume</Button>
+                  </div>
                 </div>
               </div>
             </div>

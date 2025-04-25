@@ -3,13 +3,13 @@ import { WorkStatus } from '~/types/work.type'
 
 export default defineEventHandler(async (event: H3Event) => {
   try {
-    const pausedWork = await prisma.work.findFirst({
+    const pausedWorks = await prisma.work.findMany({
       where: {
         status: WorkStatus.PAUSE,
       },
     })
 
-    if (!pausedWork) {
+    if (!pausedWorks) {
       setResponseStatus(event, 404)
       return {
         success: false,
@@ -17,7 +17,7 @@ export default defineEventHandler(async (event: H3Event) => {
       }
     }
 
-    return pausedWork
+    return pausedWorks
   
   } catch (error) {
     console.error('Error fetching paused work:', error)
