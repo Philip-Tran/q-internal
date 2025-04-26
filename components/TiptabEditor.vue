@@ -37,6 +37,9 @@ const editor = useEditor({
       allowFullscreen: true,
       modestBranding: true,
     }),
+    TiptapCodeBlock.configure({
+      // defaultLanguage: 'javascript',
+    })
   ],
 
   editorProps: {
@@ -145,6 +148,12 @@ onBeforeUnmount(() => {
 .tiptap {
   &:first-child {
     margin-top: 0;
+  }
+
+  pre {
+    code {
+      @apply text-base text-white font-medium
+    }
   }
 
   ul,
