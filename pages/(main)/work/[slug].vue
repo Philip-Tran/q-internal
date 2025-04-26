@@ -92,8 +92,8 @@ const toggleNote = () => {
                     </div>
                 </div>
                 <TiptabEditor v-model="noteContent"
-                    class="rounded-none border-white text-white w-full bg-white pl-6 pr-1 pt-6 border-none"
-                    editorClass="text-black" :isButtonVisible="false" />
+                    class="rounded-none border-white text-white w-full bg-white border-none"
+                    editorClass="text-black" :isButtonVisible="true" />
                 <div class="py-2 px-6 rounded-b-lg bg-white min-h-[32px]">
                     <div class="text-white flex text-sm w-full items-center justify-end">
                         <span v-if="saveStatus === 'saving'"><CircleCheckBig class="w-3 h-3" color="yellow" /></span>

@@ -1,6 +1,8 @@
 <script setup>
+import { TiptapTaskItem, TiptapTaskList } from '~/composables/tiptapExt';
 import { cn } from '@/lib/utils';
 import { ScrollArea } from './ui/scroll-area';
+import { Code, ListCollapse, ListEnd, Pilcrow, Redo2, SquareCheck, Undo2, WrapText, Youtube } from 'lucide-vue-next';
 
 const props = defineProps({
   modelValue: String,
@@ -22,18 +24,42 @@ const editor = useEditor({
   onUpdate: ({ editor }) => {
     emit('update:modelValue', editor.getHTML())
   },
-  extensions: [TiptapStarterKit],
+  extensions: [
+    TiptapStarterKit,
+    TiptapTaskList,
+    TiptapListItem,
+    TiptapTaskItem.configure({
+      nested: true
+    }),
+    TiptapYoutube.configure({
+      controls: true,
+      nocookie: true,
+      allowFullscreen: true,
+      modestBranding: true,
+    }),
+  ],
 
   editorProps: {
     attributes: {
       spellcheck: "true",
-      class: cn("prose w-full lg:w-[700px] text-sm w-full mx-0 leading-8 lg:leading-relaxed text-grey-700 prose-sm prose-h1:font-sans prose-h2:font-sans prose-h3:font-sans prose-h4:font-sans prose-h5:font-sans min-h-60 overflow-y-auto focus:outline-none", props.editorClass)
+      class: cn("prose w-full xl:w-[1000px] max-w-full text-sm w-[100%] p-6 pb-12 mx-0 leading-8 lg:leading-relaxed text-grey-700 prose-sm prose-h1:font-sans prose-h2:font-sans prose-h3:font-sans prose-h4:font-sans prose-h5:font-sans min-h-60 overflow-y-auto focus:outline-none", props.editorClass)
     },
     transformPastedText(text) {
       return text
     }
   },
 });
+
+const addVideo = () => {
+  const url = prompt('Enter YouTube URL')
+  if (!url || !editor.value) return;
+
+  editor.value.commands.setYoutubeVideo({
+    src: url,
+    width: 650,
+    height: 365,
+  });
+}
 
 onBeforeUnmount(() => {
   unref(editor).destroy();
@@ -46,87 +72,67 @@ onBeforeUnmount(() => {
     props.class,
   )
     ">
-    <div v-if="editor && isButtonVisible">
-      <button @click="editor.chain().focus().toggleBold().run()"
-        :disabled="!editor.can().chain().focus().toggleBold().run()" :class="{ 'is-active': editor.isActive('bold') }">
-        bold
+    <div v-if="editor && isButtonVisible" class="flex flex-wrap gap-4 px-6 py-1 bg-gray-100 border-y-slate-400">
+      <button class="tiptap-btn" @click="editor.chain().focus().undo().run()"
+        :disabled="!editor.can().chain().focus().undo().run()">
+        <Undo2 />
       </button>
-      <button @click="editor.chain().focus().toggleItalic().run()"
-        :disabled="!editor.can().chain().focus().toggleItalic().run()"
-        :class="{ 'is-active': editor.isActive('italic') }">
-        italic
+
+      <button class="tiptap-btn" @click="editor.chain().focus().redo().run()"
+        :disabled="!editor.can().chain().focus().redo().run()">
+        <Redo2 />
       </button>
-      <button @click="editor.chain().focus().toggleStrike().run()"
-        :disabled="!editor.can().chain().focus().toggleStrike().run()"
-        :class="{ 'is-active': editor.isActive('strike') }">
-        strike
+
+      <button class="tiptap-btn" @click="editor.chain().focus().toggleTaskList().run()"
+        :class="{ 'is-active': editor.isActive('taskList') }">
+        <SquareCheck class="w-5 h-5 text-gray-800" />
       </button>
-      <button @click="editor.chain().focus().toggleCode().run()"
-        :disabled="!editor.can().chain().focus().toggleCode().run()" :class="{ 'is-active': editor.isActive('code') }">
-        code
+
+      <button class="tiptap-btn" @click="editor.chain().focus().sinkListItem('taskItem').run()"
+        :disabled="!editor.can().sinkListItem('taskItem')">
+        <ListCollapse class="w-5 h-5" />
       </button>
-      <button @click="editor.chain().focus().unsetAllMarks().run()">
-        clear marks
+
+      <button class="tiptap-btn" @click="editor.chain().focus().liftListItem('taskItem').run()"
+        :disabled="!editor.can().liftListItem('taskItem')">
+        <ListEnd class="w-5 h-5" />
       </button>
-      <button @click="editor.chain().focus().clearNodes().run()">
-        clear nodes
+
+      <button @click="addVideo" class="tiptap-btn">
+        <Youtube class="w-5 h-5" />
       </button>
-      <button @click="editor.chain().focus().setParagraph().run()"
+
+      <button class="tiptap-btn" @click="editor.chain().focus().setParagraph().run()"
         :class="{ 'is-active': editor.isActive('paragraph') }">
-        paragraph
+        <Pilcrow />
       </button>
-      <button @click="editor.chain().focus().toggleHeading({ level: 1 }).run()"
-        :class="{ 'is-active': editor.isActive('heading', { level: 1 }) }">
-        h1
+
+      <button class="tiptap-btn" @click="editor.chain().focus().toggleCode().run()"
+        :disabled="!editor.can().chain().focus().toggleCode().run()" :class="{ 'is-active': editor.isActive('code') }">
+        <Code />
       </button>
-      <button @click="editor.chain().focus().toggleHeading({ level: 2 }).run()"
-        :class="{ 'is-active': editor.isActive('heading', { level: 2 }) }">
-        h2
+ 
+      <button class="tiptap-btn" @click="editor.chain().focus().setHardBreak().run()">
+        <WrapText />
       </button>
-      <button @click="editor.chain().focus().toggleHeading({ level: 3 }).run()"
-        :class="{ 'is-active': editor.isActive('heading', { level: 3 }) }">
-        h3
+      
+      <button class="tiptap-btn" @click="editor.chain().focus().unsetAllMarks().run()">
+        Clear marks
       </button>
-      <button @click="editor.chain().focus().toggleHeading({ level: 4 }).run()"
-        :class="{ 'is-active': editor.isActive('heading', { level: 4 }) }">
-        h4
+
+      <button class="tiptap-btn" @click="editor.chain().focus().clearNodes().run()">
+        Clear nodes
       </button>
-      <button @click="editor.chain().focus().toggleHeading({ level: 5 }).run()"
-        :class="{ 'is-active': editor.isActive('heading', { level: 5 }) }">
-        h5
-      </button>
-      <button @click="editor.chain().focus().toggleHeading({ level: 6 }).run()"
-        :class="{ 'is-active': editor.isActive('heading', { level: 6 }) }">
-        h6
-      </button>
-      <button @click="editor.chain().focus().toggleBulletList().run()"
-        :class="{ 'is-active': editor.isActive('bulletList') }">
-        bullet list
-      </button>
-      <button @click="editor.chain().focus().toggleOrderedList().run()"
+      <!-- <button class="tiptap-btn" @click="editor.chain().focus().toggleOrderedList().run()"
         :class="{ 'is-active': editor.isActive('orderedList') }">
         ordered list
-      </button>
-      <button @click="editor.chain().focus().toggleCodeBlock().run()"
+      </button> -->
+
+      <!-- <button class="tiptap-btn" @click="editor.chain().focus().toggleCodeBlock().run()"
         :class="{ 'is-active': editor.isActive('codeBlock') }">
         code block
-      </button>
-      <button @click="editor.chain().focus().toggleBlockquote().run()"
-        :class="{ 'is-active': editor.isActive('blockquote') }">
-        blockquote
-      </button>
-      <button @click="editor.chain().focus().setHorizontalRule().run()">
-        horizontal rule
-      </button>
-      <button @click="editor.chain().focus().setHardBreak().run()">
-        hard break
-      </button>
-      <button @click="editor.chain().focus().undo().run()" :disabled="!editor.can().chain().focus().undo().run()">
-        undo
-      </button>
-      <button @click="editor.chain().focus().redo().run()" :disabled="!editor.can().chain().focus().redo().run()">
-        redo
-      </button>
+      </button> -->
+
     </div>
 
     <ScrollArea class="h-[400px]">
@@ -134,3 +140,71 @@ onBeforeUnmount(() => {
     </ScrollArea>
   </div>
 </template>
+
+<style lang="scss">
+.tiptap {
+  &:first-child {
+    margin-top: 0;
+  }
+
+  ul,
+  ol {
+    padding: 0 1rem;
+    margin: 1.25rem 1rem 1.25rem 0.4rem;
+
+    li p {
+      margin-top: 0.25em;
+      margin-bottom: 0.25em;
+    }
+  }
+
+  ul[data-type='taskList'] {
+    list-style: none;
+    margin-left: 0;
+    padding: 0;
+
+    li {
+      align-items: center;
+      display: flex;
+
+      >label {
+        flex: 0 0 auto;
+        margin-right: 0.5rem;
+        user-select: none;
+      }
+
+      >div {
+        flex: 1 1 auto;
+      }
+    }
+
+    input[type='checkbox'] {
+      cursor: pointer;
+    }
+
+    ul[data-type='taskList'] {
+      margin: 0;
+    }
+  }
+}
+
+/* Add button styles */
+.tiptap-btn {
+  padding: .25rem;
+  border-radius: 0.375rem;
+  cursor: pointer;
+  font-size: 0.875rem;
+  color: black;
+
+  &.is-active {
+    background: #3b82f6;
+    color: white;
+    border-color: #2563eb;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+</style>
