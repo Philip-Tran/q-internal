@@ -178,7 +178,7 @@ model Work {
   status      WorkStatus
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
-  worklogs    WorkLog[]
+  worklogs    WorkLog[]   
   noteContent String?
 
   @@map("work")
@@ -197,7 +197,7 @@ model WorkLog {
   logType    LogType
 
   workId String
-  work   Work   @relation(fields: [workId], references: [id])
+  work   Work   @relation(fields: [workId], references: [id], onDelete: Cascade)
 
   @@map("work_log")
 }

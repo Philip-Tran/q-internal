@@ -3,18 +3,11 @@ definePageMeta({
   middleware: ["admin"]
 })
 
+import OkrCard from "~/components/home/okr-card/OkrCard.vue";
+import { RandomQuote } from "~/components/home/quote";
 import { type Work } from "~/types/work.type";
 
-import { ArrowBigUpDash, Crosshair, Goal, Pencil } from "lucide-vue-next";
 import { toast } from "vue-sonner";
-
-// Fetch OKRs
-const { status: okrsStatus } = await useFetch("/api/okrs/current", {
-  method: "GET",
-  lazy: true,
-  key: "currentOKRs",
-});
-const { data: currentOKRs } = useNuxtData("currentOKRs");
 
 // Fetch Current Work
 const { status: workStatus, data: currentWork, error: workError } = await useFetch<Work | null>("/api/work/current", {
@@ -28,7 +21,6 @@ const { status: pausedWorkStatus, data: pausedWorks, error: pausedWorkError } = 
   key: "pausedWorks"
 });
 
-const monthTimePercentage = getMonthProgressPercentage();
 
 const onResumeClick = async (workId: string) => {
   const data = await $fetch("/api/work/un-paused", {
@@ -45,91 +37,34 @@ const onResumeClick = async (workId: string) => {
   }
 }
 
+
+const refreshWorkCard = async () => {
+  await refreshNuxtData("currentWork")
+}
+
 </script>
 
 <template>
   <div class="space-y-4">
-    <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-      <Card v-for="i in 4">
-        <CardHeader class="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle class="text-sm font-medium">
-            Subscriptions
-          </CardTitle>
-          <Goal />
-        </CardHeader>
-        <CardContent>
-          <div class="text-2xl font-bold">
-            +2350
-          </div>
-          <p class="text-xs text-muted-foreground">
-            +180.1% from last month
-          </p>
-        </CardContent>
-      </Card>
-    </div>
+    <RandomQuote/>
 
     <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
-      <Card class="col-span-4">
-        <CardHeader class="border-b-2">
-          <CardTitle>This month goal</CardTitle>
-        </CardHeader>
-        <p v-if="okrsStatus === 'pending'">Is loading</p>
-        <template v-else>
-          <CardContent class="p-6 relative">
-            <div class="flex flex-col space-y-8">
-              <div v-for="okr in currentOKRs" :key="okr.id" class="flex flex-col space-y-5">
-                <div class="flex space-x-4 justify-between">
-                  <div class="flex space-x-3 justify-center items-center">
-                    <div class="flex justify-center items-center">
-                      <Crosshair />
-                    </div>
-                    <h2 class="font-serif text-2xl font-medium">
-                      {{ okr.name }}
-                    </h2>
-                  </div>
-                  <div>
-                    <AnimatedCircularProgressBar :max="100" :show-percentage="true" :min="0" :value="okr.progressOnTotalKeyResult"
-                      :circleStrokeWidth=8 class="w-[60px] h-[60px] text-lg" />
-                  </div>
-                </div>
-                <div>
-                  <Progress :model-value="monthTimePercentage" class="h-2" />
-                </div>
-                <div class="absolute -top-6 -right-2">
-                  <RouterLink :to="`/okrs/edit/${okr.id}`">
-                    <Button size="icon" variant="ghost">
-                      <Pencil class="stroke-slate-400 hover:stroke-yellow-600" />
-                    </Button>
-                  </RouterLink>
-                </div>
-                <div>
-                  <RouterLink :to="`/progress/${okr.id}`">
-                    <Button variant="secondary">
-                      <span>Update</span>
-                      <ArrowBigUpDash />
-                    </Button>
-                  </RouterLink>
-                </div>
-              </div>
-            </div>
-          </CardContent>
-        </template>
-      </Card>
+      <OkrCard/>
       <Card class="col-span-3">
-        <CardHeader class="border-b py-2 flex flex-row items-center justify-between">
+        <CardHeader class="border-b flex flex-row h-[68px] items-center justify-between">
           <CardTitle>Current</CardTitle>
-          <AppUiCreateNewWorkDialog />
+          <AppUiCreateNewWorkDialog @newWorkCreated="refreshWorkCard"/>
         </CardHeader>
         <CardContent class="p-6">
           <div class="">
             <div class="flex flex-col space-y-10">
               <AppUiCurrentWorkCard :currentWork="currentWork" :status="workStatus" :error="workError" />
-              <div v-if="pausedWorks" class="flex flex-col space-y-2">
+              <div v-if="pausedWorks" class="flex flex-col space-y-6">
                 <Label>Paused Work</Label>
-                <div>
-                  <div v-for="(pausedWork, index) in pausedWorks" :key="index">
-                    <h6>{{ pausedWork?.workName }}</h6>
-                    <Button variant="link" @click="onResumeClick(pausedWork.id)">Resume</Button>
+                <div class="flex flex-col space-y-4">
+                  <div v-for="(pausedWork, index) in pausedWorks" :key="index" class="p-3 rounded-lg bg-yellow-50 border flex space-x-4 items-center justify-start">
+                    <Button variant="secondary" class="hover:bg-primary" size="xs" @click="onResumeClick(pausedWork.id)">Resume</Button>
+                    <p>{{ pausedWork?.workName }}</p>
                   </div>
                 </div>
               </div>

@@ -1,21 +1,17 @@
 <script lang="ts" setup>
+import { Plus } from "lucide-vue-next"
 import { addWorkSchema } from "@/schemas/work.schemas"
 
 import { toast } from "vue-sonner"
-import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogFooter,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
-} from '@/components/ui/dialog'
 
 import { toTypedSchema } from '@vee-validate/zod'
 import { useForm } from 'vee-validate';
 
 const router = useRouter()
+const isOpened = ref(false)
+const emit = defineEmits<{
+  (e: 'newWorkCreated'): void;
+}>();
 
 const { meta, defineField, values, handleSubmit, errors } = useForm({
     validationSchema: toTypedSchema(addWorkSchema)
@@ -32,6 +28,7 @@ const onSubmit = handleSubmit(async (values) => {
     })
 
     if (status.value === "success") {
+        emit("newWorkCreated")
         toast.info("New work created successfully", {
             description: "Start working now",
             action: {
@@ -41,18 +38,22 @@ const onSubmit = handleSubmit(async (values) => {
                 }
             }
         })
+        setInterval(() => {
+            isOpened.value = false
+        }, 2000)
     }
 })
+
 </script>
 
 <template>
-    <Dialog>
+    <Dialog v-model:open="isOpened">
         <DialogTrigger as-child>
-            <Button variant="outline">
-                Create new work
+            <Button variant="secondary" size="icon">
+                <Plus />
             </Button>
         </DialogTrigger>
-        <DialogContent class="sm:max-w-[525px] md:h-[]">
+        <DialogContent  class="sm:max-w-[525px] md:h-[]">
             <DialogHeader>
                 <DialogTitle>New Work</DialogTitle>
                 <DialogDescription>
