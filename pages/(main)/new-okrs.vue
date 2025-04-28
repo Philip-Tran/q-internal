@@ -51,7 +51,7 @@ async function onSubmit(values: any) {
         <h2 class="text-center text-2xl font-medium">New OKRs</h2>
         <div class="items-center justify-center">
           <div class="max-w-[650px] mx-auto">
-            <Form v-slot="{ meta, values, validate }" as="" keep-values
+            <Form v-slot="{ meta, values, validate }" as="" keep-values v-auto-animate
               :validation-schema="toTypedSchema(newOKRsSchema[stepIndex - 1])">
               <Stepper v-slot="{ isNextDisabled, isPrevDisabled, nextStep, prevStep }" v-model="stepIndex"
                 class="block w-full">
@@ -106,8 +106,8 @@ async function onSubmit(values: any) {
                       </FormField>
                     </template>
 
-                    <template v-if="stepIndex === 2">
-                      <div v-for="(keyResult, index) in keyResults" :key="index"
+                    <template v-if="stepIndex === 2" v-auto-animate>
+                      <div v-for="(keyResult, index) in keyResults" :key="index" v-auto-animate
                         class="w-full relative flex flex-row space-x-6 items-center">
                         <FormField v-slot="{ componentField }" :name="`keyResults[${index}].keyResultName`">
                           <FormItem class="w-3/4">

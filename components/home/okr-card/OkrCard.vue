@@ -1,5 +1,5 @@
 <script setup lang=ts>
-import { ArrowBigUpDash, Crosshair } from 'lucide-vue-next';
+import { ArrowBigUpDash, Crosshair, Pencil } from 'lucide-vue-next';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '~/components/ui/collapsible';
 
 const props = defineProps({
@@ -19,7 +19,7 @@ const isOpen = ref(false)
 
 <template>
   <Card class="col-span-4">
-    <CardHeader class="border-b-2 h-[68px]">
+    <CardHeader class="border-b h-[68px]">
       <CardTitle>This month goal</CardTitle>
     </CardHeader>
     <p v-if="false">Is loading</p>

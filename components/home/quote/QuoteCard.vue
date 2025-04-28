@@ -16,6 +16,6 @@ getRandomQuote();
 
 <template>
   <div v-if="randomQuote">
-    <Quote :content="randomQuote.content" :author="randomQuote.author" />
+    <Quote :content="randomQuote.content" :author="randomQuote.author" class="min-h-32"/>
   </div>
 </template>

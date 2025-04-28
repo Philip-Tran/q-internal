@@ -51,7 +51,7 @@ const refreshWorkCard = async () => {
   <div class="space-y-4">
     <RandomQuote />
 
-    <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
+    <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-7">
       <OkrCard />
       <Card class="col-span-3">
         <CardHeader class="border-b flex flex-row h-[68px] items-center justify-between">
