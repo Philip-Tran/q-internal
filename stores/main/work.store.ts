@@ -1,23 +1,29 @@
-import { defineStore } from 'pinia'
+import { defineStore } from "pinia";
 
 export const useMyWorkStore = defineStore("work", () => {
   const state = ref({
     work: {
       workName: "",
-      status: ""
+      status: "",
     },
     isLoading: false,
     isError: false,
-    message: ""
-  })
+    message: "",
+  });
 
-  const createNewWork = async (values: {workName: string}) => {
+  const createNewWork = async (values: { workName: string }) => {
     try {
-      const {data} = await useFetch("")
-    } catch (error) {
-      
-    }
+      const { data } = await useFetch("");
+    } catch (error) {}
+  };
+
+  const newWorkDialogState = ref({
+    isOpened: false,
+  });
+
+  const toggleNewWorkDialog = () => {
+    newWorkDialogState.value.isOpened = !newWorkDialogState.value.isOpened 
   }
 
-  return {state, createNewWork}
-})
+  return { state, createNewWork, newWorkDialogState, toggleNewWorkDialog };
+});

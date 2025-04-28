@@ -1,14 +1,14 @@
 <script lang="ts" setup>
+import { useMyWorkStore } from "#imports"
+
 import { Plus } from "lucide-vue-next"
 import { addWorkSchema } from "@/schemas/work.schemas"
-
 import { toast } from "vue-sonner"
-
 import { toTypedSchema } from '@vee-validate/zod'
 import { useForm } from 'vee-validate';
 
+const workStore = useMyWorkStore()
 const router = useRouter()
-const isOpened = ref(false)
 const emit = defineEmits<{
   (e: 'newWorkCreated'): void;
 }>();
@@ -20,7 +20,7 @@ const { meta, defineField, values, handleSubmit, errors } = useForm({
 const [workName, workNameAttrs] = defineField('workName');
 
 const onSubmit = handleSubmit(async (values) => {
-    console.log(values)
+    // console.log(values)
     const { data, status } = await useFetch("/api/work", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -30,16 +30,15 @@ const onSubmit = handleSubmit(async (values) => {
     if (status.value === "success") {
         emit("newWorkCreated")
         toast.info("New work created successfully", {
-            description: "Start working now",
             action: {
-                label: "Start",
+                label: "Start working",
                 onClick: () => {
                     router.push(`/work/${data.value?.data.id}`)
                 }
             }
         })
         setInterval(() => {
-            isOpened.value = false
+            workStore.newWorkDialogState.isOpened = false
         }, 2000)
     }
 })
@@ -47,7 +46,7 @@ const onSubmit = handleSubmit(async (values) => {
 </script>
 
 <template>
-    <Dialog v-model:open="isOpened">
+    <Dialog v-model:open="workStore.newWorkDialogState.isOpened">
         <DialogTrigger as-child>
             <Button variant="secondary" size="icon">
                 <Plus />

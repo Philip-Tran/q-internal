@@ -1,12 +1,15 @@
 <script setup lang="ts">
 import { GlowBorder } from "@/components/ui/glow-border"
 import type { Work } from "@/types/work.type"
+import { useMyWorkStore } from "#imports"
 
 defineProps<{
   currentWork?: Work | null
   status?: string
   error?: Error | null
 }>()
+
+const workStore = useMyWorkStore()
 </script>
 
 <template>
@@ -32,7 +35,8 @@ defineProps<{
 
   <!-- If no work is in progress -->
   <div v-else class="text-center text-gray-500">
-    <p>There is no work in progress.</p>
+    <p class="mb-4">There is no work in progress.</p>
+    <Button variant="default" @click="workStore.toggleNewWorkDialog()">Create</Button>
   </div>
 
   <!-- Show error message if API fails -->
