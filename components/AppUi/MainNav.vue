@@ -5,7 +5,8 @@ import { type HTMLAttributes } from "vue";
 const navLinks = [
   { name: 'Home', path: '/' },
   { name: 'New OKRs', path: '/new-okrs' },
-  { name: 'Settings', path: '/settings' }
+  { name: 'Module', path: '/module' },
+  { name: 'Settings', path: '/settings' },
 ]
 
 type Orientation = "horizontal" | "vertical";

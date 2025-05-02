@@ -201,3 +201,24 @@ model WorkLog {
 
   @@map("work_log")
 }
+
+model Module {
+  id    String @id @default(uuid())
+  name  String
+  url  String
+  iconUrl String?
+
+  logs     ModuleLog[] // one Module has many ModuleLogs
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("module")
+}
+
+model ModuleLog {
+  id       String   @id @default(uuid())
+  content  String
+  moduleId String   // foreign key
+
+  module   Module   @relation(fields: [moduleId], references: [id]) // many-to-one relation
+}

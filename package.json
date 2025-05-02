@@ -58,6 +58,7 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "nodemailer": "^6.10.0",
+    "nuxt-file-storage": "^0.3.0",
     "nuxt-nodemailer": "^1.1.2",
     "sass-embedded": "^1.87.0",
     "scss": "^0.2.4",
