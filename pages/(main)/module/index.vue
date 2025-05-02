@@ -24,6 +24,10 @@ const moduleData = [
         url: "https://claude.ai",
         name: "Claude AI",
     },
+    {
+        url: "https://duckduckgo.com/",
+        name: "Duckduckgo",
+    },
 ]
 </script>
 

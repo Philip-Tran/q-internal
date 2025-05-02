@@ -6,29 +6,12 @@ definePageMeta({
 import { useAuthStore } from "../../stores/auth/auth.store";
 import { toast } from 'vue-sonner'
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Button } from '@/components/ui/button';
-
+import { authClient } from '~/server/utils/auth-client';
 const authStore = useAuthStore();
 const { loginState } = storeToRefs(authStore)
+
 const email = ref('');
 const password = ref('');
-
-const login = () => {
-  authStore.login({ email: loginState.value.Credential.email, password: loginState.value.Credential.password });
-  console.log(email.value, password.value);
-};
-
-import { authClient } from '~/server/utils/auth-client';
 
 const handleLogin = async () => {
   await authClient.signIn.email({
@@ -39,7 +22,7 @@ const handleLogin = async () => {
       onError: (context) => {
         console.error(context.error.message);
         toast.error(context.error.message, {
-          description: 'Please try again',
+          description: 'Try again',
         })
         loginState.value.isError = true;
         loginState.value.message = context.error.message;
@@ -60,45 +43,30 @@ const handleLogin = async () => {
 
 <template>
   <div class="flex h-screen w-full items-center justify-center px-4">
-    <Card class="mx-auto max-w-sm">
+    <Card class="mx-auto max-w-sm w-[500px]">
       <CardHeader>
         <CardTitle class="text-2xl">
           Login
         </CardTitle>
-        <CardDescription>
-          Enter your email below to login to your account
-        </CardDescription>
       </CardHeader>
       <CardContent>
         <form @submit.prevent="handleLogin">
           <div class="grid gap-4">
             <div class="grid gap-2">
               <Label for="email">Email</Label>
-              <Input v-model="email" id="email" type="email" placeholder="m@example.com" required />
+              <Input v-model="email" id="email" type="email" required />
             </div>
             <div class="grid gap-2">
               <div class="flex items-center">
                 <Label for="password">Password</Label>
-                <a href="#" class="ml-auto inline-block text-sm underline">
-                  Forgot password?
-                </a>
               </div>
               <Input v-model="password" id="password" type="password" required />
             </div>
-            <Button type="submit" class="w-full">
+            <Button type="submit" class="w-full" @keydown.enter="handleLogin">
               Login
             </Button>
-            <!-- <Button variant="outline" class="w-full">
-              Login with Google
-            </Button> -->
           </div>
         </form>
-        <div class="mt-4 text-center text-sm">
-          Don't have an account?
-          <a href="#" class="underline">
-            Sign up
-          </a>
-        </div>
       </CardContent>
     </Card>
   </div>

@@ -1,26 +1,21 @@
 <script setup lang="ts">
+import { useMyWorkStore } from '#imports'
+
 import { useEventListener, onClickOutside } from '@vueuse/core'
 import { ref, onMounted, onUnmounted } from 'vue'
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-  CommandSeparator,
-  CommandShortcut,
-} from '@/components/ui/command'
-
 import {
   Calculator,
   Calendar,
   CreditCard,
+  Home,
   Settings,
   Smile,
+  Target,
   User,
+  Workflow,
 } from 'lucide-vue-next'
 
+const workStore = useMyWorkStore()
 const router = useRouter()
 const isCommandVisible = ref(false)
 const commandRef = ref<HTMLElement | null>(null)
@@ -56,9 +51,29 @@ onUnmounted(() => {
 })
 
 const handleNewWork = () => {
-  router.push("/new-work")
+  isCommandVisible.value = false
+  workStore.newWorkDialogState.isOpened = true
 }
 
+const handleNewOKRs = () => {
+  router.push("/new-okrs")
+  isCommandVisible.value = false
+}
+
+const handleGoHomeCommand = () => {
+  isCommandVisible.value = false
+  router.push("/")
+}
+
+const handleGoSettingCommand = ( ) => {
+  isCommandVisible.value  = false
+  router.push("/settings")
+}
+
+const handleGoModule = ( ) => {
+  isCommandVisible.value  = false
+  router.push("/module")
+}
 </script>
 
 <template>
@@ -68,42 +83,38 @@ const handleNewWork = () => {
 
     <div class="default-layout flex-1 px-4 2xl:px-20 pt-6">
       <slot />
-      <!-- Overlay -->
-      <div v-if="isCommandVisible" class="fixed inset-0 bg-black bg-opacity-50 z-40"></div>
 
+      <!-- Command Overlay -->
+      <div v-if="isCommandVisible" class="fixed inset-0 bg-black bg-opacity-50 z-40"></div>
       <!-- Command Palette -->
       <div v-if="isCommandVisible" class="fixed inset-0 flex items-center justify-center py-12 z-50">
         <Command ref="commandRef" class="rounded-lg border shadow-md max-w-[450px] max-h-[450px] bg-white">
           <CommandInput placeholder="Type a command or search..." />
           <CommandList>
             <CommandEmpty>No results found.</CommandEmpty>
-            <CommandGroup heading="Suggestions">
+            <CommandGroup heading="Quick actions">
               <CommandItem @select="handleNewWork" value="newWork">
-                <Smile />
-                <span>New Work</span>
+                <Workflow />
+                <span>Create new work</span>
               </CommandItem>
-              <CommandItem value="openCalendar">
-                <Calendar />
-                <span>Open Calendar</span>
-              </CommandItem>
-              <CommandItem disabled value="calculator">
-                <Calculator />
-                <span>Calculator</span>
+              <CommandItem @select="handleNewOKRs" value="openCalendar">
+                <Target />
+                <span>New OKRs</span>
               </CommandItem>
             </CommandGroup>
             <CommandSeparator />
-            <CommandGroup heading="Settings">
-              <CommandItem value="profile">
-                <User />
-                <span>Profile</span>
-                <CommandShortcut>⌘P</CommandShortcut>
+            <CommandGroup heading="Pages">
+              <CommandItem @select="handleGoHomeCommand" value="home">
+                <Home />
+                <span>Home</span>
+                <CommandShortcut  >⌘H</CommandShortcut>
               </CommandItem>
-              <CommandItem value="billing">
+              <CommandItem @select="handleGoModule" value="module">
                 <CreditCard />
-                <span>Billing</span>
-                <CommandShortcut>⌘B</CommandShortcut>
+                <span>Module</span>
+                <CommandShortcut>M</CommandShortcut>
               </CommandItem>
-              <CommandItem value="settings">
+              <CommandItem @select="handleGoSettingCommand" value="settings">
                 <Settings />
                 <span>Settings</span>
                 <CommandShortcut>⌘S</CommandShortcut>

@@ -37,7 +37,7 @@ const saveStatus = ref<'idle' | 'saving' | 'saved'>('idle')
 
 const autoSave = debounce(async () => {
     saveStatus.value = 'saving'
-    await $fetch(`/api/work/note?workId=${route.params.slug}`, {
+    await $fetch(`/api/work/note?workId=${route.params.id}`, {
         method: "POST",
         body: { noteContent: noteContent.value }
     })

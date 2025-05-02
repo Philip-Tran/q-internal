@@ -2,7 +2,7 @@
 import { TiptapTaskItem, TiptapTaskList } from '~/composables/tiptapExt';
 import { cn } from '@/lib/utils';
 import { ScrollArea } from './ui/scroll-area';
-import { Code, ListCollapse, ListEnd, Pilcrow, Redo2, SquareCheck, Undo2, WrapText, Youtube } from 'lucide-vue-next';
+import { Code, Eraser, ListCollapse, ListEnd, Pilcrow, Redo2, RemoveFormatting, RemoveFormattingIcon, SquareCheck, Undo2, WrapText, Youtube } from 'lucide-vue-next';
 
 const props = defineProps({
   modelValue: String,
@@ -75,66 +75,70 @@ onBeforeUnmount(() => {
     props.class,
   )
     ">
-    <div v-if="editor && isButtonVisible" class="flex flex-wrap gap-4 px-6 py-1 bg-gray-100 border-y-slate-400">
-      <button class="tiptap-btn" @click="editor.chain().focus().undo().run()"
+    <div v-if="editor && isButtonVisible" class="flex flex-wrap space-x-2 px-6 py-1 border-y-slate-400 border-b border-b-slate-50">
+      <Button size="icon" variant="ghost" class="tiptap-btn" @click="editor.chain().focus().undo().run()"
         :disabled="!editor.can().chain().focus().undo().run()">
         <Undo2 />
-      </button>
+      </Button>
 
-      <button class="tiptap-btn" @click="editor.chain().focus().redo().run()"
+      <Button class="tiptap-btn" variant="ghost" size="icon" @click="editor.chain().focus().redo().run()"
         :disabled="!editor.can().chain().focus().redo().run()">
         <Redo2 />
-      </button>
+      </Button>
 
-      <button class="tiptap-btn" @click="editor.chain().focus().toggleTaskList().run()"
+      <Button class="tiptap-btn" variant="ghost" size="icon" @click="editor.chain().focus().toggleTaskList().run()"
         :class="{ 'is-active': editor.isActive('taskList') }">
         <SquareCheck class="w-5 h-5 text-gray-800" />
-      </button>
+      </Button>
 
-      <button class="tiptap-btn" @click="editor.chain().focus().sinkListItem('taskItem').run()"
+      <Button class="tiptap-btn" variant="ghost" size="icon"
+        @click="editor.chain().focus().sinkListItem('taskItem').run()"
         :disabled="!editor.can().sinkListItem('taskItem')">
         <ListCollapse class="w-5 h-5" />
-      </button>
+      </Button>
 
-      <button class="tiptap-btn" @click="editor.chain().focus().liftListItem('taskItem').run()"
+      <Button class="tiptap-btn" variant="ghost" size="icon"
+        @click="editor.chain().focus().liftListItem('taskItem').run()"
         :disabled="!editor.can().liftListItem('taskItem')">
         <ListEnd class="w-5 h-5" />
-      </button>
+      </Button>
 
-      <button @click="addVideo" class="tiptap-btn">
+      <Button variant="ghost" size="icon" @click="addVideo" class="tiptap-btn">
         <Youtube class="w-5 h-5" />
-      </button>
+      </Button>
 
-      <button class="tiptap-btn" @click="editor.chain().focus().setParagraph().run()"
+      <Button class="tiptap-btn" variant="ghost" size="icon" @click="editor.chain().focus().setParagraph().run()"
         :class="{ 'is-active': editor.isActive('paragraph') }">
         <Pilcrow />
-      </button>
+      </Button>
 
-      <button class="tiptap-btn" @click="editor.chain().focus().toggleCode().run()"
+      <Button class="tiptap-btn" variant="ghost" size="icon" @click="editor.chain().focus().toggleCode().run()"
         :disabled="!editor.can().chain().focus().toggleCode().run()" :class="{ 'is-active': editor.isActive('code') }">
         <Code />
-      </button>
- 
-      <button class="tiptap-btn" @click="editor.chain().focus().setHardBreak().run()">
-        <WrapText />
-      </button>
-      
-      <button class="tiptap-btn" @click="editor.chain().focus().unsetAllMarks().run()">
-        Clear marks
-      </button>
+      </Button>
 
-      <button class="tiptap-btn" @click="editor.chain().focus().clearNodes().run()">
-        Clear nodes
-      </button>
-      <!-- <button class="tiptap-btn" @click="editor.chain().focus().toggleOrderedList().run()"
+      <Button class="tiptap-btn" variant="ghost" size="icon" @click="editor.chain().focus().setHardBreak().run()">
+        <WrapText />
+      </Button>
+
+      <Button class="tiptap-btn" variant="ghost" size="icon" @click="editor.chain().focus().clearNodes().run()">
+        <RemoveFormatting />
+      </Button>
+
+      <Button class="tiptap-btn" variant="ghost" size="default" @click="editor.chain().focus().unsetAllMarks().run()">
+        <Eraser />
+      </Button>
+
+
+      <!-- <Button class="tiptap-btn" @click="editor.chain().focus().toggleOrderedList().run()"
         :class="{ 'is-active': editor.isActive('orderedList') }">
         ordered list
-      </button> -->
+      </Button> -->
 
-      <!-- <button class="tiptap-btn" @click="editor.chain().focus().toggleCodeBlock().run()"
+      <!-- <Button class="tiptap-btn" @click="editor.chain().focus().toggleCodeBlock().run()"
         :class="{ 'is-active': editor.isActive('codeBlock') }">
         code block
-      </button> -->
+      </Button> -->
 
     </div>
 
@@ -180,6 +184,11 @@ onBeforeUnmount(() => {
         flex: 0 0 auto;
         margin-right: 0.5rem;
         user-select: none;
+        align-items: center;
+
+        input {
+          margin: auto auto;
+        }
       }
 
       >div {
@@ -197,18 +206,12 @@ onBeforeUnmount(() => {
   }
 }
 
-/* Add button styles */
+/* Add Button styles */
 .tiptap-btn {
-  padding: .25rem;
-  border-radius: 0.375rem;
-  cursor: pointer;
-  font-size: 0.875rem;
   color: black;
 
   &.is-active {
-    background: #3b82f6;
-    color: white;
-    border-color: #2563eb;
+    @apply bg-slate-50
   }
 
   &:disabled {

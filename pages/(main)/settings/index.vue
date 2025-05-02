@@ -1,7 +1,22 @@
 <script lang="ts" setup>
-const { data, status } = await useFetch('/api/setting/get',{
-    method: "GET"
+const { data, status } = await useFetch('/api/setting/get', {
+  method: "GET"
 })
+
+const router = useRouter()
+import { toast } from 'vue-sonner';
+import { authClient } from '~/server/utils/auth-client';
+
+const handleLogOut = async () => {
+  await authClient.signOut({
+    fetchOptions: {
+      onSuccess: () => {
+        toast.info("Logout successfully")
+        router.push("/login"); 
+      },
+    },
+  })
+}
 </script>
 
 <template>
@@ -22,7 +37,15 @@ const { data, status } = await useFetch('/api/setting/get',{
           <span>Setting</span>
           <div>
             <pre>{{ data }}</pre>
-            <Input  />
+            <Input />
+          </div>
+        </TabsContent>
+        <TabsContent value="account">
+          <span>Account</span>
+          <div>
+            <pre>{{ data }}</pre>
+            <Input />
+            <Button @click="handleLogOut">Logout</Button>
           </div>
         </TabsContent>
       </div>
