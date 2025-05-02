@@ -22,11 +22,23 @@ const isOpen = ref(false)
     <CardHeader class="border-b h-[68px]">
       <CardTitle>This month goal</CardTitle>
     </CardHeader>
-    <p v-if="false">Is loading</p>
-    <template v-else>
+    <div >
       <CardContent class="p-6 relative">
         <div class="flex flex-col space-y-8">
-          <div v-for="okr in okrStore.state" :key="okr.id" class="flex flex-col space-y-5">
+          <div v-if="okrStore.state.isLoading">
+            <Skeleton class="w-full h-24 rounded-md bg-gray-100"/>
+          </div>
+          <div v-else-if="okrStore.okrs = []" class="h-full w-full flex">
+            <div class="flex flex-col w-full justify-center space-y-4 align-middle">
+              <p class="text-destructive">No OKRs set for this month</p>
+              <NuxtLink to="/new-okrs">
+                <Button class="w-fit">
+                  Create
+                </Button>
+              </NuxtLink>
+            </div>
+          </div>
+          <div v-else v-for="okr in okrStore.okrs" :key="okr.id" class="flex flex-col space-y-5">
             <div class="flex space-x-4 justify-between">
               <div class="flex space-x-3 justify-center items-center">
                 <div class="flex justify-center items-center">
@@ -78,6 +90,6 @@ const isOpen = ref(false)
           </div>
         </div>
       </CardContent>
-    </template>
+    </div>
   </Card>
 </template>

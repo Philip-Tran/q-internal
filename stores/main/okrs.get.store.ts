@@ -1,15 +1,27 @@
 export const useOKRsGetStore = defineStore("orks-get", () => {
-    const state = ref()
+  const okrs = ref();
+  const state = ref({
+    isLoading: false,
+    isError: false,
+    isSuccess: false,
+  });
 
-    const getOKRs = async () => {
-        try {
-            const data = await $fetch("/api/okrs/current")
+  const getOKRs = async () => {
+    state.value.isLoading = true;
+    try {
+      const data = await $fetch("/api/okrs/current");
 
-            state.value = data
-        } catch (error) {
-            console.error(error)
-        }
+      if(!data) {
+        state.value.isError = true;
+      }
+
+      okrs.value = data;
+    } catch (error) {
+      console.error(error);
+    } finally {
+        state.value.isLoading = false
     }
+  };
 
-    return { state, getOKRs}
-})
+  return { okrs, getOKRs, state };
+});

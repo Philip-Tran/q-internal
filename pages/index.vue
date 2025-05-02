@@ -23,7 +23,6 @@ const { status: pausedWorkStatus, data: pausedWorks, error: pausedWorkError } = 
 });
 
 const onResumeClick = async (workId: string) => {
-
   const data = await $fetch("/api/work/un-paused", {
     method: 'POST',
     body: { id: workId }
@@ -39,7 +38,6 @@ const onResumeClick = async (workId: string) => {
   await refreshNuxtData("currentWork")
 
 }
-
 
 const refreshWorkCard = async () => {
   await refreshNuxtData("currentWork")
