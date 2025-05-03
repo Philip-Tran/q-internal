@@ -1,13 +1,6 @@
 <script setup lang=ts>
 import { ArrowBigUpDash, Crosshair, Pencil } from 'lucide-vue-next';
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '~/components/ui/collapsible';
 
-const props = defineProps({
-  currentOKRs: {
-
-  },
-
-})
 const monthTimePercentage = getMonthProgressPercentage();
 const okrStore = useOKRsGetStore()
 
@@ -28,7 +21,7 @@ const isOpen = ref(false)
           <div v-if="okrStore.state.isLoading">
             <Skeleton class="w-full h-24 rounded-md bg-gray-100"/>
           </div>
-          <div v-else-if="okrStore.okrs = []" class="h-full w-full flex">
+          <div v-else-if="okrStore.okrs[0] == null" class="h-full w-full flex">
             <div class="flex flex-col w-full justify-center space-y-4 align-middle">
               <p class="text-destructive">No OKRs set for this month</p>
               <NuxtLink to="/new-okrs">
@@ -50,7 +43,7 @@ const isOpen = ref(false)
               </div>
               <div>
                 <AnimatedCircularProgressBar :max="100" :show-percentage="true" :min="0"
-                  :value="okr.progressOnTotalKeyResult" :circleStrokeWidth=8 class="w-[60px] h-[60px] text-lg" />
+                  :value="okr.progressOnTotalKeyResult == null ? 0 : okr.progressOnTotalKeyResult" :circleStrokeWidth=8 class="w-[60px] h-[60px] text-lg" />
               </div>
             </div>
             <div>
