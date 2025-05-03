@@ -15,13 +15,13 @@ import { Toaster } from '@/components/ui/sonner'
 </template>
 
 <style>
-/* .page-enter-active,
+.page-enter-active,
 .page-leave-active {
   transition: all 0.1s ease;
 }
 .page-enter-from,
 .page-leave-to {
   opacity: 0;
-  filter: blur(.5rem);
-} */
+  filter: blur(.25rem);
+}
 </style>

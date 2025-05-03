@@ -4,7 +4,9 @@ import { ArrowBigUpDash, Crosshair, Pencil } from 'lucide-vue-next';
 const monthTimePercentage = getMonthProgressPercentage();
 const okrStore = useOKRsGetStore()
 
-okrStore.getOKRs()
+if(okrStore.okrs == null) {
+  okrStore.getOKRs()
+}
 
 const isOpen = ref(false)
 

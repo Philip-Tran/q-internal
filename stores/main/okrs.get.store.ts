@@ -11,7 +11,9 @@ export const useOKRsGetStore = defineStore("orks-get", () => {
     try {
       const data = await $fetch("/api/okrs/current");
 
-      if(!data) {
+      console.log(data)
+
+      if (!data) {
         state.value.isError = true;
       }
 
@@ -19,7 +21,7 @@ export const useOKRsGetStore = defineStore("orks-get", () => {
     } catch (error) {
       console.error(error);
     } finally {
-        state.value.isLoading = false
+      state.value.isLoading = false;
     }
   };
 
