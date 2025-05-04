@@ -61,18 +61,17 @@ const onSubmit = handleSubmit(async (values) => {
             </DialogHeader>
 
             <form id="dialogForm" @submit="onSubmit">
-                <div>
-                    <Label class="mb-4">Name</Label>
+                <div class="space-y-2">
+                    <Label class="mb-4">Title</Label>
                     <div>
                         <Textarea type="text" placeholder="" v-model="workName" v-bind="workNameAttrs"
                             class="md:min-h-[140px]" />
                     </div>
-                    <span class="text-sm my-2">{{ errors.workName }}</span>
                 </div>
             </form>
 
             <DialogFooter>
-                <Button type="submit" form="dialogForm">
+                <Button type="submit" :disabled="!meta.valid" form="dialogForm">
                     Create and start working
                 </Button>
             </DialogFooter>
