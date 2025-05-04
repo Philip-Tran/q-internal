@@ -9,7 +9,7 @@ export default defineEventHandler(async (event: H3Event) => {
       },
     })
 
-    if (!pausedWorks) {
+    if (pausedWorks[0] == null) {
       setResponseStatus(event, 404)
       return {
         success: false,

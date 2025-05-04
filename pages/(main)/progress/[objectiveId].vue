@@ -6,7 +6,7 @@ definePageMeta({
 import { updateOKRsReflex } from '~/schemas/oKRs.schema'
 import type { KeyResult, ObjectiveWithKeyResults, Reflex } from '~/types/okr.type'
 import { toast } from 'vue-sonner'
-import { Loader2 } from 'lucide-vue-next'
+import { Goal, Loader2 } from 'lucide-vue-next'
 import { Slider } from '@/components/ui/slider'
 
 const route = useRoute()
@@ -44,6 +44,22 @@ const onSubmit = async () => {
         keyResults.value,
         objectiveId as string
     )
+
+    if(isError) {
+        toast.error("Error occur", {
+            description: errorMessage
+        })
+    }
+
+    if(isSuccess) {
+        toast.info("Submit update successfully", {
+            action: () => {
+                setTimeout(() => {
+                    router.push("/")
+                }, 1500);
+            }
+        })
+    }
 }
 </script>
 
@@ -59,41 +75,56 @@ const onSubmit = async () => {
                         <div class="mx-2">
                             <form @submit.prevent="onSubmit" class="space-y-6">
                                 <div class="space-y-10 mx-auto">
+                                    <div class="grid grid-cols-[1fr_80px_auto] items-center gap-12 mb-4">
+                                        <div>
+                                            <Label>Goal</Label>
+                                        </div>
+                                        <div>
+                                            <Label>Key result</Label>
+                                        </div>
+                                        <div class="w-[120px]">
+                                            <Label>Update</Label>
+                                        </div>
+
+                                    </div>
                                     <div v-for="kr in keyResults" :key="kr.id"
-                                        class="grid grid-cols-[1fr_auto_auto] items-center gap-12 mb-4">
+                                        class="grid grid-cols-[1fr_80px_auto] items-center gap-12 mb-4">
 
                                         <!-- Key Result Name -->
-                                        <div>
+                                        <div class="flex align-middle space-x-4 items-center">
+                                            <div class="w-6">
+                                                <Goal class="w-4 h-4 text-green-700" />
+                                            </div>
                                             <h6 class="text-md font-serif">{{ kr.name }}</h6>
                                         </div>
 
                                         <!-- Result Number Display -->
-                                        <div class="text-right">
-                                            <span class="text-lg font-medium text-gray-800">{{ kr.resultNumber }}</span>
+                                        <div class="text-center">
+                                            <span class="text-lg font-medium font-serif text-gray-800">{{
+                                                kr.resultNumber }}</span>
                                         </div>
 
                                         <!-- Result Update -->
                                         <div class="">
                                             <NumberField v-model="kr.resultUpdate" :min="0" :default-value="1"
-                                                class="w-[120px]">
+                                                :max="kr.resultNumber" class="w-[120px]">
                                                 <NumberFieldContent class="">
-                                                    <NumberFieldDecrement />
                                                     <NumberFieldInput class="" />
+                                                    <NumberFieldDecrement />
                                                     <NumberFieldIncrement />
                                                 </NumberFieldContent>
                                             </NumberField>
                                         </div>
                                     </div>
                                 </div>
-                                
+
                                 <div class="flex flex-col space-y-6 my-12">
                                     <AppUiUpdateReflexForm v-on:reflex="reflex => updateReflex(reflex)" />
                                 </div>
 
                                 <!-- Submit Button -->
                                 <div class="flex justify-center">
-                                    <Button type="submit" :disabled="!reflexValue || !keyResults || isLoading"
-                                        class="">
+                                    <Button type="submit" :disabled="!reflexValue || !keyResults || isLoading" class="">
                                         <Loader2 v-if="isLoading" class="w-4 h-4 mr-2 animate-spin" />
                                         {{ (isLoading) ? 'Submitting...' : 'Submit' }}
                                     </Button>

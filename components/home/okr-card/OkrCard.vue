@@ -4,11 +4,17 @@ import { ArrowBigUpDash, Crosshair, Pencil } from 'lucide-vue-next';
 const monthTimePercentage = getMonthProgressPercentage();
 const okrStore = useOKRsGetStore()
 
-if(okrStore.okrs == null) {
+if (okrStore.okrs == null) {
   okrStore.getOKRs()
 }
 
+const { data: setting } = await useFetch("/api/setting", {
+  method: "get"
+})
+
 const isOpen = ref(false)
+
+const today = getCurrentWeekday()
 
 </script>
 
@@ -17,11 +23,11 @@ const isOpen = ref(false)
     <CardHeader class="border-b h-[68px]">
       <CardTitle>This month goal</CardTitle>
     </CardHeader>
-    <div >
+    <div>
       <CardContent class="p-6 relative">
         <div class="flex flex-col space-y-8">
           <div v-if="okrStore.state.isLoading">
-            <Skeleton class="w-full h-24 rounded-md bg-gray-100"/>
+            <Skeleton class="w-full h-24 rounded-md bg-gray-100" />
           </div>
           <div v-else-if="okrStore.okrs[0] == null" class="h-full w-full flex">
             <div class="flex flex-col w-full justify-center space-y-4 align-middle">
@@ -45,7 +51,8 @@ const isOpen = ref(false)
               </div>
               <div>
                 <AnimatedCircularProgressBar :max="100" :show-percentage="true" :min="0"
-                  :value="okr.progressOnTotalKeyResult == null ? 0 : okr.progressOnTotalKeyResult" :circleStrokeWidth=8 class="w-[60px] h-[60px] text-lg text-gray-700" />
+                  :value="okr.progressOnTotalKeyResult == null ? 0 : okr.progressOnTotalKeyResult" :circleStrokeWidth=8
+                  class="w-[60px] h-[60px] text-lg text-gray-700" />
               </div>
             </div>
             <div>
@@ -59,29 +66,39 @@ const isOpen = ref(false)
               </RouterLink>
             </div>
             <div class="flex space-x-6">
-              <RouterLink :to="`/progress/${okr.id}`">
-                <Button variant="secondary">
-                  <span>Update</span>
-                  <ArrowBigUpDash />
-                </Button>
-              </RouterLink>
               <Collapsible v-model:open="isOpen">
                 <CollapsibleTrigger>
                   <Button variant="outline">
-                    Expand
+                    Detail
                   </Button>
                 </CollapsibleTrigger>
                 <CollapsibleContent>
                   <div class="rounded-md border p-4 bg-slate-50">
-                    <div v-for="kr in okr.keyResults" class="p-2 rounded-md">
+                    <div v-for="kr in okr.keyResults" class="p-2 rounded-md flex items-center space-x-6">
                       <p class="text-base">
                         {{ kr.name }}
                       </p>
+                      <span class="padding-3 rounded-full bg-slate-100">{{ kr.resultNumber }}</span>
                     </div>
                   </div>
                 </CollapsibleContent>
               </Collapsible>
             </div>
+
+            <div v-if="today === setting?.updateDay">
+              <RouterLink :to="`/progress/${okr.id}`">
+                <div class="rounded-md p-6 bg-yellow-100 border border-yellow-400 shadow-sm">
+                  <div class="flex items-center space-x-3">
+                    <Label>Let's update</Label>
+                    <ArrowBigUpDash class="text-yellow-600" />
+                    <Button variant="secondary" class="bg-yellow-300 hover:bg-yellow-400 text-yellow-900 font-semibold">
+                      <span>Update</span>
+                    </Button>
+                  </div>
+                </div>
+              </RouterLink>
+            </div>
+
           </div>
         </div>
       </CardContent>

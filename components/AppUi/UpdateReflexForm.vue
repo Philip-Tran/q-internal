@@ -26,7 +26,7 @@ watch(values, (newValues) => {
             <div class="my-8 flex flex-col space-y-4">
                 <div class="flex justify-between items-center">
                     <Label>How confident I am in completing the goals</Label>
-                    <div>{{ confidentRate }}</div>
+                    <div>{{ confidentRate ? confidentRate[0] : null }}</div>
                 </div>
                 <div class="flex flex-col gap-2 items-end ">
                     <Slider v-model="confidentRate" :max="100" :step="1" :disable="false" v-bind="confidentRateAttrs" />

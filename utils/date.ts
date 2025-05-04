@@ -23,3 +23,19 @@ export const getMonthProgressPercentage = () => {
     return Math.round((currentDay / totalDays) * 100);
   });
 };
+
+export enum WeekDay {
+  SUN,
+  MON,
+  TUE,
+  WED,
+  THU,
+  FRI,
+  SAT,
+}
+
+export function getCurrentWeekday(): keyof typeof WeekDay {
+  const dayIndex = new Date().getDay() // 0 (Sun) to 6 (Sat)
+  return WeekDay[dayIndex] as keyof typeof WeekDay
+}
+
