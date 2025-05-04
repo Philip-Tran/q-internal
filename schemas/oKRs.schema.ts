@@ -30,3 +30,16 @@ export const createOKRs = z.object({
 
 // Export inferred TypeScript type
 export type NewOKRsType = z.infer<typeof createOKRs>;
+
+export const updateOKRsReflex = z.object({
+  confidentRate: z.array(
+    z.number()
+      .min(0, { message: 'Confidence rate cannot be less than 0.' })
+      .max(100, { message: 'Confidence rate cannot be more than 100.' })
+  )
+  .nonempty({ message: 'At least one confidence rate is required.' })
+  .default([50]),
+  statusNotes: z.string().default(""),
+  howToOvercomeChallenges: z.string().default(""),
+  noteToMyself: z.string().default(""),
+});

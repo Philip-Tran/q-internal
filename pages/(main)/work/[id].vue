@@ -19,7 +19,8 @@ const route = useRoute();
 const isLogTabOpen = ref(false)
 const noteContent = ref("")
 
-const { status, data: CurrentWork } = await useFetch<Work>("/api/work/current", {
+
+const { status, data:CurrentWork } = await useFetch<Work>("/api/work/current", {
     method: "GET",
 })
 
@@ -55,7 +56,6 @@ const isNoteOpen = ref(false)
 const toggleNote = () => {
   isNoteOpen.value = !isNoteOpen.value
 }
-
 </script>
 
 <template>

@@ -91,20 +91,31 @@ enum WeekDay {
 
 model Setting {
   id        Int     @id @default(autoincrement())
-  updateDay WeekDay @default(SUN)
+  updateDay WeekDay @default(FRI)
+
+  @@map("setting")
+}
+
+enum UpdateStatus {
+  TRUE
+  FALSE
+  IGNORED
+  IDLE
 }
 
 model Objective {
   id                       String           @id @default(uuid())
   name                     String
-  createdAt                DateTime         @default(now())
-  updatedAt                DateTime         @updatedAt
   month                    Int
   year                     Int
   progressOnTotalKeyResult Int?
   keyResults               KeyResult[]
   reflexes                 Reflex[]
   progressUpdates          ProgressUpdate[]
+  isUpdated                UpdateStatus     @default(IDLE)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("objective")
 }
@@ -126,13 +137,14 @@ model KeyResult {
 }
 
 model Reflex {
-  id                String   @id @default(uuid())
-  confidentRate     Int
-  whatCanBeImproved String
-  whatToDoToImprove String
-  noteToMyself      String
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
+  id                      String @id @default(uuid())
+  confidentRate           Int
+  statusNotes             String
+  howToOvercomeChallenges String
+  noteToMyself            String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   objectiveId String
   objective   Objective @relation(fields: [objectiveId], references: [id])
@@ -178,7 +190,7 @@ model Work {
   status      WorkStatus
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
-  worklogs    WorkLog[]   
+  worklogs    WorkLog[]
   noteContent String?
 
   @@map("work")
@@ -203,22 +215,22 @@ model WorkLog {
 }
 
 model Module {
-  id    String @id @default(uuid())
-  name  String
-  url  String
+  id      String  @id @default(uuid())
+  name    String
+  url     String
   iconUrl String?
 
-  logs     ModuleLog[] // one Module has many ModuleLogs
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  logs      ModuleLog[] // one Module has many ModuleLogs
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
 
   @@map("module")
 }
 
 model ModuleLog {
-  id       String   @id @default(uuid())
+  id       String @id @default(uuid())
   content  String
-  moduleId String   // foreign key
+  moduleId String // foreign key
 
-  module   Module   @relation(fields: [moduleId], references: [id]) // many-to-one relation
+  module Module @relation(fields: [moduleId], references: [id]) // many-to-one relation
 }

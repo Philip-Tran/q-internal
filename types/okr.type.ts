@@ -16,4 +16,11 @@ export interface KeyResult {
     progressOnTotalKeyResult: number | null
     keyResults: KeyResult[]
   }
+
+export type Reflex = {
+  confidentRate: number[];
+  statusNotes: string;
+  howToOvercomeChallenges: string;
+  noteToMyself: string;
+};
   

@@ -1,6 +1,6 @@
 <script setup>
 definePageMeta({
-  layout: ["auth-layout"]
+  layout: "auth-layout"
 })
 
 import { useAuthStore } from "../../stores/auth/auth.store";

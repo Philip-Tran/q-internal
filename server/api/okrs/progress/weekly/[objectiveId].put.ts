@@ -1,13 +1,38 @@
 import { defineEventHandler, readBody, createError } from "h3";
 import { getObjectiveProgressOnKeyResult } from "~/server/utils/progress";
+import { type Reflex } from "~/types/okr.type";
 
 export default defineEventHandler(async (event) => {
   try {
     const body = await readBody<{
       keyResults: { id: string; resultUpdate: number }[];
+      reflex: Reflex
     }>(event);
-    
+
+    const { confidentRate, howToOvercomeChallenges, noteToMyself, statusNotes } = body.reflex
     const objectiveId = getRouterParam(event, "objectiveId");
+
+    if (!objectiveId) {
+      throw createError({
+        statusCode: 400,
+        statusMessage: "Missing objectiveId in route params",
+      });
+    }
+
+    if(objectiveId) {
+      const objective = await prisma.objective.findUnique({
+        where: {
+          id: objectiveId
+        }
+      })
+
+      if(!objective) {
+        throw createError({
+          statusCode: 400,
+          statusMessage: "No objective found",
+        });
+      }
+    }
 
     // Validate the input
     if (!Array.isArray(body.keyResults) || body.keyResults.length === 0) {
@@ -49,6 +74,17 @@ export default defineEventHandler(async (event) => {
         progressOnTotalKeyResult: progressNumber,
       },
     });
+
+    // create new Reflex record
+    await prisma.reflex.create({
+      data: {
+         statusNotes,
+         confidentRate: confidentRate[0],
+         howToOvercomeChallenges,
+         noteToMyself,
+         objectiveId,
+      }
+    })
 
     return {
       message: "Key results updated successfully",

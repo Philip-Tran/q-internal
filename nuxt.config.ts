@@ -11,10 +11,21 @@ export default defineNuxtConfig({
     '@vee-validate/nuxt',
     "nuxt-tiptap-editor",
     "@formkit/auto-animate/nuxt",
-    "@nuxtjs/i18n"
+    "@nuxtjs/i18n",
+    "nuxt-nodemailer"
   ],
+  nodemailer: {
+    from: 'quyet@trueedu.org',
+    host: 'mail.trueedu.org',
+    port: 465,
+    secure: true,
+    auth: {
+      user: 'quyet@trueedu.org',
+      pass: 'Tranquyetrc213v',
+    },
+  },
   pinia: {
-    storesDirs: ["./stores/**", "./custom-folder/stores/**"],
+    storesDirs: ["./stores/**", "./custom-folder/stores/**", "./custom-folder/stores/**/**"],
   },
   tiptap: {
     prefix: "Tiptap", 

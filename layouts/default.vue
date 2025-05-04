@@ -2,16 +2,11 @@
 import { useMyWorkStore } from '#imports'
 
 import { useEventListener, onClickOutside } from '@vueuse/core'
-import { ref, onMounted, onUnmounted } from 'vue'
 import {
-  Calculator,
-  Calendar,
   CreditCard,
   Home,
   Settings,
-  Smile,
   Target,
-  User,
   Workflow,
 } from 'lucide-vue-next'
 

@@ -13,7 +13,7 @@ const router = useRouter()
 // Fetch Current Work
 const { status: workStatus, data: currentWork, error: workError } = await useFetch<Work | null>("/api/work/current", {
   method: "GET",
-  key: "currentWork"
+  key: "currentWork",
 });
 
 // Fetch Paused Work

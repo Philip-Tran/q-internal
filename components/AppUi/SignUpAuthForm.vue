@@ -26,8 +26,7 @@ const [password, passwordAttrs] = defineField('password')
 const [confirmPassword, confirmPasswordAttrs] = defineField('confirmPassword')
 
 const onSubmit = handleSubmit((values) => {
-  console.log('Form Submitted:', values)
-  alert('Signup successful!')
+
 })
 </script>
 

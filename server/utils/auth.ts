@@ -13,6 +13,14 @@ export const auth = betterAuth({
     enabled: true,
   },
 
+  emailVerification: {
+    sendVerificationEmail: async ({ user, url, token }, request) => {
+      const { sendMail } = useNodeMailer();
+      await sendMail({ subject: `Click the link to verify your email: ${url}`, text: `Hi ${user.name}. Please verify your email`, to: user.email });
+    },
+    sendOnSignUp: true
+  },
+
   socialProviders: {
     github: {
       clientId: "Ov23li7QNVgHfXByLjpU" as string | "Ov23li7QNVgHfXByLjpU",
