@@ -65,7 +65,7 @@ const today = getCurrentWeekday()
                 </Button>
               </RouterLink>
             </div>
-            <div class="flex space-x-6">
+            <div class="flex space-x-3">
               <Collapsible v-model:open="isOpen">
                 <CollapsibleTrigger>
                   <Button variant="outline">
@@ -83,6 +83,31 @@ const today = getCurrentWeekday()
                   </div>
                 </CollapsibleContent>
               </Collapsible>
+              <div>
+                <Dialog>
+                  <DialogTrigger as-child>
+                    <Button variant="outline">Latest update</Button>
+                  </DialogTrigger>
+                  <DialogContent class="sm:max-w-[700px] max-h-[78vh] h-screen">
+                    <DialogHeader>
+                      <DialogTitle>Edit profile</DialogTitle>
+                      <DialogDescription>
+                        Make changes to your profile here. Click save when you're done.
+                      </DialogDescription>
+                    </DialogHeader>
+                    <ScrollArea>
+                      <div class="grid gap-4 py-4">
+                        this
+                      </div>
+                    </ScrollArea>
+                    <DialogFooter>
+                      <Button type="submit">
+                        Save changes
+                      </Button>
+                    </DialogFooter>
+                  </DialogContent>
+                </Dialog>
+              </div>
             </div>
 
             <div v-if="today === setting?.updateDay">
