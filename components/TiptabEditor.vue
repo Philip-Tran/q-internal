@@ -142,7 +142,7 @@ onBeforeUnmount(() => {
 
     </div>
 
-    <ScrollArea class="h-[400px]">
+    <ScrollArea class="h-[500px]">
       <TiptapEditorContent :editor="editor" />
     </ScrollArea>
   </div>
