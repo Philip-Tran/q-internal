@@ -83,7 +83,7 @@ const handleGoModule = ( ) => {
       <div v-if="isCommandVisible" class="fixed inset-0 bg-black bg-opacity-50 z-40"></div>
       <!-- Command Palette -->
       <div v-if="isCommandVisible" class="fixed inset-0 flex items-center justify-center py-12 z-50">
-        <Command ref="commandRef" class="rounded-lg border shadow-md max-w-[450px] max-h-[450px] bg-white">
+        <Command ref="commandRef" class="rounded-lg border shadow-md max-w-[450px] max-h-[450px]">
           <CommandInput placeholder="Type a command or search..." />
           <CommandList>
             <CommandEmpty>No results found.</CommandEmpty>

@@ -4,16 +4,20 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   modules: [
     "@nuxtjs/tailwindcss",
+    '@nuxtjs/color-mode',
     "@pinia/nuxt",
     "shadcn-nuxt",
     "@nuxt/fonts",
-    '@nuxtjs/color-mode',
     '@vee-validate/nuxt',
     "nuxt-tiptap-editor",
     "@formkit/auto-animate/nuxt",
     "@nuxtjs/i18n",
     "nuxt-nodemailer"
   ],
+  colorMode: {
+    classSuffix: "",
+    preference: 'dark',
+  },
   nodemailer: {
     from: 'quyet@trueedu.org',
     host: 'mail.trueedu.org',
@@ -28,7 +32,7 @@ export default defineNuxtConfig({
     storesDirs: ["./stores/**", "./custom-folder/stores/**", "./custom-folder/stores/**/**"],
   },
   tiptap: {
-    prefix: "Tiptap", 
+    prefix: "Tiptap",
   },
   shadcn: {
     /**
@@ -64,7 +68,7 @@ export default defineNuxtConfig({
         // default values
         componentName: 'NuxtLink',
         prefetch: true,
-        prefetchOn: { visibility: true, interaction: true } 
+        prefetchOn: { visibility: true, interaction: true }
       }
     }
   }

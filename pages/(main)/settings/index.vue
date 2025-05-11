@@ -12,7 +12,7 @@ const handleLogOut = async () => {
     fetchOptions: {
       onSuccess: () => {
         toast.info("Logout successfully")
-        router.push("/login"); 
+        router.push("/login");
       },
     },
   })
@@ -43,6 +43,8 @@ const handleLogOut = async () => {
         <TabsContent value="account">
           <span>Account</span>
           <div>
+            <AppUiColorToggle />
+
             <pre>{{ data }}</pre>
             <Input />
             <Button @click="handleLogOut">Logout</Button>

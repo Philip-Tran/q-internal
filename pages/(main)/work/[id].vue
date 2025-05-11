@@ -84,7 +84,7 @@ const toggleNote = () => {
         <div class="absolute z-10 right-8 top-8">
             <div v-if="isNoteOpen" class="drop-shadow-lg shadow-white w-[700px] h-1/2">
                 <div class="flex justify-between items-center py-2 px-6 bg-yellow-200 rounded-t-lg">
-                    <div>{{ CurrentWork?.workName }}</div>
+                    <div class="dark:text-black">{{ CurrentWork?.workName }}</div>
                     <div>
                         <Button size="icon" variant="ghost" @click="toggleNote">
                             <Minimize2 />
