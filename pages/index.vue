@@ -53,7 +53,7 @@ const refreshWorkCard = async () => {
       <OkrCard />
       <Card class="col-span-3">
         <CardHeader class="border-b flex flex-row h-[68px] items-center justify-between">
-          <CardTitle>Current</CardTitle>
+          <CardTitle>Work</CardTitle>
           <AppUiCreateNewWorkDialog @newWorkCreated="refreshWorkCard" />
         </CardHeader>
         <CardContent class="p-6">

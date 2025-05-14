@@ -15,7 +15,7 @@ const workStore = useMyWorkStore()
 <template>
   <!-- Show skeleton while fetching -->
   <GlowBorder v-if="status === 'pending'"
-    class="relative flex h-[300px] w-full flex-col items-center justify-center overflow-hidden rounded-lg bg-background md:shadow-xl"
+    class="relative flex h-[300px] w-full flex-col items-center justify-center overflow-hidden bg-background md:shadow-xl"
     :color="['#A07CFE', '#FE8FB5', '#FFBE7B']">
     <Skeleton class="w-full h-12" />
   </GlowBorder>
@@ -23,7 +23,7 @@ const workStore = useMyWorkStore()
   <!-- If there is an active work -->
   <RouterLink v-else-if="currentWork?.id" :to="`/work/${currentWork.id}`">
     <GlowBorder :duration="3000"
-      class="relative flex h-[300px] w-full flex-col items-center justify-center overflow-hidden rounded-lg bg-background md:shadow-xl"
+      class="relative flex h-[300px] w-full flex-col items-center justify-center overflow-hidden bg-background md:shadow-xl"
       :color="['#5B3FCB', '#C6507A', '#C47A24']">
       <span
         class="pointer-events-none whitespace-pre-wrap text-center text-xl font-medium leading-none text-slate-900 dark:text-white">

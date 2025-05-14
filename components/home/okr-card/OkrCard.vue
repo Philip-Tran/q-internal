@@ -1,5 +1,7 @@
 <script setup lang=ts>
 import { ArrowBigUpDash, Crosshair, Pencil } from 'lucide-vue-next';
+import { Alert, AlertDescription, AlertTitle } from '~/components/ui/alert';
+import { Quote } from 'lucide-vue-next';
 
 const monthTimePercentage = getMonthProgressPercentage();
 const okrStore = useOKRsGetStore()
@@ -66,7 +68,7 @@ const today = getCurrentWeekday()
               </RouterLink>
             </div>
             <div class="flex space-x-3">
-              <Collapsible v-model:open="isOpen">
+              <!-- <Collapsible v-model:open="isOpen">
                 <CollapsibleTrigger>
                   <Button variant="outline">
                     Detail
@@ -82,7 +84,7 @@ const today = getCurrentWeekday()
                     </div>
                   </div>
                 </CollapsibleContent>
-              </Collapsible>
+              </Collapsible> -->
               <div>
                 <Dialog>
                   <DialogTrigger as-child>
@@ -107,6 +109,27 @@ const today = getCurrentWeekday()
                     </DialogFooter>
                   </DialogContent>
                 </Dialog>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-6">
+              <div class="flex flex-col space-y-2">
+                <Alert class="" v-for="kr in okr.keyResults" variant="default">
+                  <AlertTitle>{{ kr.resultUpdate }} / {{ kr.resultNumber }}</AlertTitle>
+                  <AlertDescription>
+                    {{ kr.name }}
+                  </AlertDescription>
+                </Alert>
+              </div>
+              <div class="flex flex-cols space-y-2">
+                <Card v-for="reflex in okr.reflexes" class="h-min p-4">
+                  <CardContent class="p-0 space-y-3 gap-2">
+                    <Quote />
+                    <p class="italic text-lg font-serif">
+                      {{ reflex.howToOvercomeChallenges }}
+                    </p>
+                  </CardContent>
+                </Card>
               </div>
             </div>
 

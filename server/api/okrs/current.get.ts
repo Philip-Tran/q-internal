@@ -13,8 +13,36 @@ export default defineEventHandler(async (event) => {
       progressOnTotalKeyResult: true,
       month: true,
       year: true,
-      keyResults: true
+      keyResults: true,
+      reflexes: {
+        take: 1,
+        orderBy: {
+          createdAt: "desc"
+        },
+        select: {
+          confidentRate: true,
+          statusNotes: true,
+          noteToMyself: true,
+          howToOvercomeChallenges: true,
+          updatedAt: true,
+        }
+      }
     }
   })
+
+  // const objectivesWithReflex = await Promise.all(
+  //   currentObjectives.map(async (objective) => {
+  //     const recentReflex = await prisma.reflex.findFirst({
+  //       where: { objectiveId: objective.id },
+  //       orderBy: { createdAt: 'desc' }
+  //     })
+
+  //     return {
+  //       ...objective,
+  //       recentReflex
+  //     }
+  //   })
+  // )
+
   return currentObjectives
 })
