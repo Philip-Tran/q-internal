@@ -31,8 +31,6 @@ export interface KeyResult {
   name: string
   resultNumber: number
   resultUpdate: number
-  createdAt: string | Date 
-  updatedAt: string | Date
   objectiveId: string
 }
 

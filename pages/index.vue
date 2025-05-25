@@ -3,18 +3,25 @@ definePageMeta({
   middleware: ["admin"]
 })
 
+import { FetchKeys } from "~/constants/data-key";
+
 import OkrCard from "~/components/home/okr-card/OkrCard.vue";
 import { RandomQuote } from "~/components/home/quote";
 import { type Work } from "~/types/work.type";
 
+const workStore = useMyWorkStore()
 import { toast } from "vue-sonner";
 const router = useRouter()
 
 // Fetch Paused Work
 const { status: pausedWorkStatus, data: pausedWorks, error: pausedWorkError } = await useFetch<Work[] | null>("/api/work/paused", {
   method: "GET",
-  key: "pausedWorks"
+  key: FetchKeys.PAUSED_WORKS
 });
+
+const { data: currentWork, status, error } = await useFetch("/api/work/current", {
+  key: FetchKeys.THE_CURRENT_WORK,
+})
 
 const onResumeClick = async (workId: string) => {
   const data = await $fetch("/api/work/un-paused", {
@@ -22,34 +29,18 @@ const onResumeClick = async (workId: string) => {
     body: { id: workId }
   })
 
+  await refreshNuxtData(FetchKeys.THE_CURRENT_WORK)
+
   toast.info("Unpaused work successfully", {
     action: {
       label: 'Start working',
       onClick: () => router.push(`/work/${workId}`)
     },
   })
-  await refreshNuxtData("currentWork")
 }
 
 const refreshWorkCard = async () => {
-  await refreshNuxtData("currentWork")
-}
-
-const {
-  data,
-  error,
-  status,
-  isLoading,
-  refetch,
-  refresh,
-} = useQuery({
-  key: ['the-current-work'],
-  query: () =>  $fetch("/api/work/current"),
-})
-
-const currentWork = ref()
-if(status.value == "success") {
-  currentWork.value = data.value
+  await refreshNuxtData(FetchKeys.THE_CURRENT_WORK)
 }
 
 </script>
@@ -68,6 +59,10 @@ if(status.value == "success") {
           <div class="">
             <div class="flex flex-col space-y-10">
               <AppUiCurrentWorkCard v-if="currentWork" :currentWork="currentWork" :status="status" :error="error" />
+              <div v-else class="text-center text-gray-500">
+                <p class="mb-4">There is no work in progress.</p>
+                <Button variant="default" @click="workStore.toggleNewWorkDialog()">Create</Button>
+              </div>
               <div v-if="pausedWorks" class="flex flex-col space-y-6">
                 <Label>Paused Work</Label>
                 <div class="flex flex-col space-y-4">
@@ -86,6 +81,5 @@ if(status.value == "success") {
     </div>
   </div>
 </template>
-
 
 <style></style>

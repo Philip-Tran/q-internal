@@ -30,19 +30,5 @@ export default defineEventHandler(async (event) => {
     }
   })
 
-  // const objectivesWithReflex = await Promise.all(
-  //   currentObjectives.map(async (objective) => {
-  //     const recentReflex = await prisma.reflex.findFirst({
-  //       where: { objectiveId: objective.id },
-  //       orderBy: { createdAt: 'desc' }
-  //     })
-
-  //     return {
-  //       ...objective,
-  //       recentReflex
-  //     }
-  //   })
-  // )
-
   return currentObjectives
 })

@@ -6,12 +6,5 @@ export default defineEventHandler(async (event) => {
       status: WorkStatus.IN_PROGRESS,
     }
   })
-
-  if(currentWork) {
-    return currentWork
-  } else {
-    return {
-      message: "No work in progress"
-    }
-  }
+  return currentWork
 })

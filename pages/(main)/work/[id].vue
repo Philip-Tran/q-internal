@@ -7,21 +7,25 @@ import { LampEffect } from '~/components/ui/lamp-effect';
 import LogTab from "@/components/AppUi/work/LogTab.vue";
 import debounce from 'lodash.debounce'
 import { CircleCheckBig, Maximize2, Minimize2 } from 'lucide-vue-next';
-
-interface Work {
-    workName: string,
-    status: string,
-    id: string,
-    noteContent: string
-}
+import { FetchKeys } from '~/constants/data-key';
 
 const route = useRoute();
 const isLogTabOpen = ref(false)
 const noteContent = ref("")
 
-const { status, data:CurrentWork } = await useFetch<Work>("/api/work/current", {
-    method: "GET",
-})
+const CurrentWork = ref()
+
+const { data: CachedCurrentWork } = useNuxtData(FetchKeys.THE_CURRENT_WORK)
+
+if(CachedCurrentWork.value) {
+    CurrentWork.value = CachedCurrentWork.value
+} else {
+    const data = await $fetch(`/api/work/current`, {
+      
+    })
+    CurrentWork.value = data
+}
+
 
 const toggleLogTab = () => {
     isLogTabOpen.value = !isLogTabOpen.value
@@ -50,10 +54,17 @@ watch(noteContent, () => {
     autoSave()
 })
 
+onBeforeRouteLeave(async () => {
+     await $fetch(`/api/work/note?workId=${route.params.id}`, {
+        method: "POST",
+        body: { noteContent: noteContent.value }
+    })
+})
+
 // toggle note
 const isNoteOpen = ref(false)
 const toggleNote = () => {
-  isNoteOpen.value = !isNoteOpen.value
+    isNoteOpen.value = !isNoteOpen.value
 }
 </script>
 
@@ -91,12 +102,16 @@ const toggleNote = () => {
                     </div>
                 </div>
                 <TiptabEditor v-model="noteContent"
-                    class="rounded-none border-white text-white w-full bg-white border-none"
-                    editorClass="text-black" :isButtonVisible="true" />
+                    class="rounded-none border-white text-white w-full bg-white border-none" editorClass="text-black"
+                    :isButtonVisible="true" />
                 <div class="py-2 px-6 rounded-b-lg bg-white min-h-[32px]">
                     <div class="text-white flex text-sm w-full items-center justify-end">
-                        <span v-if="saveStatus === 'saving'"><CircleCheckBig class="w-3 h-3" color="yellow" /></span>
-                        <span v-else-if="saveStatus === 'saved'"><CircleCheckBig class="w-3 h-3" color="green" /></span>
+                        <span v-if="saveStatus === 'saving'">
+                            <CircleCheckBig class="w-3 h-3" color="yellow" />
+                        </span>
+                        <span v-else-if="saveStatus === 'saved'">
+                            <CircleCheckBig class="w-3 h-3" color="green" />
+                        </span>
                     </div>
                 </div>
             </div>

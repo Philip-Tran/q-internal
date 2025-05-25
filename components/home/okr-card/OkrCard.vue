@@ -13,7 +13,7 @@ const { data: setting } = await useFetch("/api/setting", {
 })
 
 const { data: currentOkrs, refresh, error, status } = await useFetch("/api/okrs/current", {
-  key: "current-okr",
+  key: "current-okrs",
   getCachedData: (key) => {
     if (nuxt.isHydrating && nuxt.payload.data[key]) {
       return nuxt.payload.data[key]
@@ -25,6 +25,9 @@ const { data: currentOkrs, refresh, error, status } = await useFetch("/api/okrs/
     }
 
     return null
+  },
+  
+  onResponse({ response }) {
   }
 })
 

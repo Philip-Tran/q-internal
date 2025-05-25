@@ -14,6 +14,7 @@ import { toast } from "vue-sonner"
 import { toTypedSchema } from '@vee-validate/zod'
 import { useForm } from 'vee-validate';
 import { addLogSchema } from '~/schemas/work.schemas';
+import { FetchKeys } from '~/constants/data-key';
 
 const router = useRouter()
 const currentTab = ref('logUpdate')
@@ -43,6 +44,8 @@ const onSubmit = handleSubmit(async (values) => {
       logType,
       ...values,
     },
+    server: false,
+    lazy: true
   })
 
   if (status.value === "success") {
@@ -58,6 +61,10 @@ const onSubmit = handleSubmit(async (values) => {
       setTimeout(() => {
         router.push("/")
       }, 2000)
+    }
+    
+    if (logType === LogType.PAUSE) {
+      await refreshNuxtData(FetchKeys.PAUSED_WORKS)
     }
   }
 })

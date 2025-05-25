@@ -1,10 +1,11 @@
 <script setup lang="ts">
+import type { AsyncDataRequestStatus } from "#app";
 import { GlowBorder } from "@/components/ui/glow-border"
 import type { Work } from "@/types/work.type"
 
 const props = defineProps<{
-  currentWork?: Work | null
-  status?: string
+  currentWork: Work | null,
+  status?: AsyncDataRequestStatus
   error?: Error | null
 }>()
 
@@ -13,6 +14,7 @@ const workStore = useMyWorkStore()
 </script>
 
 <template>
+
   <!-- Show skeleton while fetching -->
   <GlowBorder v-if="status === 'pending'"
     class="relative flex h-[300px] w-full flex-col items-center justify-center overflow-hidden bg-background md:shadow-xl"
@@ -30,14 +32,7 @@ const workStore = useMyWorkStore()
         {{ currentWork.workName }}
       </span>
     </GlowBorder>
-
   </RouterLink>
-
-  <!-- If no work is in progress -->
-  <div v-else class="text-center text-gray-500">
-    <p class="mb-4">There is no work in progress.</p>
-    <Button variant="default" @click="workStore.toggleNewWorkDialog()">Create</Button>
-  </div>
 
   <!-- Show error message if API fails -->
   <div v-if="error" class="text-red-500 text-center">
