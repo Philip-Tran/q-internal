@@ -3,7 +3,7 @@ import { Toaster } from '@/components/ui/sonner'
 </script>
 
 <template>
-  <!-- <NuxtLoadingIndicator :height=2 /> -->
+  <NuxtLoadingIndicator :height=2 color="white"/>
 
   <ClientOnly>
     <Toaster richColors class="pointer-events-auto" :duration=4500 position="top-center" />

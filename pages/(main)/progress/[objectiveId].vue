@@ -4,10 +4,9 @@ definePageMeta({
 })
 
 import { updateOKRsReflex } from '~/schemas/oKRs.schema'
-import type { KeyResult, ObjectiveWithKeyResults, Reflex } from '~/types/okr.type'
+import type { KeyResult, Reflex } from '~/types/okr.type'
 import { toast } from 'vue-sonner'
 import { Goal, Loader2 } from 'lucide-vue-next'
-import { Slider } from '@/components/ui/slider'
 
 const route = useRoute()
 const router = useRouter()

@@ -10,12 +10,6 @@ import { type Work } from "~/types/work.type";
 import { toast } from "vue-sonner";
 const router = useRouter()
 
-// Fetch Current Work
-const { status: workStatus, data: currentWork, error: workError } = await useFetch<Work | null>("/api/work/current", {
-  method: "GET",
-  key: "currentWork",
-});
-
 // Fetch Paused Work
 const { status: pausedWorkStatus, data: pausedWorks, error: pausedWorkError } = await useFetch<Work[] | null>("/api/work/paused", {
   method: "GET",
@@ -34,13 +28,28 @@ const onResumeClick = async (workId: string) => {
       onClick: () => router.push(`/work/${workId}`)
     },
   })
-
   await refreshNuxtData("currentWork")
-
 }
 
 const refreshWorkCard = async () => {
   await refreshNuxtData("currentWork")
+}
+
+const {
+  data,
+  error,
+  status,
+  isLoading,
+  refetch,
+  refresh,
+} = useQuery({
+  key: ['the-current-work'],
+  query: () =>  $fetch("/api/work/current"),
+})
+
+const currentWork = ref()
+if(status.value == "success") {
+  currentWork.value = data.value
 }
 
 </script>
@@ -48,7 +57,6 @@ const refreshWorkCard = async () => {
 <template>
   <div class="space-y-4">
     <RandomQuote />
-
     <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-7">
       <OkrCard />
       <Card class="col-span-3">
@@ -59,7 +67,7 @@ const refreshWorkCard = async () => {
         <CardContent class="p-6">
           <div class="">
             <div class="flex flex-col space-y-10">
-              <AppUiCurrentWorkCard :currentWork="currentWork" :status="workStatus" :error="workError" />
+              <AppUiCurrentWorkCard v-if="currentWork" :currentWork="currentWork" :status="status" :error="error" />
               <div v-if="pausedWorks" class="flex flex-col space-y-6">
                 <Label>Paused Work</Label>
                 <div class="flex flex-col space-y-4">

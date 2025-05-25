@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import Quote from './Quote.vue';
 import { Quotes } from '~/constants/quote';
-import { ref } from 'vue';
 
 const randomQuote = ref<{ content: string; author: string } | null>(null);
 

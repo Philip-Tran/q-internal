@@ -1,4 +1,4 @@
-import { defineStore } from "pinia";
+import { useQuery } from "@pinia/colada"
 
 export const useMyWorkStore = defineStore("work", () => {
   const state = ref({
@@ -11,10 +11,22 @@ export const useMyWorkStore = defineStore("work", () => {
     message: "",
   });
 
+  const {
+    data,
+    error,
+    status,
+    isLoading,
+    refetch,
+    refresh,
+  } = useQuery({
+    key: ['all-current-work'],
+    query: () => $fetch("/api/work/current"),
+  })
+
   const createNewWork = async (values: { workName: string }) => {
     try {
       const { data } = await useFetch("");
-    } catch (error) {}
+    } catch (error) { }
   };
 
   const newWorkDialogState = ref({
@@ -22,7 +34,7 @@ export const useMyWorkStore = defineStore("work", () => {
   });
 
   const toggleNewWorkDialog = () => {
-    newWorkDialogState.value.isOpened = !newWorkDialogState.value.isOpened 
+    newWorkDialogState.value.isOpened = !newWorkDialogState.value.isOpened
   }
 
   return { state, createNewWork, newWorkDialogState, toggleNewWorkDialog };

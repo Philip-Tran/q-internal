@@ -12,7 +12,8 @@ export default defineNuxtConfig({
     "nuxt-tiptap-editor",
     "@formkit/auto-animate/nuxt",
     "@nuxtjs/i18n",
-    "nuxt-nodemailer"
+    "nuxt-nodemailer",
+    "@pinia/colada-nuxt"
   ],
   colorMode: {
     classSuffix: "",
@@ -33,6 +34,11 @@ export default defineNuxtConfig({
   },
   tiptap: {
     prefix: "Tiptap",
+  },
+  i18n: {
+    bundle: {
+      optimizeTranslationDirective: false,
+    },
   },
   shadcn: {
     /**

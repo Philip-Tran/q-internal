@@ -1,15 +1,15 @@
 <script setup lang="ts">
 import { GlowBorder } from "@/components/ui/glow-border"
 import type { Work } from "@/types/work.type"
-import { useMyWorkStore } from "#imports"
 
-defineProps<{
+const props = defineProps<{
   currentWork?: Work | null
   status?: string
   error?: Error | null
 }>()
 
 const workStore = useMyWorkStore()
+
 </script>
 
 <template>
@@ -21,7 +21,7 @@ const workStore = useMyWorkStore()
   </GlowBorder>
 
   <!-- If there is an active work -->
-  <RouterLink v-else-if="currentWork?.id" :to="`/work/${currentWork.id}`">
+  <RouterLink v-else-if="currentWork" :to="`/work/${currentWork.id}`">
     <GlowBorder :duration="3000"
       class="relative flex h-[300px] w-full flex-col items-center justify-center overflow-hidden bg-background md:shadow-xl"
       :color="['#5B3FCB', '#C6507A', '#C47A24']">

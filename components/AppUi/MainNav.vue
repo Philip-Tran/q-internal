@@ -40,7 +40,7 @@ const navClasses = computed(() => {
       class="text-sm font-medium transition-all py-1 px-3"
       :class="{
         'text-slate-900 bg-slate-50 rounded-full': route.path === link.path,
-        'text-muted-foreground hover:text-slate-900': route.path !== link.path
+        'text-muted-foreground dark:hover:text-white': route.path !== link.path
       }"
     >
       {{ link.name }}

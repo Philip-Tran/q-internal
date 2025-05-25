@@ -3,21 +3,36 @@ import { ArrowBigUpDash, Crosshair, Pencil } from 'lucide-vue-next';
 import { Alert, AlertDescription, AlertTitle } from '~/components/ui/alert';
 import { Quote } from 'lucide-vue-next';
 
+const nuxt = useNuxtApp()
 const monthTimePercentage = getMonthProgressPercentage();
-const okrStore = useOKRsGetStore()
-
-if (okrStore.okrs == null) {
-  okrStore.getOKRs()
-}
-
-const { data: setting } = await useFetch("/api/setting", {
-  method: "get"
-})
-
-const isOpen = ref(false)
-
 const today = getCurrentWeekday()
 
+const { data: setting } = await useFetch("/api/setting", {
+  method: "get",
+  key: "app-setting"
+})
+
+const { data: currentOkrs, refresh, error, status } = await useFetch("/api/okrs/current", {
+  key: "current-okr",
+  getCachedData: (key) => {
+    if (nuxt.isHydrating && nuxt.payload.data[key]) {
+      return nuxt.payload.data[key]
+    }
+
+    // Check if the data is already cached in the static data
+    if (nuxt.static.data[key]) {
+      return nuxt.static.data[key]
+    }
+
+    return null
+  }
+})
+
+if (!currentOkrs.value) {
+  await refresh()
+} else {
+  console.log('Using cached data:', currentOkrs.value)
+}
 </script>
 
 <template>
@@ -28,10 +43,10 @@ const today = getCurrentWeekday()
     <div>
       <CardContent class="p-6 relative">
         <div class="flex flex-col space-y-8">
-          <div v-if="okrStore.state.isLoading">
+          <div v-if="status == 'pending'">
             <Skeleton class="w-full h-24 rounded-md bg-gray-100" />
           </div>
-          <div v-else-if="okrStore.okrs[0] == null" class="h-full w-full flex">
+          <div v-else-if="currentOkrs == null" class="h-full w-full flex">
             <div class="flex flex-col w-full justify-center space-y-4 align-middle">
               <p class="text-destructive">No OKRs set for this month</p>
               <NuxtLink to="/new-okrs">
@@ -41,7 +56,7 @@ const today = getCurrentWeekday()
               </NuxtLink>
             </div>
           </div>
-          <div v-else v-for="okr in okrStore.okrs" :key="okr.id" class="flex flex-col space-y-5">
+          <div v-else v-for="okr in currentOkrs" :key="okr.id" class="flex flex-col space-y-5">
             <div class="flex space-x-4 justify-between">
               <div class="flex space-x-3 justify-center items-center">
                 <div class="flex justify-center items-center">
@@ -146,7 +161,6 @@ const today = getCurrentWeekday()
                 </div>
               </RouterLink>
             </div>
-
           </div>
         </div>
       </CardContent>

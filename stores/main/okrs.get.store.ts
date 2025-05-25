@@ -1,29 +1,26 @@
-export const useOKRsGetStore = defineStore("orks-get", () => {
-  const okrs = ref();
-  const state = ref({
-    isLoading: false,
-    isError: false,
-    isSuccess: false,
-  });
+import { useQuery } from "@pinia/colada"
+import type { Objective } from "~/types/okr.type"
 
-  const getOKRs = async () => {
-    state.value.isLoading = true;
-    try {
-      const data = await $fetch("/api/okrs/current");
+export const useOKRsGetStore = defineStore("okrsGet", () => {
+  const {
+    data: okrs,
+    error,
+    status,
+    isLoading,
+    refetch,
+    refresh,
+  } = useQuery<Objective[]>({
+    staleTime: 1000 * 60 * 60, // 1 hour
+    key: ['all-current-objectives'],
+    query: () => $fetch("/api/okrs/current"),
+  })
 
-      console.log(data)
-
-      if (!data) {
-        state.value.isError = true;
-      }
-
-      okrs.value = data;
-    } catch (error) {
-      console.error(error);
-    } finally {
-      state.value.isLoading = false;
-    }
-  };
-
-  return { okrs, getOKRs, state };
-});
+  return {
+    okrs,
+    error,
+    status,
+    isLoading,
+    refetch,
+    refresh,
+  }
+})
