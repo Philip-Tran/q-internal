@@ -125,7 +125,6 @@ model Objective {
   progressOnTotalKeyResult Int?
   keyResults               KeyResult[]
   reflexes                 Reflex[]
-  progressUpdates          ProgressUpdate[]
   isUpdated                UpdateStatus     @default(IDLE)
 
   createdAt DateTime @default(now())
@@ -164,17 +163,6 @@ model Reflex {
   @@map("reflex")
 }
 
-model ProgressUpdate {
-  id            String   @id @default(uuid())
-  confidentRate Int
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
-
-  objectiveId String
-  objective   Objective @relation(fields: [objectiveId], references: [id])
-
-  @@map("progress_update")
-}
 
 enum WorkStatus {
   TODO
@@ -194,6 +182,8 @@ model Work {
 
   Project   Project? @relation(fields: [projectId], references: [id])
   projectId String?
+
+  Timestamps Timestamps[]
 
   @@map("work")
 }
@@ -216,11 +206,16 @@ model WorkLog {
   @@map("work_log")
 }
 
+enum ProjectStatus {
+  IN_PROGRESS
+}
+
 model Project {
-  id          String  @id @default(nanoid(6))
+  id          String        @id @default(nanoid(6))
   name        String
   description String?
   note        String?
+  status      ProjectStatus @default(IN_PROGRESS)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -258,6 +253,9 @@ model Timestamps {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  workId String
+  Work   Work   @relation(fields: [workId], references: [id], onDelete: Cascade)
+
   @@map("time_stamps")
 }
 
@@ -267,17 +265,9 @@ model Module {
   url     String
   iconUrl String?
 
-  logs      ModuleLog[] // one Module has many ModuleLogs
   createdAt DateTime    @default(now())
   updatedAt DateTime    @updatedAt
 
   @@map("module")
 }
 
-model ModuleLog {
-  id       String @id @default(uuid())
-  content  String
-  moduleId String // foreign key
-
-  module Module @relation(fields: [moduleId], references: [id]) // many-to-one relation
-}

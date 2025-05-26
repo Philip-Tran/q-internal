@@ -14,7 +14,7 @@ import { toast } from "vue-sonner";
 const router = useRouter()
 
 // Fetch Paused Work
-const { status: pausedWorkStatus, data: pausedWorks, error: pausedWorkError } = await useFetch<Work[] | null>("/api/work/paused", {
+const { status: pausedWorkStatus, data: pausedWorks, error: pausedWorkError, refresh: refreshPausedWorks } = await useFetch<Work[] | null>("/api/work/paused", {
   method: "GET",
   key: FetchKeys.PAUSED_WORKS
 });
@@ -30,6 +30,7 @@ const onResumeClick = async (workId: string) => {
   })
 
   await refreshNuxtData(FetchKeys.THE_CURRENT_WORK)
+  refreshPausedWorks()
 
   toast.info("Unpaused work successfully", {
     action: {

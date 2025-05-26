@@ -1,3 +1,5 @@
+import type { NuxtPage } from "nuxt/schema";
+
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   compatibilityDate: "2024-11-01",
@@ -19,6 +21,22 @@ export default defineNuxtConfig({
     classSuffix: "",
     preference: 'dark',
   },
+
+  // exclude component directory from file based routing 
+  hooks: {
+    'pages:extend': function (pages) {
+      const pagesToRemove: NuxtPage[] = []
+      pages.forEach((page) => {
+        if (page.path.includes('component') || page.path.includes('/api')) {
+          pagesToRemove.push(page)
+        }
+      })
+      pagesToRemove.forEach((page: NuxtPage) => {
+        pages.splice(pages.indexOf(page), 1)
+      })
+    }
+  },
+
   nodemailer: {
     from: 'quyet@trueedu.org',
     host: 'mail.trueedu.org',
