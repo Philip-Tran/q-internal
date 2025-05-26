@@ -1,18 +1,9 @@
-
-import { WorkStatus as PrismaWorkStatus } from "@prisma/client";
-
-export enum WorkStatus {
-  TODO = "TODO",
-  IN_PROGRESS = "IN_PROGRESS",
-  DONE = "DONE",
-  PAUSE = "PAUSE",
-}
-
+export type WorkStatus = 'TODO' | 'IN_PROGRESS' | 'DONE' | 'PAUSE'
 
 type Work = {
     id: string
     workName: string
-    status: PrismaWorkStatus
+    status: WorkStatus
     createdAt: string
     updatedAt: string
 }

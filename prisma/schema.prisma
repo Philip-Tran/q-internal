@@ -89,9 +89,23 @@ enum WeekDay {
   SAT
 }
 
+enum Theme {
+  light
+  dark
+}
+
 model Setting {
-  id        Int     @id @default(autoincrement())
-  updateDay WeekDay @default(FRI)
+  id       Int    @id @default(autoincrement())
+  timezone String @default("Asia/Bangkok") // e.g. "Asia/Tokyo", "America/New_York"
+
+  // in minute
+  breakRemindInterval Int     @default(60)
+  remindBreakTime     Boolean @default(true)
+  enableSoundRemind   Boolean @default(false)
+  updateDay           WeekDay @default(FRI)
+
+  // ui
+  theme Theme @default(dark)
 
   @@map("setting")
 }
@@ -104,7 +118,7 @@ enum UpdateStatus {
 }
 
 model Objective {
-  id                       String           @id @default(uuid())
+  id                       String           @id @default(cuid())
   name                     String
   month                    Int
   year                     Int
@@ -131,13 +145,11 @@ model KeyResult {
   objectiveId String
   objective   Objective @relation(fields: [objectiveId], references: [id])
 
-  keyResultProgressUpdate KeyResultProgressUpdate[]
-
   @@map("key_result")
 }
 
 model Reflex {
-  id                      String @id @default(uuid())
+  id                      String @id @default(cuid())
   confidentRate           Int
   statusNotes             String
   howToOvercomeChallenges String
@@ -164,19 +176,6 @@ model ProgressUpdate {
   @@map("progress_update")
 }
 
-model KeyResultProgressUpdate {
-  id String @id @default(uuid())
-
-  updatedKeyResultNumber Int
-  createdAt              DateTime @default(now())
-  updatedAt              DateTime @updatedAt
-
-  keyResultId String
-  keyResult   KeyResult @relation(fields: [keyResultId], references: [id])
-
-  @@map("key_result_progress_update")
-}
-
 enum WorkStatus {
   TODO
   IN_PROGRESS
@@ -185,13 +184,16 @@ enum WorkStatus {
 }
 
 model Work {
-  id          String     @id @default(uuid())
+  id          String     @id @default(nanoid())
   workName    String
   status      WorkStatus
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
   worklogs    WorkLog[]
   noteContent String?
+
+  Project   Project? @relation(fields: [projectId], references: [id])
+  projectId String?
 
   @@map("work")
 }
@@ -212,6 +214,51 @@ model WorkLog {
   work   Work   @relation(fields: [workId], references: [id], onDelete: Cascade)
 
   @@map("work_log")
+}
+
+model Project {
+  id          String  @id @default(nanoid(6))
+  name        String
+  description String?
+  note        String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  works Work[] // One-to-many relationship
+
+  @@map("project")
+}
+
+model WorkSchedule {
+  id        Int @id @default(autoincrement())
+  // the number of hours work each day
+  sunday    Int @default(0)
+  monday    Int @default(0)
+  tuesday   Int @default(0)
+  wednesday Int @default(0)
+  thursday  Int @default(0)
+  friday    Int @default(0)
+  saturday  Int @default(0)
+
+  validFrom DateTime @default(now())
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("work_schedule")
+}
+
+model Timestamps {
+  id        Int      @id @default(autoincrement())
+  type      String?
+  startedAt DateTime @default(now())
+  endedAt   DateTime
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("time_stamps")
 }
 
 model Module {
