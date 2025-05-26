@@ -11,7 +11,7 @@ export default defineNuxtConfig({
     '@vee-validate/nuxt',
     "nuxt-tiptap-editor",
     "@formkit/auto-animate/nuxt",
-    "@nuxtjs/i18n",
+    // "@nuxtjs/i18n",
     "nuxt-nodemailer",
     "@pinia/colada-nuxt"
   ],
@@ -35,11 +35,11 @@ export default defineNuxtConfig({
   tiptap: {
     prefix: "Tiptap",
   },
-  i18n: {
-    bundle: {
-      optimizeTranslationDirective: false,
-    },
-  },
+  // i18n: {
+  //   bundle: {
+  //     optimizeTranslationDirective: false,
+  //   },
+  // },
   shadcn: {
     /**
      * Prefix for all the imported component

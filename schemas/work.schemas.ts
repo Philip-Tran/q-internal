@@ -1,4 +1,10 @@
-import { WorkStatus } from "@/types/work.type";
+export enum WorkStatus {
+  TODO = "TODO",
+  IN_PROGRESS = "IN_PROGRESS",
+  DONE = "DONE",
+  PAUSE = "PAUSE",
+}
+
 import * as z from "zod";
 
 const addWorkSchema = z.object({
