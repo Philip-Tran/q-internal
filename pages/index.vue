@@ -68,7 +68,7 @@ const refreshWorkCard = async () => {
                 <div class="flex flex-col space-y-4">
                   <div v-for="(pausedWork, index) in pausedWorks" :key="index"
                     class="p-3 rounded-lg bg-amber-300 bg-opacity-30 border flex space-x-4 items-center justify-start">
-                    <Button variant="secondary" class="hover:bg-primary" size="xs"
+                    <Button variant="secondary" class="rounded-full" size="xs"
                       @click="onResumeClick(pausedWork.id)">Resume</Button>
                     <p>{{ pausedWork?.workName }}</p>
                   </div>

@@ -43,9 +43,6 @@ async function onSubmit(values: any) {
   }
 }
 
-const okrs = ref()
-const {data} = useNuxtData("current-okrs")
-if(data.value) okrs.value = data.value
 </script>
 
 <template>
@@ -53,7 +50,6 @@ if(data.value) okrs.value = data.value
     <div class="w-full items-center">
       <div class="space-y-20 py-12">
         <h2 class="text-center text-2xl font-medium">New OKRs</h2>
-        <pre>{{ okrs }}</pre>
         <div class="items-center justify-center">
           <div class="max-w-[650px] mx-auto">
             <Form v-slot="{ meta, values, validate }" as="" keep-values v-auto-animate

@@ -11,8 +11,8 @@ import { FetchKeys } from '~/constants/data-key';
 
 const route = useRoute();
 const isLogTabOpen = ref(false)
-const noteContent = ref("")
 
+const noteContent = ref("")
 const CurrentWork = ref()
 
 const { data: CachedCurrentWork } = useNuxtData(FetchKeys.THE_CURRENT_WORK)
@@ -25,7 +25,6 @@ if(CachedCurrentWork.value) {
     })
     CurrentWork.value = data
 }
-
 
 const toggleLogTab = () => {
     isLogTabOpen.value = !isLogTabOpen.value
@@ -82,14 +81,7 @@ const toggleNote = () => {
                 </div>
             </div>
         </LampEffect>
-        <div class="fixed bottom-7 right-1/2 translate-x-1/2">
-            <div class="flex flex-row justify-between space-x-6 opacity-0 hover:opacity-100">
-                <Button variant="outline" class="" size="xs">Log Work</Button>
-                <Button variant="secondary" class="" size="xs">Pause</Button>
-                <Button variant="outline" class="" size="xs">Finish</Button>
-            </div>
-        </div>
-
+        
         <!-- Note UI -->
         <div class="absolute z-10 right-8 top-8">
             <div v-if="isNoteOpen" class="drop-shadow-lg shadow-white w-[700px] h-1/2">

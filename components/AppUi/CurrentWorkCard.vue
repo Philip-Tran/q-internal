@@ -14,7 +14,6 @@ const workStore = useMyWorkStore()
 </script>
 
 <template>
-
   <!-- Show skeleton while fetching -->
   <GlowBorder v-if="status === 'pending'"
     class="relative flex h-[300px] w-full flex-col items-center justify-center overflow-hidden bg-background md:shadow-xl"
