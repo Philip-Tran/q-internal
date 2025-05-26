@@ -1,4 +1,4 @@
-import { WorkStatus } from "~/types/work.type"
+import { WorkStatus } from "@prisma/client";
 
 export default defineEventHandler(async (event) => {
     const workId = getRouterParam(event, "id");

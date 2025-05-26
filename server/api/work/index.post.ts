@@ -1,4 +1,5 @@
-import { type Work, WorkStatus } from '~/types/work.type'
+import { type Work } from '~/types/work.type'
+import { WorkStatus } from "@prisma/client";
 
 export default defineEventHandler(async (event) => {
   const body = await readBody<Work>(event)

@@ -1,5 +1,5 @@
 import { H3Event } from 'h3'
-import { WorkStatus } from '~/types/work.type'
+import { WorkStatus } from "@prisma/client";
 
 export default defineEventHandler(async (event: H3Event) => {
   try {
