@@ -36,6 +36,10 @@ export default defineNuxtConfig({
       })
     }
   },
+  
+  devServer: {
+    port: 5000,
+  },
 
   nodemailer: {
     from: 'quyet@trueedu.org',
@@ -83,7 +87,6 @@ export default defineNuxtConfig({
   },
 
   app: {
-    pageTransition: { name: 'page', mode: 'out-in' }
   },
 
   experimental: {

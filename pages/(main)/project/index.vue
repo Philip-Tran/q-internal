@@ -1,8 +1,10 @@
 <script setup lang="ts">
+definePageMeta({
+    layout: "sidebar-layout"
+})
+
 import ProjectTitle from "./components/ProjectTitle.vue"
-import CreateWorkCard from "./components/CreateWorkCard.vue"
 import { Play, Square } from "lucide-vue-next"
-import { useNow } from "@vueuse/core"
 
 const name = ref("")
 
@@ -17,7 +19,7 @@ const addProject = async () => {
     }
 }
 
-const projectId = ref("EWDtbQ")
+const projectId = ref("vxfFiBR")
 const workName = ref("")
 
 

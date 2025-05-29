@@ -4,7 +4,7 @@ definePageMeta({
 })
 
 import { LampEffect } from '~/components/ui/lamp-effect';
-import LogTab from "@/components/AppUi/work/LogTab.vue";
+import LogTab from "~/pages/(main)/work/components/LogTab.vue";
 import debounce from 'lodash.debounce'
 import { CircleCheckBig, Maximize2, Minimize2 } from 'lucide-vue-next';
 import { FetchKeys } from '~/constants/data-key';
@@ -17,7 +17,7 @@ const { data: CachedCurrentWork } = useNuxtData(FetchKeys.THE_CURRENT_WORK)
 
 const { data: CurrentWork, refresh, } = await useLazyFetch("/api/work/current", {
     method: "get",
-    default: () => CachedCurrentWork
+    default: () => CachedCurrentWork,
 })
 
 const toggleLogTab = () => {

@@ -118,7 +118,7 @@ const onSubmit = async () => {
                                 </div>
 
                                 <div class="flex flex-col space-y-6 my-12">
-                                    <AppUiUpdateReflexForm v-on:reflex="reflex => updateReflex(reflex)" />
+                                    <AppUpdateReflexForm v-on:reflex="reflex => updateReflex(reflex)" />
                                 </div>
 
                                 <!-- Submit Button -->

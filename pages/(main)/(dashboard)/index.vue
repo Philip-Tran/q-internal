@@ -1,12 +1,11 @@
 <script lang="ts" setup>
 definePageMeta({
-  middleware: ["admin"],
   layout: "sidebar-layout"
 })
 
 import { FetchKeys } from "~/constants/data-key";
 
-import OkrCard from "~/components/home/okr-card/OkrCard.vue";
+import OkrCard from "~/pages/(main)/(dashboard)/components/OkrCard.vue";
 import { RandomQuote } from "~/components/home/quote";
 import { type Work } from "~/types/work.type";
 
@@ -48,7 +47,6 @@ const refreshWorkCard = async () => {
 </script>
 
 <template>
-  <AppPageTitle title="Dashboard"/>
   <div class="space-y-4">
     <RandomQuote />
     <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-7">
@@ -56,17 +54,17 @@ const refreshWorkCard = async () => {
       <Card class="col-span-3">
         <CardHeader class="border-b flex flex-row h-[68px] items-center justify-between">
           <CardTitle>Work</CardTitle>
-          <AppUiCreateNewWorkDialog @newWorkCreated="refreshWorkCard" />
+          <AppCreateNewWorkDialog @newWorkCreated="refreshWorkCard" />
         </CardHeader>
         <CardContent class="p-6">
           <div class="">
             <div class="flex flex-col space-y-10">
-              <AppUiCurrentWorkCard v-if="currentWork" :currentWork="currentWork" :status="status" :error="error" />
+              <AppCurrentWorkCard v-if="currentWork" :currentWork="currentWork" :status="status" :error="error" />
               <div v-else class="text-center text-gray-500">
                 <p class="mb-4">There is no work in progress.</p>
                 <Button variant="default" @click="workStore.toggleNewWorkDialog()">Create</Button>
               </div>
-              <div v-if="pausedWorks" class="flex flex-col space-y-6">
+              <div v-if="pausedWorks && !pausedWorkError" class="flex flex-col space-y-6">
                 <Label>Paused Work</Label>
                 <div class="flex flex-col space-y-4">
                   <div v-for="(pausedWork, index) in pausedWorks" :key="index"

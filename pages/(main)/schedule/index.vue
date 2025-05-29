@@ -7,15 +7,12 @@ import CalendarView from "./components/CalendarView.vue"
 import CreateScheduleDialog from "./components/CreateScheduleDialog.vue"
 
 const select = ref()
-const onCreateNewWorkSchedule = () => {
-
-}
 
 const { data, refresh } = await useFetch("/api/schedule", {
     method: "get",
 })
 
-const handleSelect = (entry) => {
+const handleSelect = (entry: any) => {
     console.log("selected", entry)
     select.value = entry
 }
@@ -29,6 +26,6 @@ const handleSelect = (entry) => {
     </AppPageHeader>
 
     <div>
-        <CalendarView :data="data" @select="handleSelect" class="xl:grid-cols-3" />
+        <CalendarView v-if="data" :data="data" @select="handleSelect" class="xl:grid-cols-3" />
     </div>
 </template>

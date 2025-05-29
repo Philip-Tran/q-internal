@@ -14,7 +14,7 @@ const data = await useNuxtData("currentWork")
                     </span>
                 </RouterLink>
                 <Separator orientation="vertical" class="w-[2px] h-7" />
-                <AppUiMainNav class="mx-6" />
+                <AppMainNav class="mx-6" />
             </div>
             <div class="ml-auto flex items-center space-x-4">
                 <!-- <NuxtLink :to="`/work/${data.data.value.id}`" class="flex align-middle py-2 content-center px-4 rounded-full bg-yellow-300 bg-opacity-60 space-x-2">

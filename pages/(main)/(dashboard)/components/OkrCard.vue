@@ -151,7 +151,7 @@ if (!currentOkrs.value) {
               </div>
             </div>
 
-            <div v-if="today === setting?.updateDay">
+            <div v-if="setting && setting.updateDay && today === setting?.updateDay">
               <RouterLink :to="`/progress/${okr.id}`">
                 <div class="rounded-md p-6 bg-yellow-100 border border-yellow-400 shadow-sm">
                   <div class="flex items-center space-x-3">

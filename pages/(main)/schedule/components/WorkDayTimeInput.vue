@@ -35,7 +35,7 @@ watch(active, (newVal) => {
             <NumberField
                 :format-options="{
                     style: 'decimal',
-                    minimumFractionDigits: 1
+                    minimumFractionDigits: 0
                 }"
                 :max="15"
                 :min="0"

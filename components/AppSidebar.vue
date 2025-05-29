@@ -12,11 +12,11 @@ const items = [
     {
         title: "Schedule setting",
         url: "/schedule",
-        icon: null,
+        icon: Home,
     },
     {
-        title: "Dashboard",
-        url: "/",
+        title: "Project",
+        url: "/project",
         icon: Home,
     },
 ]

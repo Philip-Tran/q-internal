@@ -1,10 +1,9 @@
 <script lang="ts" setup>
 import AppSideBar from '~/components/AppSidebar.vue';
-import { ScrollArea } from '~/components/ui/scroll-area';
-import { SidebarProvider, SidebarTrigger } from '~/components/ui/sidebar';
 </script>
 
 <template>
+    <AppCommand/>
     <div class="dark:bg-[#171717] fixed inset-0 flex overflow-hidden">
         <SidebarProvider>
             <AppSideBar />

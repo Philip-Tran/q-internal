@@ -11,7 +11,6 @@ import { toTypedSchema } from '@vee-validate/zod'
 import { toast } from 'vue-sonner'
 import { Check, Circle, Dot, Plus, Trash } from 'lucide-vue-next'
 
-
 const stepIndex = ref(1)
 const steps = [
   { step: 1, title: 'Decide objective', description: 'What I am trying to achieve' },

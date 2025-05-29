@@ -28,6 +28,15 @@ export default defineEventHandler(async (event) => {
     }
   })
 
+  if (existTimeStamp && existTimeStamp.status === "IS_TRACKING") {
+    throw createError({
+      statusCode: 404,
+      statusMessage: "Cannot start an tracking work",
+      message: "Cannot start an tracking work",
+      data: { field: "status" }
+    })
+  }
+
   if (!existTimeStamp) {
     const timestamp = await prisma.timestamps.create({
       data: {

@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { useMyWorkStore } from '#imports'
-
 import { useEventListener, onClickOutside } from '@vueuse/core'
 import {
   CreditCard,
@@ -74,7 +72,7 @@ const handleGoModule = ( ) => {
 <template>
   <div>
     <!-- Header -->
-    <AppUiHeader/>
+    <AppHeader/>
 
     <div class="default-layout flex-1 px-4 2xl:px-20 pt-6">
       <slot />

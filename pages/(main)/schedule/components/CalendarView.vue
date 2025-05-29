@@ -13,6 +13,8 @@ interface ScheduleEntry {
     thursday: number
     friday: number
     saturday: number
+    createdAt: Date
+    updatedAt: Date
 }
 
 const props = defineProps<{
