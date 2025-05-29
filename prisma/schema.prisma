@@ -9,7 +9,7 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mysql"
   url      = env("DATABASE_URL")
 }
 
@@ -28,6 +28,8 @@ model User {
   banned     Boolean?
   banReason  String?
   banExpires DateTime?
+
+  setting Setting?
 
   @@map("user")
 }
@@ -80,13 +82,13 @@ model Verification {
 }
 
 enum WeekDay {
-  SUN
-  MON
-  TUE
-  WED
-  THU
-  FRI
-  SAT
+  SUNDAY
+  MONDAY
+  TUESDAY
+  WEDNESDAY
+  THURSDAY
+  FRIDAY
+  SATURDAY
 }
 
 enum Theme {
@@ -102,10 +104,13 @@ model Setting {
   breakRemindInterval Int     @default(60)
   remindBreakTime     Boolean @default(true)
   enableSoundRemind   Boolean @default(false)
-  updateDay           WeekDay @default(FRI)
+  updateDay           WeekDay @default(FRIDAY)
 
   // ui
   theme Theme @default(dark)
+
+  userId String @unique // only one setting per user
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("setting")
 }
@@ -118,14 +123,14 @@ enum UpdateStatus {
 }
 
 model Objective {
-  id                       String           @id @default(cuid())
+  id                       String       @id @default(cuid())
   name                     String
   month                    Int
   year                     Int
   progressOnTotalKeyResult Int?
   keyResults               KeyResult[]
   reflexes                 Reflex[]
-  isUpdated                UpdateStatus     @default(IDLE)
+  isUpdated                UpdateStatus @default(IDLE)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -163,7 +168,6 @@ model Reflex {
   @@map("reflex")
 }
 
-
 enum WorkStatus {
   TODO
   IN_PROGRESS
@@ -183,7 +187,7 @@ model Work {
   Project   Project? @relation(fields: [projectId], references: [id])
   projectId String?
 
-  Timestamps Timestamps[]
+  Timestamps Timestamps? @relation(name: "TimestampsToWork")
 
   @@map("work")
 }
@@ -211,7 +215,7 @@ enum ProjectStatus {
 }
 
 model Project {
-  id          String        @id @default(nanoid(6))
+  id          String        @id @default(nanoid(7))
   name        String
   description String?
   note        String?
@@ -226,15 +230,15 @@ model Project {
 }
 
 model WorkSchedule {
-  id        Int @id @default(autoincrement())
+  id        Int   @id @default(autoincrement())
   // the number of hours work each day
-  sunday    Int @default(0)
-  monday    Int @default(0)
-  tuesday   Int @default(0)
-  wednesday Int @default(0)
-  thursday  Int @default(0)
-  friday    Int @default(0)
-  saturday  Int @default(0)
+  sunday    Float @default(0)
+  monday    Float @default(0)
+  tuesday   Float @default(0)
+  wednesday Float @default(0)
+  thursday  Float @default(0)
+  friday    Float @default(0)
+  saturday  Float @default(0)
 
   validFrom DateTime @default(now())
 
@@ -244,17 +248,50 @@ model WorkSchedule {
   @@map("work_schedule")
 }
 
+model WorkScheduleTimeBlock {
+  id        Int                    @id @default(autoincrement())
+  timeSlots WorkScheduleTimeSlot[] // 1-to-many relationship
+
+  @@map("work_schedule_time_block")
+}
+
+model WorkScheduleTimeSlot {
+  id         Int                   @id @default(autoincrement())
+  day        WeekDay 
+  index      Int // for ordering or grouping
+  startedAt  String // 8:AM 
+  endedAt    String // 12:PM
+  scheduleId Int
+  schedule   WorkScheduleTimeBlock @relation(fields: [scheduleId], references: [id], onDelete: Cascade)
+
+  @@map("work_schedule_time_slot")
+}
+
+enum TimestampStatus {
+  IDLE
+  RUNNING
+  STOPPED
+  PAUSED
+  IS_TRACKING
+}
+
 model Timestamps {
-  id        Int      @id @default(autoincrement())
-  type      String?
-  startedAt DateTime @default(now())
-  endedAt   DateTime
+  id           Int             @id @default(autoincrement())
+  type         String?
+  startedAt    DateTime        @default(now())
+  endedAt      DateTime?
+  lastPingedAt DateTime?
+  status       TimestampStatus @default(IDLE)
+
+  totalDuration Int?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  workId String
-  Work   Work   @relation(fields: [workId], references: [id], onDelete: Cascade)
+  timestampsRecord Json?
+
+  work   Work   @relation(name: "TimestampsToWork", fields: [workId], references: [id], onDelete: Cascade)
+  workId String @unique
 
   @@map("time_stamps")
 }
@@ -265,9 +302,8 @@ model Module {
   url     String
   iconUrl String?
 
-  createdAt DateTime    @default(now())
-  updatedAt DateTime    @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("module")
 }
-

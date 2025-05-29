@@ -11,20 +11,14 @@ import { FetchKeys } from '~/constants/data-key';
 
 const route = useRoute();
 const isLogTabOpen = ref(false)
-
 const noteContent = ref("")
-const CurrentWork = ref()
 
 const { data: CachedCurrentWork } = useNuxtData(FetchKeys.THE_CURRENT_WORK)
 
-if(CachedCurrentWork.value) {
-    CurrentWork.value = CachedCurrentWork.value
-} else {
-    const data = await $fetch(`/api/work/current`, {
-      
-    })
-    CurrentWork.value = data
-}
+const { data: CurrentWork, refresh, } = await useLazyFetch("/api/work/current", {
+    method: "get",
+    default: () => CachedCurrentWork
+})
 
 const toggleLogTab = () => {
     isLogTabOpen.value = !isLogTabOpen.value
@@ -54,7 +48,7 @@ watch(noteContent, () => {
 })
 
 onBeforeRouteLeave(async () => {
-     await $fetch(`/api/work/note?workId=${route.params.id}`, {
+    await $fetch(`/api/work/note?workId=${route.params.id}`, {
         method: "POST",
         body: { noteContent: noteContent.value }
     })
@@ -81,7 +75,7 @@ const toggleNote = () => {
                 </div>
             </div>
         </LampEffect>
-        
+
         <!-- Note UI -->
         <div class="absolute z-10 right-8 top-8">
             <div v-if="isNoteOpen" class="drop-shadow-lg shadow-white w-[700px] h-1/2">

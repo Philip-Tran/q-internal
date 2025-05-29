@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 definePageMeta({
-  middleware: ["admin"]
+  middleware: ["admin"],
+  layout: "sidebar-layout"
 })
 
 import { FetchKeys } from "~/constants/data-key";
@@ -24,7 +25,7 @@ const { data: currentWork, status, error } = await useFetch("/api/work/current",
 })
 
 const onResumeClick = async (workId: string) => {
-  const data = await $fetch("/api/work/un-paused", {
+  const data = await $fetch("/api/work/un-pause", {
     method: 'POST',
     body: { id: workId }
   })
@@ -47,6 +48,7 @@ const refreshWorkCard = async () => {
 </script>
 
 <template>
+  <AppPageTitle title="Dashboard"/>
   <div class="space-y-4">
     <RandomQuote />
     <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-7">
