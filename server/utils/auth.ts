@@ -16,7 +16,7 @@ export const auth = betterAuth({
   emailVerification: {
     sendVerificationEmail: async ({ user, url, token }, request) => {
       const { sendMail } = useNodeMailer();
-      await sendMail({ subject: `Click the link to verify your email: ${url}`, text: `Hi ${user.name}. Please verify your email`, to: user.email });
+      await sendMail({ text: `Click the link to verify your email: ${url}`, subject: `Hi ${user.name}. Please verify your email`, to: user.email });
     },
     sendOnSignUp: true
   },
@@ -30,3 +30,5 @@ export const auth = betterAuth({
     },
   },
 });
+
+

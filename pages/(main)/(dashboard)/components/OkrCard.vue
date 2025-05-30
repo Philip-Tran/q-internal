@@ -1,4 +1,6 @@
 <script setup lang=ts>
+import { FetchKeys } from '~/constants/data-key';
+
 import { ArrowBigUpDash, Crosshair, Pencil } from 'lucide-vue-next';
 import { Alert, AlertDescription, AlertTitle } from '~/components/ui/alert';
 import { Quote } from 'lucide-vue-next';
@@ -9,33 +11,12 @@ const today = getCurrentWeekday()
 
 const { data: setting } = await useFetch("/api/setting", {
   method: "get",
-  key: "app-setting"
+  key: FetchKeys.APP_SETTING
 })
 
 const { data: currentOkrs, refresh, error, status } = await useFetch("/api/okrs/current", {
-  key: "current-okrs",
-  getCachedData: (key) => {
-    if (nuxt.isHydrating && nuxt.payload.data[key]) {
-      return nuxt.payload.data[key]
-    }
-
-    // Check if the data is already cached in the static data
-    if (nuxt.static.data[key]) {
-      return nuxt.static.data[key]
-    }
-
-    return null
-  },
-  
-  onResponse({ response }) {
-  }
+  key: FetchKeys.CURRENT_OKRs,
 })
-
-if (!currentOkrs.value) {
-  await refresh()
-} else {
-  console.log('Using cached data:', currentOkrs.value)
-}
 </script>
 
 <template>
@@ -86,23 +67,6 @@ if (!currentOkrs.value) {
               </RouterLink>
             </div>
             <div class="flex space-x-3">
-              <!-- <Collapsible v-model:open="isOpen">
-                <CollapsibleTrigger>
-                  <Button variant="outline">
-                    Detail
-                  </Button>
-                </CollapsibleTrigger>
-                <CollapsibleContent>
-                  <div class="rounded-md border p-4 bg-slate-50">
-                    <div v-for="kr in okr.keyResults" class="p-2 rounded-md flex items-center space-x-6">
-                      <p class="text-base">
-                        {{ kr.name }}
-                      </p>
-                      <span class="padding-3 rounded-full bg-slate-100">{{ kr.resultNumber }}</span>
-                    </div>
-                  </div>
-                </CollapsibleContent>
-              </Collapsible> -->
               <div>
                 <Dialog>
                   <DialogTrigger as-child>

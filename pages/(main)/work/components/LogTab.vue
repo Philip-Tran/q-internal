@@ -37,7 +37,7 @@ const onSubmit = handleSubmit(async (values) => {
     logType = LogType.UPDATE;
   }
 
-  const { status, data } = await useFetch("/api/work/log", {
+  const data = await $fetch("/api/work/log", {
     method: "POST",
     body: {
       workId: props.workId,
@@ -48,8 +48,8 @@ const onSubmit = handleSubmit(async (values) => {
     lazy: true
   })
 
-  if (status.value === "success") {
-    toast.success(`${data.value?.message}`, {
+  if (data) {
+    toast.success(`${data?.message}`, {
       description: logType == LogType.UPDATE ? "Update successfully" : "Redirecting to dashboard"
     })
 
@@ -68,8 +68,6 @@ const onSubmit = handleSubmit(async (values) => {
     }
   }
 })
-
-
 </script>
 
 <template>

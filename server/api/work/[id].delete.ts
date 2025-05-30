@@ -8,10 +8,7 @@ export default defineEventHandler(async (event) => {
       },
     });
 
-    return {
-      message: "Work deleted successfully",
-      data: deletedWork,
-    };
+    return deletedWork
   } catch (error) {
     console.error(error);
     throw createError({

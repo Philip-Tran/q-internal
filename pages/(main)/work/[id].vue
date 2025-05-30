@@ -63,6 +63,9 @@ const toggleNote = () => {
 
 <template>
     <div class="relative">
+        <NuxtLink to="/" class="absolute top-0 left-0 rounded-br-full dark:hover:bg-slate-700 h-24 w-24 z-50">
+        </NuxtLink>
+
         <div class="absolute translate-x-1/2 z-10 right-1/2 opacity-0 hover:opacity-100 top-4">
             <Button @click="toggleLogTab">Log work</Button>
         </div>
@@ -109,6 +112,5 @@ const toggleNote = () => {
                 </Button>
             </div>
         </div>
-
     </div>
 </template>

@@ -13,7 +13,6 @@ export default defineNuxtConfig({
     '@vee-validate/nuxt',
     "nuxt-tiptap-editor",
     "@formkit/auto-animate/nuxt",
-    // "@nuxtjs/i18n",
     "nuxt-nodemailer",
     "@pinia/colada-nuxt"
   ],
@@ -48,7 +47,7 @@ export default defineNuxtConfig({
     secure: true,
     auth: {
       user: 'quyet@trueedu.org',
-      pass: 'Tranquyetrc213v',
+      pass: process.env.EMAIL_AUTH_PASSWORD,
     },
   },
   pinia: {

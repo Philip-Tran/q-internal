@@ -26,6 +26,6 @@ const handleSelect = (entry: any) => {
     </AppPageHeader>
 
     <div>
-        <CalendarView v-if="data" :data="data" @select="handleSelect" class="xl:grid-cols-3" />
+        <CalendarView v-if="data" :data="data" @select="handleSelect" class="xl:grid-cols-3 lg:grid-cols-2 md:grid-cols-2" />
     </div>
 </template>

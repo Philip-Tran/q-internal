@@ -45,7 +45,7 @@ onUnmounted(() => {
 
 const handleNewWork = () => {
     isCommandVisible.value = false
-    workStore.newWorkDialogState.isOpened = true
+    workStore.openNewWorkDialog()
 }
 
 const handleNewOKRs = () => {
