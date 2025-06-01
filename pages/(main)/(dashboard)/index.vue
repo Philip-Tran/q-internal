@@ -1,8 +1,7 @@
 <script lang="ts" setup>
 definePageMeta({
   layout: "sidebar-layout",
-  keepalive: true,
-})
+});
 
 import { FetchKeys } from "~/constants/data-key";
 import CurrentWorkCard from "./components/CurrentWorkCard.vue";
@@ -11,35 +10,44 @@ import OKRCard from "~/pages/(main)/(dashboard)/components/OKRCard.vue";
 import { RandomQuote } from "~/pages/(main)/(dashboard)/components/quote";
 import { type Work } from "~/types/work.type";
 
-const workStore = useMyWorkStore()
+const workStore = useMyWorkStore();
 
-const { data: currentWork, status: currentWorkStatus, error: currentWorkError } = await useFetch<Work | null>("/api/work/current", {
+const {
+  data: currentWork,
+  status: currentWorkStatus,
+  error: currentWorkError,
+} = await useFetch<Work | null>("/api/work/current", {
   method: "GET",
   key: FetchKeys.THE_CURRENT_WORK,
-})
+});
 
 onActivated(() => {
-  refreshNuxtData(FetchKeys.THE_CURRENT_WORK)
-})
+  refreshNuxtData(FetchKeys.THE_CURRENT_WORK);
+});
 
-const route = useRoute()
+const route = useRoute();
 
-watch(() => route.fullPath, () => {
-  refreshNuxtData(FetchKeys.THE_CURRENT_WORK)
-})
-
-
+watch(
+  () => route.fullPath,
+  () => {
+    refreshNuxtData(FetchKeys.THE_CURRENT_WORK);
+  }
+);
 
 // Fetch Paused Work
-const { status: pausedWorkStatus, data: pausedWorks, error: pausedWorkError, refresh: pausedWorkRefresh } = await useFetch<Work | null>("/api/work/paused", {
+const {
+  status: pausedWorkStatus,
+  data: pausedWorks,
+  error: pausedWorkError,
+  refresh: pausedWorkRefresh,
+} = await useFetch<Work[] | null>("/api/work/paused", {
   method: "GET",
-  key: FetchKeys.PAUSED_WORKS
+  key: FetchKeys.PAUSED_WORKS,
 });
 
 const refreshWorkCard = async () => {
-  await refreshNuxtData(FetchKeys.THE_CURRENT_WORK)
-}
-
+  await refreshNuxtData(FetchKeys.THE_CURRENT_WORK);
+};
 </script>
 
 <template>
@@ -48,13 +56,19 @@ const refreshWorkCard = async () => {
     <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-7">
       <OKRCard />
       <Card class="col-span-3">
-        <CardHeader class="border-b flex flex-row h-[68px] items-center justify-between">
+        <CardHeader
+          class="border-b flex flex-row h-[68px] items-center justify-between"
+        >
           <CardTitle>Work</CardTitle>
           <AppCreateNewWorkDialog @newWorkCreated="refreshWorkCard" />
         </CardHeader>
         <CardContent class="p-6">
           <div class="flex flex-col space-y-10">
-            <CurrentWorkCard :currentWork="currentWork" :status="currentWorkStatus" :error="currentWorkError" />
+            <CurrentWorkCard
+              :currentWork="currentWork"
+              :status="currentWorkStatus"
+              :error="currentWorkError"
+            />ß
             <PausedWorks v-if="pausedWorks" :paused-works="pausedWorks" />
           </div>
         </CardContent>
