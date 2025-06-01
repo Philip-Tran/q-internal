@@ -3,13 +3,14 @@ definePageMeta({
     layout: "plain-layout"
 })
 
-import { LampEffect } from '~/components/ui/lamp-effect';
+import TiptapEditor from "./components/TiptapEditor.vue"
+import { FetchKeys } from '~/constants/data-key';
 import LogTab from "~/pages/(main)/work/components/LogTab.vue";
+
+import { LampEffect } from '~/components/ui/lamp-effect';
 import debounce from 'lodash.debounce'
 import { CircleCheckBig, Maximize2, Minimize2 } from 'lucide-vue-next';
-import { FetchKeys } from '~/constants/data-key';
 
-const route = useRoute();
 const isLogTabOpen = ref(false)
 const noteContent = ref("")
 
@@ -88,7 +89,7 @@ const toggleNote = () => {
                         </Button>
                     </div>
                 </div>
-                <TiptabEditor v-model="noteContent"
+                <TiptapEditor v-model="noteContent"
                     class="rounded-none border-white text-white w-full bg-white border-none" editorClass="text-black"
                     :isButtonVisible="true" />
                 <div class="py-2 px-6 rounded-b-lg bg-white min-h-[32px]">

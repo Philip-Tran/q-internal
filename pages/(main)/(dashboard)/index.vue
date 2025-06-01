@@ -11,6 +11,7 @@ import { RandomQuote } from "~/pages/(main)/(dashboard)/components/quote";
 import { type Work } from "~/types/work.type";
 
 const workStore = useMyWorkStore();
+const route = useRoute();
 
 const {
   data: currentWork,
@@ -24,15 +25,6 @@ const {
 onActivated(() => {
   refreshNuxtData(FetchKeys.THE_CURRENT_WORK);
 });
-
-const route = useRoute();
-
-watch(
-  () => route.fullPath,
-  () => {
-    refreshNuxtData(FetchKeys.THE_CURRENT_WORK);
-  }
-);
 
 // Fetch Paused Work
 const {
@@ -68,7 +60,7 @@ const refreshWorkCard = async () => {
               :currentWork="currentWork"
               :status="currentWorkStatus"
               :error="currentWorkError"
-            />ß
+            />
             <PausedWorks v-if="pausedWorks" :paused-works="pausedWorks" />
           </div>
         </CardContent>
