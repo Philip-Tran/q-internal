@@ -6,12 +6,9 @@ definePageMeta({
 import { FetchKeys } from "~/constants/data-key";
 import CurrentWorkCard from "./components/CurrentWorkCard.vue";
 import PausedWorks from "./components/PausedWorks.vue";
-import OKRCard from "~/pages/(main)/(dashboard)/components/OKRCard.vue";
-import { RandomQuote } from "~/pages/(main)/(dashboard)/components/quote";
+import OKRCard from "./components/OKRCard.vue";
+import { RandomQuote } from "./components/quote";
 import { type Work } from "~/types/work.type";
-
-const workStore = useMyWorkStore();
-const route = useRoute();
 
 const {
   data: currentWork,
