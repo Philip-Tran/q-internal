@@ -1,12 +1,17 @@
 <script setup lang="ts">
-import { Toaster } from '@/components/ui/sonner'
+import { Toaster } from "@/components/ui/sonner";
 </script>
 
 <template>
   <!-- <NuxtLoadingIndicator :height=2 color="white" :duration=0 /> -->
 
   <ClientOnly>
-    <Toaster richColors class="pointer-events-auto" :duration=4500 position="top-center" />
+    <Toaster
+      richColors
+      class="pointer-events-auto"
+      :duration="4500"
+      position="top-center"
+    />
   </ClientOnly>
 
   <NuxtLayout>
@@ -14,6 +19,4 @@ import { Toaster } from '@/components/ui/sonner'
   </NuxtLayout>
 </template>
 
-<style>
-
-</style>
+<style></style>

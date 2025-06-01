@@ -13,18 +13,16 @@ const route = useRoute();
 const isLogTabOpen = ref(false)
 const noteContent = ref("")
 
-const { data: CachedCurrentWork } = useNuxtData(FetchKeys.THE_CURRENT_WORK)
-
-const { data: CurrentWork, refresh, } = await useLazyFetch("/api/work/current", {
+const { data: CurrentWork, refresh } = await useLazyFetch("/api/work/current", {
     method: "get",
-    default: () => CachedCurrentWork,
+    key: FetchKeys.THE_CURRENT_WORK,
 })
 
 const toggleLogTab = () => {
     isLogTabOpen.value = !isLogTabOpen.value
 }
 
-onBeforeMount(() => {
+watchEffect(() => {
     if (CurrentWork.value?.noteContent) {
         noteContent.value = CurrentWork.value.noteContent
     }
@@ -33,28 +31,28 @@ onBeforeMount(() => {
 const saveStatus = ref<'idle' | 'saving' | 'saved'>('idle')
 
 const autoSave = debounce(async () => {
+    if (!CurrentWork.value?.id) return; 
+    
     saveStatus.value = 'saving'
-    await $fetch(`/api/work/note?workId=${route.params.id}`, {
+    await $fetch(`/api/work/note?workId=${CurrentWork.value.id}`, {
         method: "POST",
         body: { noteContent: noteContent.value }
     })
     saveStatus.value = 'saved'
     setTimeout(() => saveStatus.value = 'idle', 1500)
     console.log('Auto-saved')
-}, 2000) // saves 1 second after last change
+}, 2000)
 
 watch(noteContent, () => {
     autoSave()
 })
 
 onBeforeRouteLeave(async () => {
-    await $fetch(`/api/work/note?workId=${route.params.id}`, {
-        method: "POST",
-        body: { noteContent: noteContent.value }
-    })
+    autoSave.cancel()
+    
+    await refreshNuxtData(FetchKeys.THE_CURRENT_WORK)
 })
 
-// toggle note
 const isNoteOpen = ref(false)
 const toggleNote = () => {
     isNoteOpen.value = !isNoteOpen.value
@@ -63,7 +61,7 @@ const toggleNote = () => {
 
 <template>
     <div class="relative">
-        <NuxtLink to="/" class="absolute top-0 left-0 rounded-br-full dark:hover:bg-slate-700 h-24 w-24 z-50">
+        <NuxtLink to="/" :prefetch="false" class="absolute top-0 left-0 rounded-br-full dark:hover:bg-slate-700 h-24 w-24 z-50">
         </NuxtLink>
 
         <div class="absolute translate-x-1/2 z-10 right-1/2 opacity-0 hover:opacity-100 top-4">

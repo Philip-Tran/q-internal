@@ -1,22 +1,26 @@
-<script setup lang=ts>
-import { FetchKeys } from '~/constants/data-key';
+<script setup lang="ts">
+import { FetchKeys } from "~/constants/data-key";
 
-import { ArrowBigUpDash, Crosshair, Pencil } from 'lucide-vue-next';
-import { Alert, AlertDescription, AlertTitle } from '~/components/ui/alert';
-import { Quote } from 'lucide-vue-next';
+import { ArrowBigUpDash, Crosshair, Pencil } from "lucide-vue-next";
+import { Alert, AlertDescription, AlertTitle } from "~/components/ui/alert";
+import { Quote } from "lucide-vue-next";
 
-const nuxt = useNuxtApp()
 const monthTimePercentage = getMonthProgressPercentage();
-const today = getCurrentWeekday()
+const today = getCurrentWeekday();
 
 const { data: setting } = await useFetch("/api/setting", {
   method: "get",
-  key: FetchKeys.APP_SETTING
-})
+  key: FetchKeys.APP_SETTING,
+});
 
-const { data: currentOkrs, refresh, error, status } = await useFetch("/api/okrs/current", {
+const {
+  data: currentOkrs,
+  refresh,
+  error,
+  status,
+} = await useFetch("/api/okrs/current", {
   key: FetchKeys.CURRENT_OKRs,
-})
+});
 </script>
 
 <template>
@@ -31,16 +35,21 @@ const { data: currentOkrs, refresh, error, status } = await useFetch("/api/okrs/
             <Skeleton class="w-full h-24 rounded-md bg-gray-100" />
           </div>
           <div v-else-if="currentOkrs == null" class="h-full w-full flex">
-            <div class="flex flex-col w-full justify-center space-y-4 align-middle">
+            <div
+              class="flex flex-col w-full justify-center space-y-4 align-middle"
+            >
               <p class="text-destructive">No OKRs set for this month</p>
               <NuxtLink to="/new-okrs">
-                <Button class="w-fit">
-                  Create
-                </Button>
+                <Button class="w-fit"> Create </Button>
               </NuxtLink>
             </div>
           </div>
-          <div v-else v-for="okr in currentOkrs" :key="okr.id" class="flex flex-col space-y-5">
+          <div
+            v-else
+            v-for="okr in currentOkrs"
+            :key="okr.id"
+            class="flex flex-col space-y-5"
+          >
             <div class="flex space-x-4 justify-between">
               <div class="flex space-x-3 justify-center items-center">
                 <div class="flex justify-center items-center">
@@ -51,9 +60,18 @@ const { data: currentOkrs, refresh, error, status } = await useFetch("/api/okrs/
                 </h2>
               </div>
               <div>
-                <AnimatedCircularProgressBar :max="100" :show-percentage="true" :min="0"
-                  :value="okr.progressOnTotalKeyResult == null ? 0 : okr.progressOnTotalKeyResult" :circleStrokeWidth=8
-                  class="w-[60px] h-[60px] text-lg text-gray-700" />
+                <AnimatedCircularProgressBar
+                  :max="100"
+                  :show-percentage="true"
+                  :min="0"
+                  :value="
+                    okr.progressOnTotalKeyResult == null
+                      ? 0
+                      : okr.progressOnTotalKeyResult
+                  "
+                  :circleStrokeWidth="8"
+                  class="w-[60px] h-[60px] text-lg text-gray-700"
+                />
               </div>
             </div>
             <div>
@@ -76,18 +94,15 @@ const { data: currentOkrs, refresh, error, status } = await useFetch("/api/okrs/
                     <DialogHeader>
                       <DialogTitle>Edit profile</DialogTitle>
                       <DialogDescription>
-                        Make changes to your profile here. Click save when you're done.
+                        Make changes to your profile here. Click save when
+                        you're done.
                       </DialogDescription>
                     </DialogHeader>
                     <ScrollArea>
-                      <div class="grid gap-4 py-4">
-                        this
-                      </div>
+                      <div class="grid gap-4 py-4">this</div>
                     </ScrollArea>
                     <DialogFooter>
-                      <Button type="submit">
-                        Save changes
-                      </Button>
+                      <Button type="submit"> Save changes </Button>
                     </DialogFooter>
                   </DialogContent>
                 </Dialog>
@@ -97,7 +112,9 @@ const { data: currentOkrs, refresh, error, status } = await useFetch("/api/okrs/
             <div class="grid grid-cols-2 gap-6">
               <div class="flex flex-col space-y-2">
                 <Alert class="" v-for="kr in okr.keyResults" variant="default">
-                  <AlertTitle>{{ kr.resultUpdate }} / {{ kr.resultNumber }}</AlertTitle>
+                  <AlertTitle
+                    >{{ kr.resultUpdate }} / {{ kr.resultNumber }}</AlertTitle
+                  >
                   <AlertDescription>
                     {{ kr.name }}
                   </AlertDescription>
@@ -115,13 +132,22 @@ const { data: currentOkrs, refresh, error, status } = await useFetch("/api/okrs/
               </div>
             </div>
 
-            <div v-if="setting && setting.updateDay && today === setting?.updateDay">
+            <div
+              v-if="
+                setting && setting.updateDay && today === setting?.updateDay
+              "
+            >
               <RouterLink :to="`/progress/${okr.id}`">
-                <div class="rounded-md p-6 bg-yellow-100 border border-yellow-400 shadow-sm">
+                <div
+                  class="rounded-md p-6 bg-yellow-100 border border-yellow-400 shadow-sm"
+                >
                   <div class="flex items-center space-x-3">
                     <Label>Let's update</Label>
                     <ArrowBigUpDash class="text-yellow-600" />
-                    <Button variant="secondary" class="bg-yellow-300 hover:bg-yellow-400 text-yellow-900 font-semibold">
+                    <Button
+                      variant="secondary"
+                      class="bg-yellow-300 hover:bg-yellow-400 text-yellow-900 font-semibold"
+                    >
                       <span>Update</span>
                     </Button>
                   </div>

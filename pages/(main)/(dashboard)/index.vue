@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 definePageMeta({
-  layout: "sidebar-layout"
+  layout: "sidebar-layout",
+  keepalive: true,
 })
 
 import { FetchKeys } from "~/constants/data-key";
@@ -12,14 +13,22 @@ import { type Work } from "~/types/work.type";
 
 const workStore = useMyWorkStore()
 
-const { data } = useNuxtData(FetchKeys.THE_CURRENT_WORK)
-const { data: currentWork, status, error, refresh } = await useFetch<Work | null>("/api/work/current", {
+const { data: currentWork, status: currentWorkStatus, error: currentWorkError } = await useFetch<Work | null>("/api/work/current", {
   method: "GET",
   key: FetchKeys.THE_CURRENT_WORK,
-  default() {
-    return data.value
-  }
 })
+
+onActivated(() => {
+  refreshNuxtData(FetchKeys.THE_CURRENT_WORK)
+})
+
+const route = useRoute()
+
+watch(() => route.fullPath, () => {
+  refreshNuxtData(FetchKeys.THE_CURRENT_WORK)
+})
+
+
 
 // Fetch Paused Work
 const { status: pausedWorkStatus, data: pausedWorks, error: pausedWorkError, refresh: pausedWorkRefresh } = await useFetch<Work | null>("/api/work/paused", {
@@ -45,11 +54,7 @@ const refreshWorkCard = async () => {
         </CardHeader>
         <CardContent class="p-6">
           <div class="flex flex-col space-y-10">
-            <CurrentWorkCard v-if="currentWork" :currentWork="currentWork" :status="status" :error="error" />
-            <div v-else class="text-center text-gray-500">
-              <p class="mb-4">There is no work in progress.</p>
-              <Button variant="default" @click="workStore.openNewWorkDialog()">Create</Button>
-            </div>
+            <CurrentWorkCard :currentWork="currentWork" :status="currentWorkStatus" :error="currentWorkError" />
             <PausedWorks v-if="pausedWorks" :paused-works="pausedWorks" />
           </div>
         </CardContent>
