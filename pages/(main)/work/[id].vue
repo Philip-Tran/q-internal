@@ -57,6 +57,7 @@ onBeforeRouteLeave(async () => {
 const isNoteOpen = ref(false)
 const toggleNote = () => {
     isNoteOpen.value = !isNoteOpen.value
+    isLogTabOpen.value = false
 }
 </script>
 

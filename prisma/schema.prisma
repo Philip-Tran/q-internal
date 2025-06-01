@@ -212,6 +212,9 @@ model WorkLog {
 
 enum ProjectStatus {
   IN_PROGRESS
+  DONE
+  REVIEWING
+  BACKLOG
 }
 
 model Project {
