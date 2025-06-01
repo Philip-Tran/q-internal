@@ -15,8 +15,6 @@ const { data: setting } = await useFetch("/api/setting", {
 
 const {
   data: currentOkrs,
-  refresh,
-  error,
   status,
 } = await useFetch("/api/okrs/current", {
   key: FetchKeys.CURRENT_OKRs,
