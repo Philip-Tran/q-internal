@@ -6,7 +6,7 @@ definePageMeta({
 import { FetchKeys } from "~/constants/data-key";
 import CurrentWorkCard from "./components/CurrentWorkCard.vue";
 import PausedWorks from "./components/PausedWorks.vue";
-import OKRCard from "./components/OKRCard.vue";
+import OkrCard from "./components/OkrCard.vue";
 import { RandomQuote } from "./components/quote";
 import { type Work } from "~/types/work.type";
 
@@ -43,7 +43,7 @@ const refreshWorkCard = async () => {
   <div class="space-y-4">
     <RandomQuote />
     <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-7">
-      <OKRCard />
+      <OkrCard />
       <Card class="col-span-3">
         <CardHeader
           class="border-b flex flex-row h-[68px] items-center justify-between"
