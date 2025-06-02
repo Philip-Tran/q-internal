@@ -16,6 +16,9 @@ export default defineEventHandler(async (event) => {
                 totalDuration: true,
               }
             }
+          },
+          orderBy: {
+            updatedAt: 'desc'
           }
         }
       : false,

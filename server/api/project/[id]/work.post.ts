@@ -56,6 +56,13 @@ export default defineEventHandler(async (event) => {
       }
     })
 
+    const timestamp = await prisma.timestamps.create({
+      data: {
+        workId: work.id,
+        status: "IDLE"
+      }
+    })
+
     return {
       success: true,
       data: work

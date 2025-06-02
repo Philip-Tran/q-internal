@@ -276,6 +276,7 @@ enum TimestampStatus {
   STOPPED
   PAUSED
   IS_TRACKING
+  INITIALIZED
 }
 
 model Timestamps {

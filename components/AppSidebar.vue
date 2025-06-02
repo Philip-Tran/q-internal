@@ -94,13 +94,13 @@ const { data, refresh, error, status } = await useFetch(`/api/project`, {
                   </SidebarMenuButton>
                 </CollapsibleTrigger>
                 <CollapsibleContent>
-                  <SidebarMenuSub class="py-4 px-0 mx-0">
+                  <SidebarMenuSub class="py-4 pr-0 mr-0">
                     <NuxtLink
                       :to="`/project/${projectItem.id}`"
                       v-if="data?.data && data?.success === true"
                       v-for="projectItem in data?.data"
                       :key="projectItem.id"
-                      class=""
+                      class="dark:hover:text-white dark:text-muted-foreground transition-all ease-in-out"
                     >
                       <SidebarMenuSubItem
                         class="py-2 px-2 cursor-pointer hover:bg-card rounded-lg"
