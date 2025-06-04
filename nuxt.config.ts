@@ -14,11 +14,16 @@ export default defineNuxtConfig({
     "nuxt-tiptap-editor",
     "@formkit/auto-animate/nuxt",
     "nuxt-nodemailer",
-    "@pinia/colada-nuxt"
+    "@pinia/colada-nuxt",
+    "@nuxthub/core"
   ],
   colorMode: {
     classSuffix: "",
     preference: 'dark',
+  },
+
+  hub: {
+    analytics: false,
   },
 
   // exclude component directory from file based routing 
