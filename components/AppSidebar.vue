@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { authClient } from "../server/utils/auth-client";
 import { FetchKeys } from "~/constants/data-key";
 
 import {
@@ -45,6 +46,14 @@ const { data, refresh, error, status } = await useFetch(`/api/project`, {
   query: { status: "IN_PROGRESS" },
   key: FetchKeys.PROJECTS_IN_PROGRESS,
 });
+
+const onLogout = async () => {
+  const res = await authClient.signOut();
+
+  if (res.data?.success) {
+    navigateTo("/login");
+  }
+};
 </script>
 
 <template>
@@ -161,17 +170,12 @@ const { data, refresh, error, status } = await useFetch(`/api/project`, {
               </DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuGroup>
-                <DropdownMenuItem>
-                  <Sparkles />
-                  Upgrade to Pro
-                </DropdownMenuItem>
-              </DropdownMenuGroup>
-              <DropdownMenuSeparator />
-              <DropdownMenuGroup>
-                <DropdownMenuItem>
-                  <BadgeCheck />
-                  Account
-                </DropdownMenuItem>
+                <NuxtLink to="/settings">
+                  <DropdownMenuItem>
+                    <Settings />
+                    Settings
+                  </DropdownMenuItem>
+                </NuxtLink>
               </DropdownMenuGroup>
               <DropdownMenuSeparator />
               <DropdownMenuItem>
@@ -181,7 +185,7 @@ const { data, refresh, error, status } = await useFetch(`/api/project`, {
                   @click="handleLogout"
                 >
                   <LogOut />
-                  <span>Log out</span>
+                  <span @click="onLogout">Log out</span>
                 </Button>
               </DropdownMenuItem>
             </DropdownMenuContent>

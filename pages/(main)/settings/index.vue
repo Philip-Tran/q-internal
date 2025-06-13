@@ -1,4 +1,8 @@
 <script lang="ts" setup>
+definePageMeta({
+  layout: "sidebar-layout"
+})
+
 const { data, status } = await useFetch('/api/setting/get', {
   method: "GET"
 })
@@ -17,15 +21,27 @@ const handleLogOut = async () => {
     },
   })
 }
+
+const settings = ref({
+  updateDay: "",
+  timezone: "",
+
+})
 </script>
 
 <template>
+  <AppPageHeader title="Settings">
+    <template #endContent>
+      <Button>Update setting</Button>
+    </template>
+  </AppPageHeader>
+
   <div>
-    <Tabs default-value="setting" class="w-[1200px] mx-auto flex space-x-12 space-y-6">
-      <div class="w-[300px]">
-        <TabsList class="grid w-full grid-cols-1">
-          <TabsTrigger value="setting">
-            Setting
+    <Tabs default-value="preferences" class="w-[1200px] mx-auto flex space-x-12">
+      <div class="w-[250px]">
+        <TabsList class="grid w-full grid-cols-1 gap-y-1">
+          <TabsTrigger class="flex py-2 text-left justify-start" value="preferences">
+            Preferences
           </TabsTrigger>
           <TabsTrigger value="account">
             Account
@@ -33,11 +49,18 @@ const handleLogOut = async () => {
         </TabsList>
       </div>
       <div class="m-0">
-        <TabsContent value="setting">
-          <span>Setting</span>
+        <TabsContent value="preferences" class="flex flex-col space-y-8">
           <div>
-            <pre>{{ data }}</pre>
-            <Input />
+            <CardTitle class="mb-2">
+              Settings
+            </CardTitle>
+            <CardDescription>
+              Lorem ipsum, dolor sit amet consectetur adipisicing elit
+            </CardDescription>
+          </div>
+          <div class="flex flex-col space-y-4">
+            <Label>Update day</Label>
+            <Input v-model="settings.updateDay"/>
           </div>
         </TabsContent>
         <TabsContent value="account">
