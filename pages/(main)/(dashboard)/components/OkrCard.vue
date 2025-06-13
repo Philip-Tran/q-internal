@@ -20,7 +20,6 @@ const { data: currentOkrs, status } = await useFetch("/api/okrs/current", {
 </script>
 
 <template>
-  <pre>{{ settings }}</pre>
   <Card class="col-span-4">
     <CardHeader class="border-b h-[68px]">
       <CardTitle>This month goal</CardTitle>

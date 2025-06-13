@@ -14,16 +14,10 @@ export default defineNuxtConfig({
     "nuxt-tiptap-editor",
     "@formkit/auto-animate/nuxt",
     "nuxt-nodemailer",
-    "@pinia/colada-nuxt",
-    "@nuxthub/core"
   ],
   colorMode: {
     classSuffix: "",
     preference: 'dark',
-  },
-
-  hub: {
-    analytics: false,
   },
 
   // exclude component directory from file based routing 
@@ -40,19 +34,15 @@ export default defineNuxtConfig({
       })
     }
   },
-  
-  devServer: {
-    port: 5000,
-  },
 
   nodemailer: {
-    from: 'quyet@trueedu.org',
-    host: 'mail.trueedu.org',
-    port: 465,
+    from: process.env.MAIL_ADDRESS,
+    host: process.env.MAIL_HOST,
+    port: process.env.MAIL_PORT,
     secure: true,
     auth: {
-      user: 'quyet@trueedu.org',
-      pass: process.env.EMAIL_AUTH_PASSWORD,
+      user: process.env.MAIL_AUTH_USER,
+      pass: process.env.MAIL_AUTH_PASSWORD,
     },
   },
   pinia: {
@@ -86,8 +76,6 @@ export default defineNuxtConfig({
   },
 
   runtimeConfig: {
-    // apiKey: process.env.GITHUB_CLIENT_ID,
-    // baseUrl: process.env.GITHUB_CLIENT_SECRET,
   },
 
   app: {

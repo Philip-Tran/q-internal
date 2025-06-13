@@ -1,5 +1,4 @@
 import { authClient } from "~/server/utils/auth-client";
-import { defineStore } from "pinia";
 
 export const useAuthStore = defineStore("auth", () => {
   const loginState = ref({
